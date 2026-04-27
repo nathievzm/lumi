@@ -1,0 +1,21 @@
+{
+	"name": "image-manager",
+	"private": true,
+	"type": "module",
+	"module": "index.ts",
+	"scripts": {
+		"fix": "oxlint --fix",
+		"fmt": "oxfmt",
+		"fmt:check": "oxfmt --check",
+		"lint": "oxlint"
+	},
+	"devDependencies": {
+		"@types/bun": "latest",
+		"oxfmt": "^0.47.0",
+		"oxlint": "^1.62.0",
+		"oxlint-tsgolint": "^0.22.0"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	}
+}
