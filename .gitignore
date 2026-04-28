@@ -1,10 +1,14 @@
 # dependencies (bun install)
 node_modules
 
+# input
+input
+
 # output
 out
 dist
 *.tgz
+output
 
 # code coverage
 coverage

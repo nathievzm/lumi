@@ -1,14 +1,23 @@
 {
 	"$schema": "./node_modules/oxlint/configuration_schema.json",
-	"plugins": ["typescript", "unicorn", "oxc"],
+	"plugins": ["typescript", "unicorn", "oxc", "eslint", "import", "jsdoc", "node", "promise"],
 	"categories": {
-		"correctness": "error"
+		"correctness": "error",
+		"suspicious": "error",
+		"pedantic": "warn",
+		"perf": "warn",
+		"style": "warn",
+		"restriction": "off",
+		"nursery": "off"
 	},
-	"rules": {},
+	"rules": {
+		"no-nodejs-modules": "off"
+	},
 	"env": {
 		"builtin": true
 	},
 	"options": {
-		"typeAware": true
+		"typeAware": true,
+		"typeCheck": true
 	}
 }

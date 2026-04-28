@@ -1,13 +1,18 @@
 {
-	"name": "image-manager",
+	"name": "media-transformer",
 	"private": true,
 	"type": "module",
 	"module": "index.ts",
 	"scripts": {
-		"fix": "oxlint --fix",
+		"dev": "bun --hot index.ts",
 		"fmt": "oxfmt",
 		"fmt:check": "oxfmt --check",
-		"lint": "oxlint"
+		"lint": "oxlint",
+		"lint:fix": "oxlint --fix",
+		"start": "bun run index.ts"
+	},
+	"dependencies": {
+		"sharp": "^0.34.5"
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
