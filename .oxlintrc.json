@@ -11,7 +11,10 @@
 		"nursery": "off"
 	},
 	"rules": {
-		"no-nodejs-modules": "off"
+		"no-nodejs-modules": "off",
+		"no-magic-numbers": "off",
+		"no-ternary": "off",
+		"sort-imports": ["warn", { "ignoreDeclarationSort": true, "ignoreCase": true }]
 	},
 	"env": {
 		"builtin": true

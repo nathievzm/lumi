@@ -4,14 +4,15 @@
 	"type": "module",
 	"module": "index.ts",
 	"scripts": {
-		"dev": "bun --hot index.ts",
+		"dev": "bun --hot src/index.ts",
 		"fmt": "oxfmt",
 		"fmt:check": "oxfmt --check",
 		"lint": "oxlint",
 		"lint:fix": "oxlint --fix",
-		"start": "bun run index.ts"
+		"start": "bun run src/index.ts"
 	},
 	"dependencies": {
+		"@clack/prompts": "^1.2.0",
 		"sharp": "^0.34.5"
 	},
 	"devDependencies": {

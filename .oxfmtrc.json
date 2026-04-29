@@ -18,8 +18,8 @@
 	"semi": false,
 	"singleQuote": true,
 	"sortImports": {
-		"partitionByNewline": true,
-		"newlinesBetween": false
+		"newlinesBetween": true,
+		"ignoreCase": true
 	},
 	"sortPackageJson": {
 		"sortScripts": true
