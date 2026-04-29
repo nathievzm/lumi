@@ -1,62 +1,73 @@
 import { exists, mkdir, readdir } from 'node:fs/promises'
-import { parse } from 'node:path'
 
-import { intro, log, note, outro, tasks } from '@clack/prompts'
-import type { Task } from '@clack/prompts'
-import sharp from 'sharp'
+import { intro, log, note, outro, text } from '@clack/prompts'
+import Spinnies from 'spinnies'
 
-import args from './args'
+import { width, height, input, output as rawOutput, size } from './args'
+import { resizeImage } from './images'
 
-try {
-	intro('✨ welcome to media-processor ✨')
+intro('✨ welcome to media-processor ✨')
 
-	const { width, height, inputDir, outputDir, size } = args
+let output = rawOutput
+const outputExists = await exists(output)
 
-	note(
-		`input: ${inputDir}
-output: ${outputDir}
+if (!outputExists) {
+	if (!output) {
+		const result = await text({
+			message: 'how do you wish to name the output directory? 📁',
+			placeholder: 'output',
+			validate: value => {
+				if (!value || value.length === 0) return 'directory name is required'
+				return undefined
+			}
+		})
+
+		output = typeof result === 'string' ? result : 'output'
+	} else {
+		log.info('oops, output directory missing, creating it for you... 🛠️')
+	}
+
+	await mkdir(output, { recursive: true })
+	log.success(`output directory ready: ${output} ✅\n`)
+}
+
+note(
+	`input: ${input}
+output: ${output}
 width: ${width}
 height: ${height}
 size: ${size}`,
-		'🎀 parsed input 🎀'
-	)
+	'🎀 parsed input 🎀'
+)
 
-	const outputExists = await exists(outputDir)
+const images = await readdir(input)
+log.info(`found ${images.length} images to process! 🚀\n`)
 
-	if (!outputExists) {
-		log.info(`output directory missing, creating it right now... 🎀\n`)
-		await mkdir(outputDir, { recursive: true })
+const spinnies = new Spinnies({
+	spinnerColor: 'magenta',
+	succeedColor: 'green',
+	failColor: 'red'
+})
+
+const promises = images.map(async image => {
+	spinnies.add(image, { text: `🔃 processing: ${image}` })
+
+	try {
+		const result = await resizeImage({ image, input, output, width, height })
+		spinnies.succeed(image, { text: result })
+	} catch (error: any) {
+		spinnies.fail(image, { text: error.message })
 	}
+})
 
-	const images = await readdir(inputDir)
-	log.info(`found ${images.length} images to process! 🚀\n`)
+log.message()
 
-	const imageTasks: Task[] = images.map(image => {
-		const file = parse(image)
-		const extension = file.ext === '.gif' ? '.webp' : '.png'
+const result = await Promise.allSettled(promises)
 
-		return {
-			task: async () => {
-				try {
-					await sharp(`${inputDir}/${image}`, { animated: true })
-						.resize(width, height, { background: 'transparent', fit: 'contain' })
-						.toFile(`${outputDir}/${file.name}${extension}`)
-
-					return `✅ processed and saved: ${file.name}${extension}`
-				} catch (error: any) {
-					throw new Error(`❌ error processing ${file.name}`, { cause: error })
-				}
-			},
-			title: `🔃 processing: ${file.name} | extension: ${file.ext}`
-		}
-	})
-
-	await tasks(imageTasks)
-
-	log.message()
+if (result.some(r => r.status === 'rejected')) {
+	log.error('yikes, some images failed to process! 😢')
+} else {
 	log.success('yay! all images processed and saved successfully! 💖')
-
-	outro('bye 👋')
-} catch (error: any) {
-	log.error(`\noops, error processing images: ${error}`)
 }
+
+outro('bye 👋')

@@ -4,7 +4,6 @@
 	"editor.formatOnSave": true,
 	"oxc.enable.oxlint": true,
 	"oxc.enable.oxfmt": true,
-	"oxc.enable": true,
 	"editor.codeActionsOnSave": {
 		"source.fixAll.oxc": "always"
 	}

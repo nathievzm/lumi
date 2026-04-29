@@ -34,18 +34,13 @@ const { values } = parseArgs({
 
 const hasSize = Number(values.size) > 0
 
-// If (hasSize) {
-// 	Log.info(`size provided (${values.size}), overriding width and height with it... 🎀\n`)
-// }
-
 const rawWidth = hasSize ? values.size : values.width
 const rawHeight = hasSize ? values.size : values.height
 
 const width = Number(rawWidth)
 const height = Number(rawHeight)
 const size = hasSize ? Number(values.size) : undefined
-const inputDir = values.input
-const outputDir = values.output
+const input = values.input
+const output = values.output
 
-const args = { height, inputDir, outputDir, size, width }
-export default args
+export { height, input, output, size, width }

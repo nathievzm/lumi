@@ -12,14 +12,13 @@
 		"separateReturnsFromParam": true
 	},
 	"objectWrap": "preserve",
-	"printWidth": 100,
+	"printWidth": 120,
 	"proseWrap": "always",
 	"quoteProps": "consistent",
 	"semi": false,
 	"singleQuote": true,
 	"sortImports": {
-		"newlinesBetween": true,
-		"ignoreCase": true
+		"newlinesBetween": true
 	},
 	"sortPackageJson": {
 		"sortScripts": true

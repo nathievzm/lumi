@@ -13,7 +13,9 @@
 	},
 	"dependencies": {
 		"@clack/prompts": "^1.2.0",
-		"sharp": "^0.34.5"
+		"@types/spinnies": "^0.5.3",
+		"sharp": "^0.34.5",
+		"spinnies": "^0.5.1"
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
