@@ -17,7 +17,10 @@
 		"sort-imports": ["warn", { "ignoreDeclarationSort": true }],
 		"consistent-type-specifier-style": ["warn", "prefer-inline"],
 		"prefer-default-export": "off",
-		"no-named-exports": "off"
+		"no-named-export": "off",
+		"prefer-readonly-parameter-types": ["warn", { "ignoreInferredTypes": true }],
+		"group-exports": "off",
+		"unicorn/no-useless-undefined": "off"
 	},
 	"env": {
 		"builtin": true

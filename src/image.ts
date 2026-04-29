@@ -3,11 +3,11 @@ import { parse } from 'node:path'
 import sharp from 'sharp'
 
 interface ResizeImageParams {
-	image: string
-	input: string
-	output: string
-	width: number
-	height: number
+	readonly image: string
+	readonly input: string
+	readonly output: string
+	readonly width: number
+	readonly height: number
 }
 
 export const resizeImage = async (params: ResizeImageParams) => {

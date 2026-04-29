@@ -10,12 +10,12 @@ const { values } = parseArgs({
 			type: 'string'
 		},
 		input: {
-			default: Bun.env.INPUT_DIR,
+			default: Bun.env.INPUT_FOLDER,
 			short: 'i',
 			type: 'string'
 		},
 		output: {
-			default: Bun.env.OUTPUT_DIR,
+			default: Bun.env.OUTPUT_FOLDER,
 			short: 'o',
 			type: 'string'
 		},
