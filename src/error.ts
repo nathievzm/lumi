@@ -1,4 +1,4 @@
-export const getErrorMessage = (error: unknown) => {
+export const getMessage = (error: unknown) => {
 	if (error instanceof Error) {
 		return error.message
 	}

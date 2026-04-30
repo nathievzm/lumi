@@ -2,25 +2,25 @@ import { exists, mkdir } from 'node:fs/promises'
 
 import { log, text } from '@clack/prompts'
 
-export const getOutputFolder = async (rawOutput: string) => {
+export const getOutput = async (rawOutput: string) => {
 	let output = rawOutput
 	const outputExists = await exists(output)
 
 	if (!outputExists) {
 		if (output) {
-			log.info('oops, output folder missing, creating it for you... 🛠️')
+			log.message('oops, output folder missing, creating it for you... 🛠️')
 		} else {
-			output = await createOutputFolder()
+			output = await createOutput()
 		}
 	}
 
 	await mkdir(output, { recursive: true })
-	log.success(`output folder ready: ${output} ✅\n`)
+	log.step(`output folder ready: ${output} ✅\n`)
 
 	return output
 }
 
-export const createOutputFolder = async () => {
+export const createOutput = async () => {
 	const name = await text({
 		message: 'how do you wish to name the output folder? 📁',
 		placeholder: 'output',

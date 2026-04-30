@@ -1,30 +1,20 @@
 import { readdir } from 'node:fs/promises'
 import { parse } from 'node:path'
 
-import { type Option, cancel, group, intro, log, note, outro, select } from '@clack/prompts'
-import sharp from 'sharp'
+import { intro, log, note, outro } from '@clack/prompts'
 import Spinnies from 'spinnies'
 
-import { height, input, output as rawOutput, size, width } from './args'
-import { getErrorMessage } from './error'
-import { getOutputFolder } from './folder'
-import { isFormatInfo, resizeImage } from './image'
+import { height, input, output as rawOutput, width } from './args'
+import { getMessage } from './error'
+import { getOutput } from './folder'
+import { getExtensions, resize } from './image'
 
 intro('✨ welcome to media-processor ✨')
 
-const output = await getOutputFolder(rawOutput)
-
-note(
-	`input: ${input}
-output: ${output}
-width: ${width}
-height: ${height}
-size: ${size}`,
-	'🎀 parsed input 🎀'
-)
+const output = await getOutput(rawOutput)
 
 const images = await readdir(input, { recursive: true })
-log.info(`found ${images.length} images to process! 🚀\n`)
+note(`found ${images.length} images to process! 🚀`)
 
 const spinnies = new Spinnies({
 	failColor: 'red',
@@ -32,52 +22,19 @@ const spinnies = new Spinnies({
 	succeedColor: 'green'
 })
 
-const extensions = [
-	...new Set(
-		images.flatMap(image => {
-			const file = parse(image)
-			return file.ext ? file.ext.toLowerCase() : ''
-		})
-	)
-].filter(Boolean)
-
-const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
-const formats: Option<string>[] = sharpFormats
-	.filter(format => format.output.file)
-	.map(format => ({ label: format.id, value: `.${format.id}` }))
-
-const promptGroups: Record<string, () => Promise<string | symbol>> = {}
-
-for (const extension of extensions) {
-	if (!extension) {
-		continue
-	}
-
-	promptGroups[extension] = () =>
-		select({
-			message: `what format do you want to use for ${extension} files? 🎨`,
-			options: formats
-		})
-}
-
-const choices = await group(promptGroups, {
-	onCancel: () => {
-		cancel('operation cancelled by the user! 😢')
-		process.exit(0)
-	}
-})
+const extensions = await getExtensions(images)
 
 const promises = images.map(async image => {
 	spinnies.add(image, { text: `🔃 processing: ${image}` })
 
 	const { name, ext } = parse(image)
-	const extension = choices[ext.toLowerCase()] ?? '.png'
+	const extension = extensions['default'] ?? extensions[ext] ?? '.png'
 
 	try {
-		const result = await resizeImage({ extension, height, image, input, name, output, width })
+		const result = await resize({ extension, height, image, input, name, output, width })
 		spinnies.succeed(image, { text: result })
 	} catch (error: unknown) {
-		const message = getErrorMessage(error)
+		const message = getMessage(error)
 		spinnies.fail(image, { text: message })
 	}
 })

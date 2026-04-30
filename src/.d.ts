@@ -4,5 +4,6 @@ declare module 'bun' {
 		HEIGHT: string
 		INPUT_FOLDER: string
 		OUTPUT_FOLDER: string
+		FORMAT: string
 	}
 }

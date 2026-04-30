@@ -9,7 +9,8 @@
 	"jsdoc": {
 		"bracketSpacing": true,
 		"lineWrappingStyle": "balance",
-		"separateReturnsFromParam": true
+		"separateReturnsFromParam": true,
+		"capitalizeDescriptions": false
 	},
 	"objectWrap": "preserve",
 	"printWidth": 120,
