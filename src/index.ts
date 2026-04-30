@@ -6,15 +6,16 @@ import Spinnies from 'spinnies'
 
 import { height, input, output as rawOutput, width } from './args'
 import { getMessage } from './error'
-import { getOutput } from './folder'
+import { getOutput, initOutput } from './folder'
 import { getExtensions, resize } from './image'
 
 intro('✨ welcome to media-processor ✨')
 
-const output = await getOutput(rawOutput)
-
 const images = await readdir(input, { recursive: true })
 note(`found ${images.length} images to process! 🚀`)
+
+const output = await getOutput(rawOutput)
+await initOutput(output)
 
 const spinnies = new Spinnies({
 	failColor: 'red',
