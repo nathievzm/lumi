@@ -1,12 +1,14 @@
 import { readdir } from 'node:fs/promises'
 import { parse } from 'node:path'
 
-import { intro, log, note, outro } from '@clack/prompts'
+import { type Option, cancel, group, intro, log, note, outro, select } from '@clack/prompts'
+import sharp from 'sharp'
 import Spinnies from 'spinnies'
 
 import { height, input, output as rawOutput, size, width } from './args'
+import { getErrorMessage } from './error'
 import { getOutputFolder } from './folder'
-import { resizeImage } from './image'
+import { isFormatInfo, resizeImage } from './image'
 
 intro('✨ welcome to media-processor ✨')
 
@@ -30,29 +32,53 @@ const spinnies = new Spinnies({
 	succeedColor: 'green'
 })
 
-const extensions = images.flatMap(image => {
-	const file = parse(image)
-	return file.ext ? file.ext.toLowerCase() : ''
-})
+const extensions = [
+	...new Set(
+		images.flatMap(image => {
+			const file = parse(image)
+			return file.ext ? file.ext.toLowerCase() : ''
+		})
+	)
+].filter(Boolean)
 
-console.table(extensions)
+const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
+const formats: Option<string>[] = sharpFormats
+	.filter(format => format.output.file)
+	.map(format => ({ label: format.id, value: `.${format.id}` }))
+
+const promptGroups: Record<string, () => Promise<string | symbol>> = {}
+
+for (const extension of extensions) {
+	if (!extension) {
+		continue
+	}
+
+	promptGroups[extension] = () =>
+		select({
+			message: `what format do you want to use for ${extension} files? 🎨`,
+			options: formats
+		})
+}
+
+const choices = await group(promptGroups, {
+	onCancel: () => {
+		cancel('operation cancelled by the user! 😢')
+		process.exit(0)
+	}
+})
 
 const promises = images.map(async image => {
 	spinnies.add(image, { text: `🔃 processing: ${image}` })
 
+	const { name, ext } = parse(image)
+	const extension = choices[ext.toLowerCase()] ?? '.png'
+
 	try {
-		const result = await resizeImage({ height, image, input, output, width })
+		const result = await resizeImage({ extension, height, image, input, name, output, width })
 		spinnies.succeed(image, { text: result })
 	} catch (error: unknown) {
-		let errorMessage = 'an unknown error occurred'
-
-		if (error instanceof Error) {
-			errorMessage = error.message
-		} else if (typeof error === 'string') {
-			errorMessage = error
-		}
-
-		spinnies.fail(image, { text: errorMessage })
+		const message = getErrorMessage(error)
+		spinnies.fail(image, { text: message })
 	}
 })
 

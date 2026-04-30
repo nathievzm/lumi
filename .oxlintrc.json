@@ -20,7 +20,8 @@
 		"no-named-export": "off",
 		"prefer-readonly-parameter-types": ["warn", { "ignoreInferredTypes": true }],
 		"group-exports": "off",
-		"unicorn/no-useless-undefined": "off"
+		"unicorn/no-useless-undefined": "off",
+		"no-continue": "off"
 	},
 	"env": {
 		"builtin": true
@@ -30,3 +31,4 @@
 		"typeCheck": true
 	}
 }
+

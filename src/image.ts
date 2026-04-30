@@ -1,6 +1,4 @@
-import { parse } from 'node:path'
-
-import sharp from 'sharp'
+import sharp, { type AvailableFormatInfo } from 'sharp'
 
 interface ResizeImageParams {
 	readonly image: string
@@ -8,21 +6,23 @@ interface ResizeImageParams {
 	readonly output: string
 	readonly width: number
 	readonly height: number
+	readonly name: string
+	readonly extension: string
 }
 
 export const resizeImage = async (params: ResizeImageParams) => {
-	const { image, input, output, width, height } = params
-
-	const file = parse(image)
-	const extension = file.ext === '.gif' ? '.webp' : '.png'
+	const { image, input, output, width, height, name, extension } = params
 
 	try {
 		await sharp(`${input}/${image}`, { animated: true })
 			.resize(width, height, { background: 'transparent', fit: 'contain' })
-			.toFile(`${output}/${file.name}${extension}`)
+			.toFile(`${output}/${name}${extension}`)
 
-		return `✅ processed and saved: ${file.name}${extension} `
+		return `✅ processed and saved: ${name}${extension} `
 	} catch (error: any) {
 		throw new Error(`❌ error processing ${image} `, { cause: error })
 	}
 }
+
+export const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
+	typeof value === 'object' && value !== null && 'output' in value && 'id' in value

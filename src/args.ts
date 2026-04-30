@@ -40,7 +40,6 @@ const rawHeight = hasSize ? values.size : values.height
 const width = Number(rawWidth)
 const height = Number(rawHeight)
 const size = hasSize ? Number(values.size) : undefined
-const input = values.input
-const output = values.output
+const { input, output } = values
 
 export { height, input, output, size, width }
