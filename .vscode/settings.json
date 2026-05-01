@@ -6,5 +6,6 @@
 	"oxc.enable.oxfmt": true,
 	"editor.codeActionsOnSave": {
 		"source.fixAll.oxc": "always"
-	}
+	},
+	"files.insertFinalNewline": false
 }
