@@ -13,6 +13,7 @@
 	},
 	"dependencies": {
 		"@clack/prompts": "^1.2.0",
+		"p-limit": "^7.3.0",
 		"sharp": "^0.34.5",
 		"spinnies": "^0.5.1"
 	},
@@ -27,4 +28,3 @@
 		"typescript": "^5"
 	}
 }
-

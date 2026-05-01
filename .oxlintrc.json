@@ -21,7 +21,8 @@
 		"prefer-readonly-parameter-types": ["warn", { "ignoreInferredTypes": true }],
 		"group-exports": "off",
 		"unicorn/no-useless-undefined": "off",
-		"no-continue": "off"
+		"no-continue": "off",
+		"capitalized-comments": ["warn", "never"]
 	},
 	"env": {
 		"builtin": true

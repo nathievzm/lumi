@@ -13,6 +13,9 @@ interface ResizeParams {
 	readonly extension: string
 }
 
+const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
+	typeof value === 'object' && value !== null && 'output' in value && 'id' in value
+
 const getSharpFormats = () => {
 	const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
 	const formats: Option<string>[] = sharpFormats
@@ -35,9 +38,6 @@ export const resize = async (params: ResizeParams) => {
 		throw new Error(`❌ error processing ${image} `, { cause: error })
 	}
 }
-
-export const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
-	typeof value === 'object' && value !== null && 'output' in value && 'id' in value
 
 export const getExtensions = (images: readonly string[]) => {
 	if (Bun.env.FORMAT !== undefined && Bun.env.FORMAT !== '') {

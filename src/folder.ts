@@ -3,21 +3,22 @@ import { join } from 'node:path'
 
 import { cancel, group, log, path, text } from '@clack/prompts'
 
-export const getOutput = (output: string) => {
+export const getOutputPath = (output: string) => {
 	if (output) {
-		return output
+		log.message(`output folder provided: ${output}`)
+		return Promise.resolve(output)
 	}
 	return askOutputPath()
 }
 
-export const initOutput = async (outputPath: string) => {
+export const ensureOutputExists = async (outputPath: string) => {
 	const outputExists = await exists(outputPath)
 
 	if (!outputExists) {
 		await mkdir(outputPath, { recursive: true })
 	}
 
-	log.info(`output folder ready: ${outputPath} ✅`)
+	log.message(`output folder ready: ${outputPath} ✅\n`, { spacing: 0 })
 }
 
 export const askOutputPath = async () => {
