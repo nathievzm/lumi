@@ -29,7 +29,12 @@
 		"noImplicitAny": true,
 		"noImplicitThis": true,
 		"noUncheckedSideEffectImports": true,
-		"noPropertyAccessFromIndexSignature": true
+		"noPropertyAccessFromIndexSignature": true,
+
+		// Paths
+		"paths": {
+			"@/*": ["./src/lib/*"]
+		}
 	},
 	"include": ["**/*.ts", "**/*.d.ts"]
 }

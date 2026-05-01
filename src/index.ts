@@ -5,10 +5,10 @@ import { intro, log, note, outro } from '@clack/prompts'
 import pLimit from 'p-limit'
 import Spinnies from 'spinnies'
 
-import { height, input, output as rawOutput, width } from './args'
-import { getMessage } from './error'
-import { ensureOutputExists, getOutputPath } from './folder'
-import { getExtensions, resize } from './image'
+import { height, input, output as rawOutput, width } from '@/args'
+import { getMessage } from '@/error'
+import { ensureOutputExists, getOutputPath } from '@/folder'
+import { getExtensions, resize } from '@/image'
 
 intro('✨ welcome to media-processor ✨')
 
