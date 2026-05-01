@@ -5,7 +5,7 @@ import { cancel, group, log, path, text } from '@clack/prompts'
 
 export const getOutputPath = (output: string) => {
 	if (output) {
-		log.message(`output folder provided: ${output}`)
+		log.info(`output folder provided: ${output}`)
 		return Promise.resolve(output)
 	}
 	return askOutputPath()
@@ -18,7 +18,7 @@ export const ensureOutputExists = async (outputPath: string) => {
 		await mkdir(outputPath, { recursive: true })
 	}
 
-	log.message(`output folder ready: ${outputPath} ✅\n`, { spacing: 0 })
+	log.info(`output folder ready: ${outputPath} ✅\n`, { spacing: 0 })
 }
 
 export const askOutputPath = async () => {
