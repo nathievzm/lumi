@@ -26,7 +26,7 @@ const spinnies = new Spinnies({
 
 const extensions = await getExtensions(images)
 
-const limit = pLimit(10)
+const limit = pLimit({ concurrency: Number(Bun.env.LIMIT) || 10, rejectOnClear: true })
 
 const promises = images.map(image =>
 	limit(async () => {

@@ -5,5 +5,6 @@ declare module 'bun' {
 		INPUT_FOLDER: string
 		OUTPUT_FOLDER: string
 		FORMAT: string
+		LIMIT: string
 	}
 }
