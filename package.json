@@ -9,6 +9,7 @@
 		"fmt:check": "oxfmt --check",
 		"lint": "oxlint",
 		"lint:fix": "oxlint --fix",
+		"prepare": "husky",
 		"start": "bun run src/index.ts"
 	},
 	"dependencies": {
@@ -18,8 +19,11 @@
 		"spinnies": "^0.5.1"
 	},
 	"devDependencies": {
+		"@commitlint/cli": "^20.5.3",
+		"@commitlint/config-conventional": "^20.5.3",
 		"@types/bun": "latest",
 		"@types/spinnies": "^0.5.3",
+		"husky": "^9.1.7",
 		"oxfmt": "^0.47.0",
 		"oxlint": "^1.62.0",
 		"oxlint-tsgolint": "^0.22.0"

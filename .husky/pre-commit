@@ -1,0 +1,10 @@
+#!/usr/bin/env bun
+
+# auto-format all files using the fmt script from package.json
+bun run fmt
+
+# check for code smells and errors using the lint script
+bun run lint
+
+# verify typescript types are correct based on the tsconfig rules
+bunx --bun tsc --noEmit
