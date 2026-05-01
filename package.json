@@ -13,12 +13,12 @@
 	},
 	"dependencies": {
 		"@clack/prompts": "^1.2.0",
-		"@types/spinnies": "^0.5.3",
 		"sharp": "^0.34.5",
 		"spinnies": "^0.5.1"
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
+		"@types/spinnies": "^0.5.3",
 		"oxfmt": "^0.47.0",
 		"oxlint": "^1.62.0",
 		"oxlint-tsgolint": "^0.22.0"
@@ -27,3 +27,4 @@
 		"typescript": "^5"
 	}
 }
+
