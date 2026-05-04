@@ -1,7 +1,8 @@
 import { exists, mkdir } from 'node:fs/promises'
-import { join } from 'node:path'
 
-import { cancel, group, log, path, text } from '@clack/prompts'
+import { log } from '@clack/prompts'
+
+import { askOutputPath } from '@/prompt'
 
 export const getOutputPath = (output: string) => {
 	if (output) {
@@ -11,50 +12,12 @@ export const getOutputPath = (output: string) => {
 	return askOutputPath()
 }
 
-export const ensureOutputExists = async (outputPath: string) => {
-	const outputExists = await exists(outputPath)
+export const ensureOutputExists = async (output: string) => {
+	const outputExists = await exists(output)
 
 	if (!outputExists) {
-		await mkdir(outputPath, { recursive: true })
+		await mkdir(output, { recursive: true })
 	}
 
-	log.info(`output folder ready: ${outputPath} ✅\n`, { spacing: 0 })
-}
-
-export const askOutputPath = async () => {
-	const result = await group(
-		{
-			location: () =>
-				path({
-					directory: true,
-					message: 'where do you want to save the images? 📂',
-					root: process.cwd(),
-					validate: value => {
-						if (value === null || value?.trim().length === 0) {
-							return 'folder path is required'
-						}
-						return undefined
-					}
-				}),
-			name: () =>
-				text({
-					message: 'how do you wish to name the output folder? 🏷️',
-					placeholder: 'output',
-					validate: value => {
-						if (value === null || value?.trim().length === 0) {
-							return 'folder name is required'
-						}
-						return undefined
-					}
-				})
-		},
-		{
-			onCancel: () => {
-				cancel('operation cancelled by the user! 💀')
-				process.exit(0)
-			}
-		}
-	)
-
-	return join(result.location, result.name)
+	log.info(`output folder ready: ${output} ✅\n`, { spacing: 0 })
 }

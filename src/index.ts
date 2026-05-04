@@ -5,17 +5,19 @@ import { intro, log, note, outro } from '@clack/prompts'
 import pLimit from 'p-limit'
 import Spinnies from 'spinnies'
 
-import { limit as defaultLimit, height, input, output as rawOutput, width } from '@/args'
+import { cli } from '@/args'
 import { getMessage } from '@/error'
 import { ensureOutputExists, getOutputPath } from '@/folder'
-import { getExtensions, resize } from '@/image'
+import { getExtensions, getWidthAndHeight, resize } from '@/image'
 
 intro('✨ welcome to media-processor ✨')
 
-const images = await readdir(input, { recursive: true })
+const images = await readdir(cli.input, { recursive: true })
 note(`found ${images.length} images to process! 🚀`)
 
-const output = await getOutputPath(rawOutput)
+const { width, height } = await getWidthAndHeight(cli.width, cli.height)
+
+const output = await getOutputPath(cli.output)
 await ensureOutputExists(output)
 
 const spinnies = new Spinnies({
@@ -25,7 +27,7 @@ const spinnies = new Spinnies({
 })
 
 const extensions = await getExtensions(images)
-const limit = pLimit({ concurrency: defaultLimit || 10, rejectOnClear: true })
+const limit = pLimit({ concurrency: cli.limit || 10, rejectOnClear: true })
 
 const promises = images.map(image =>
 	limit(async () => {
@@ -35,7 +37,7 @@ const promises = images.map(image =>
 		const extension = extensions['default'] ?? extensions[ext] ?? '.png'
 
 		try {
-			const result = await resize({ extension, height, image, input, name, output, width })
+			const result = await resize({ extension, height, image, input: cli.input, name, output, width })
 			spinnies.succeed(image, { text: result })
 		} catch (error: unknown) {
 			const message = getMessage(error)
