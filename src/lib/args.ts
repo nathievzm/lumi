@@ -4,6 +4,11 @@ const { values } = parseArgs({
 	allowPositionals: true,
 	args: Bun.argv.slice(2),
 	options: {
+		format: {
+			default: Bun.env.FORMAT,
+			short: 'f',
+			type: 'string'
+		},
 		height: {
 			default: Bun.env.HEIGHT,
 			short: 'h',
@@ -12,6 +17,11 @@ const { values } = parseArgs({
 		input: {
 			default: Bun.env.INPUT_FOLDER,
 			short: 'i',
+			type: 'string'
+		},
+		limit: {
+			default: Bun.env.LIMIT,
+			short: 'l',
 			type: 'string'
 		},
 		output: {
@@ -39,7 +49,8 @@ const rawHeight = hasSize ? values.size : values.height
 
 const width = Number(rawWidth)
 const height = Number(rawHeight)
+const limit = Number(values.limit)
 const size = hasSize ? Number(values.size) : undefined
-const { input, output } = values
+const { input, output, format } = values
 
-export { height, input, output, size, width }
+export { height, input, output, size, width, limit, format }
