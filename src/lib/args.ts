@@ -50,7 +50,6 @@ const rawHeight = hasSize ? values.size : values.height
 const width = Number(rawWidth)
 const height = Number(rawHeight)
 const limit = Number(values.limit)
-const size = hasSize ? Number(values.size) : undefined
 const { input, output, format } = values
 
-export { height, input, output, size, width, limit, format }
+export const cli = { format, height, input, limit, output, width }

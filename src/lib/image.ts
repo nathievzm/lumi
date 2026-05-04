@@ -1,9 +1,9 @@
 import { join, parse } from 'node:path'
 
-import { type Option, cancel, group, select } from '@clack/prompts'
+import { type Option } from '@clack/prompts'
 import sharp, { type AvailableFormatInfo } from 'sharp'
 
-import { format as defaultFormat } from '@/args'
+import { askExtensions, askWidthAndHeight } from '@/prompt'
 
 interface ResizeParams {
 	readonly image: string
@@ -27,6 +27,35 @@ const getSharpFormats = () => {
 	return formats
 }
 
+export const getWidthAndHeight = (width: number, height: number) => {
+	const notWidth = isNaN(width) || width <= 0
+	const notHeight = isNaN(height) || height <= 0
+
+	if (notWidth && notHeight) {
+		return askWidthAndHeight()
+	}
+
+	return Promise.resolve({ height, width })
+}
+
+export const getExtensions = (images: readonly string[], format?: string) => {
+	if (format !== undefined && format !== '') {
+		return Promise.resolve({ default: format } as Record<string, string>)
+	}
+
+	const extensions = [
+		...new Set(
+			images.flatMap(image => {
+				const file = parse(image)
+				return file.ext ? file.ext.toLowerCase() : ''
+			})
+		)
+	].filter(Boolean)
+
+	const formats = getSharpFormats()
+	return askExtensions(extensions, formats)
+}
+
 export const resize = async (params: ResizeParams) => {
 	const { image, input, output, width, height, name, extension } = params
 
@@ -42,41 +71,4 @@ export const resize = async (params: ResizeParams) => {
 	} catch (error: any) {
 		throw new Error(`❌ error processing ${image} `, { cause: error })
 	}
-}
-
-export const getExtensions = (images: readonly string[]) => {
-	if (defaultFormat !== undefined && defaultFormat !== '') {
-		return Promise.resolve({ default: defaultFormat } as Record<string, string>)
-	}
-
-	const extensions = [
-		...new Set(
-			images.flatMap(image => {
-				const file = parse(image)
-				return file.ext ? file.ext.toLowerCase() : ''
-			})
-		)
-	].filter(Boolean)
-
-	const formats = getSharpFormats()
-	const promptGroups: Record<string, () => Promise<string | symbol>> = {}
-
-	for (const extension of extensions) {
-		if (!extension) {
-			continue
-		}
-
-		promptGroups[extension] = () =>
-			select({
-				message: `what format do you want to use for ${extension} files? 🎨`,
-				options: formats
-			})
-	}
-
-	return group(promptGroups, {
-		onCancel: () => {
-			cancel('operation cancelled by the user! 💀')
-			process.exit(0)
-		}
-	})
 }
