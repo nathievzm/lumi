@@ -5,7 +5,7 @@ import { intro, log, note, outro } from '@clack/prompts'
 import pLimit from 'p-limit'
 import Spinnies from 'spinnies'
 
-import { height, input, output as rawOutput, width } from '@/args'
+import { limit as defaultLimit, height, input, output as rawOutput, width } from '@/args'
 import { getMessage } from '@/error'
 import { ensureOutputExists, getOutputPath } from '@/folder'
 import { getExtensions, resize } from '@/image'
@@ -25,8 +25,7 @@ const spinnies = new Spinnies({
 })
 
 const extensions = await getExtensions(images)
-
-const limit = pLimit({ concurrency: Number(Bun.env.LIMIT) || 10, rejectOnClear: true })
+const limit = pLimit({ concurrency: defaultLimit || 10, rejectOnClear: true })
 
 const promises = images.map(image =>
 	limit(async () => {
@@ -48,11 +47,14 @@ const promises = images.map(image =>
 log.message()
 
 const result = await Promise.allSettled(promises)
+let outroMessage = ''
 
 if (result.some(pr => pr.status === 'rejected')) {
 	log.error('yikes, some images failed to process! 😢')
+	outroMessage = 'please check the error messages above and try again 🛠️'
 } else {
 	log.success('yay! all images processed and saved successfully! 💖')
+	outroMessage = 'bye 👋'
 }
 
-outro('bye 👋')
+outro(outroMessage)

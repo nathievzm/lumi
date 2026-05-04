@@ -1,7 +1,9 @@
-import { parse } from 'node:path'
+import { join, parse } from 'node:path'
 
 import { type Option, cancel, group, select } from '@clack/prompts'
 import sharp, { type AvailableFormatInfo } from 'sharp'
+
+import { format as defaultFormat } from '@/args'
 
 interface ResizeParams {
 	readonly image: string
@@ -29,9 +31,12 @@ export const resize = async (params: ResizeParams) => {
 	const { image, input, output, width, height, name, extension } = params
 
 	try {
-		await sharp(`${input}/${image}`, { animated: true })
+		const inputPath = join(input, image)
+		const outputPath = join(output, `${name}${extension}`)
+
+		await sharp(inputPath, { animated: true })
 			.resize(width, height, { background: 'transparent', fit: 'contain' })
-			.toFile(`${output}/${name}${extension}`)
+			.toFile(outputPath)
 
 		return `✅ processed and saved: ${name}${extension} `
 	} catch (error: any) {
@@ -40,8 +45,8 @@ export const resize = async (params: ResizeParams) => {
 }
 
 export const getExtensions = (images: readonly string[]) => {
-	if (Bun.env.FORMAT !== undefined && Bun.env.FORMAT !== '') {
-		return Promise.resolve({ default: Bun.env.FORMAT } as Record<string, string>)
+	if (defaultFormat !== undefined && defaultFormat !== '') {
+		return Promise.resolve({ default: defaultFormat } as Record<string, string>)
 	}
 
 	const extensions = [
