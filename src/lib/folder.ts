@@ -2,7 +2,16 @@ import { exists, mkdir } from 'node:fs/promises'
 
 import { log } from '@clack/prompts'
 
-import { askOutputPath } from '@/prompt'
+import { askInputPath, askOutputPath } from '@/prompt'
+
+export const getInputPath = (input: string) => {
+	if (input) {
+		log.info(`input folder provided: ${input}`)
+		return Promise.resolve(input)
+	}
+
+	return askInputPath()
+}
 
 export const getOutputPath = (output: string) => {
 	if (output) {
