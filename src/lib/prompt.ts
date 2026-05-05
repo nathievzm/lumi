@@ -2,6 +2,27 @@ import { join } from 'node:path'
 
 import { type Option, cancel, group, path, select, text } from '@clack/prompts'
 
+export const askInputPath = async () => {
+	const result = await path({
+		directory: true,
+		message: 'where are the images you want to transform? 📂',
+		root: process.cwd(),
+		validate: value => {
+			if (value === null || value?.trim().length === 0) {
+				return 'folder path is required'
+			}
+			return undefined
+		}
+	})
+
+	if (typeof result === 'symbol') {
+		cancel('operation cancelled by the user! 💀')
+		process.exit(0)
+	}
+
+	return result
+}
+
 export const askOutputPath = async () => {
 	const { location, name } = await group(
 		{

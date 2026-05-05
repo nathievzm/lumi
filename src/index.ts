@@ -7,18 +7,20 @@ import Spinnies from 'spinnies'
 
 import { cli } from '@/args'
 import { getMessage } from '@/error'
-import { ensureOutputExists, getOutputPath } from '@/folder'
+import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
 import { getExtensions, getWidthAndHeight, resize } from '@/image'
 
 intro('✨ welcome to media-processor ✨')
 
-const images = await readdir(cli.input, { recursive: true })
-note(`found ${images.length} images to process! 🚀`)
+const input = await getInputPath(cli.input)
 
-const { width, height } = await getWidthAndHeight(cli.width, cli.height)
+const images = await readdir(input, { recursive: true })
+note(`found ${images.length} images to process! 🚀`)
 
 const output = await getOutputPath(cli.output)
 await ensureOutputExists(output)
+
+const { width, height } = await getWidthAndHeight(cli.width, cli.height)
 
 const spinnies = new Spinnies({
 	failColor: 'red',
@@ -37,7 +39,7 @@ const promises = images.map(image =>
 		const extension = extensions['default'] ?? extensions[ext] ?? '.png'
 
 		try {
-			const result = await resize({ extension, height, image, input: cli.input, name, output, width })
+			const result = await resize({ extension, height, image, input, name, output, width })
 			spinnies.succeed(image, { text: result })
 		} catch (error: unknown) {
 			const message = getMessage(error)
