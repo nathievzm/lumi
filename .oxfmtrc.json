@@ -10,7 +10,9 @@
 		"bracketSpacing": true,
 		"lineWrappingStyle": "balance",
 		"separateReturnsFromParam": true,
-		"capitalizeDescriptions": false
+		"capitalizeDescriptions": true,
+		"descriptionWithDot": false,
+		"commentLineStrategy": "multiline"
 	},
 	"objectWrap": "preserve",
 	"printWidth": 120,
