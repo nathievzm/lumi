@@ -1,3 +1,5 @@
+#!/usr/bin/env bun
+
 import { readdir } from 'node:fs/promises'
 import { parse } from 'node:path'
 

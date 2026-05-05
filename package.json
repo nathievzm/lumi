@@ -1,7 +1,38 @@
 {
 	"name": "media-transformer",
 	"version": "1.0.0",
-	"private": true,
+	"description": "a concurrent cli tool to resize and convert images using bun and sharp",
+	"keywords": [
+		"bun",
+		"clack",
+		"cli",
+		"concurrency",
+		"concurrent",
+		"image",
+		"image-processing",
+		"media",
+		"p-limit",
+		"sharp",
+		"spinnies",
+		"typescript"
+	],
+	"bugs": {
+		"url": "https://github.com/nathievzm/media-transformer/issues",
+		"email": "nathalievzm@gmail.com"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Nathalie Zambrano",
+		"email": "nathalievzm@gmail.com",
+		"url": "https://github.com/nathievzm"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nathievzm/media-transformer.git"
+	},
+	"bin": {
+		"media-transformer": "src/index.ts"
+	},
 	"type": "module",
 	"module": "index.ts",
 	"scripts": {
