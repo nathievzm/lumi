@@ -22,7 +22,8 @@
 		"group-exports": "off",
 		"unicorn/no-useless-undefined": "off",
 		"no-continue": "off",
-		"capitalized-comments": ["warn", "never"]
+		"require-param-type": "off",
+		"require-returns-type": "off"
 	},
 	"env": {
 		"builtin": true
