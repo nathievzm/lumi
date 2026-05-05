@@ -1,5 +1,5 @@
 {
-	"name": "media-transformer",
+	"name": "@nathievzm/lumi",
 	"version": "1.0.0",
 	"description": "a concurrent cli tool to resize and convert images using bun and sharp",
 	"keywords": [
@@ -31,7 +31,7 @@
 		"url": "git+https://github.com/nathievzm/media-transformer.git"
 	},
 	"bin": {
-		"media-transformer": "src/index.ts"
+		"lumi": "src/index.ts"
 	},
 	"type": "module",
 	"module": "index.ts",
