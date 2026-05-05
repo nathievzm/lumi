@@ -1,5 +1,5 @@
 {
-	"name": "media-transformer",
+	"name": "@nathievzm/lumi",
 	"version": "1.0.0",
 	"description": "a concurrent cli tool to resize and convert images using bun and sharp",
 	"keywords": [
@@ -17,7 +17,7 @@
 		"typescript"
 	],
 	"bugs": {
-		"url": "https://github.com/nathievzm/media-transformer/issues",
+		"url": "https://github.com/nathievzm/lumi/issues",
 		"email": "nathalievzm@gmail.com"
 	},
 	"license": "MIT",
@@ -28,10 +28,10 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/nathievzm/media-transformer.git"
+		"url": "git+https://github.com/nathievzm/lumi.git"
 	},
 	"bin": {
-		"media-transformer": "src/index.ts"
+		"lumi": "src/index.ts"
 	},
 	"type": "module",
 	"module": "index.ts",
@@ -41,7 +41,7 @@
 		"fmt:check": "oxfmt --check",
 		"lint": "oxlint",
 		"lint:fix": "oxlint --fix",
-		"prepare": "husky",
+		"prepare": "bunx husky",
 		"start": "bun run src/index.ts"
 	},
 	"dependencies": {
