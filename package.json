@@ -41,7 +41,7 @@
 		"fmt:check": "oxfmt --check",
 		"lint": "oxlint",
 		"lint:fix": "oxlint --fix",
-		"prepare": "husky",
+		"prepare": "bunx husky",
 		"start": "bun run src/index.ts"
 	},
 	"dependencies": {
