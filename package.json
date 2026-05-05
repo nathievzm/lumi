@@ -17,7 +17,7 @@
 		"typescript"
 	],
 	"bugs": {
-		"url": "https://github.com/nathievzm/media-transformer/issues",
+		"url": "https://github.com/nathievzm/lumi/issues",
 		"email": "nathalievzm@gmail.com"
 	},
 	"license": "MIT",
@@ -28,7 +28,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/nathievzm/media-transformer.git"
+		"url": "git+https://github.com/nathievzm/lumi.git"
 	},
 	"bin": {
 		"lumi": "src/index.ts"
