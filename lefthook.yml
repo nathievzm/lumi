@@ -1,23 +1,23 @@
 pre-commit:
-  # running all checks at the same time for maximum speed ⚡
-  parallel: true
-  jobs:
-    - name: format
-      run: bun fmt
+    # running all checks at the same time for maximum speed ⚡
+    parallel: true
+    jobs:
+        - name: format
+          run: bun fmt
 
-    - name: lint
-      run: bun lint
+        - name: lint
+          run: bun lint
 
-    - name: types
-      run: bunx --bun tsc --noEmit
+        - name: types
+          run: bunx --bun tsc --noEmit
 
 commit-msg:
-  jobs:
-    - name: commitlint
-      # using bun to run commitlint as fast as possible 🌸
-      run: bunx --bun commitlint --edit {1}
+    jobs:
+        - name: commitlint
+          # using bun to run commitlint as fast as possible 🌸
+          run: bunx --bun commitlint --edit {1}
 
 pre-push:
-  jobs:
-    - name: test-placeholder
-      run: echo "ready to push! tests will go here in the future ✨"
+    jobs:
+        - name: test-placeholder
+          run: echo "ready to push! tests will go here in the future ✨"
