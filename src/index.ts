@@ -10,13 +10,28 @@ import Spinnies from 'spinnies'
 import { cli } from '@/args'
 import { getMessage } from '@/error'
 import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
-import { getExtensions, getWidthAndHeight, resize } from '@/image'
+import { getExtensions, getSharpFormats, getWidthAndHeight, resize } from '@/image'
 
 intro('✨ welcome to lumi ✨')
 
 const input = await getInputPath(cli.input)
 
-const images = await readdir(input, { recursive: true })
+const allFiles = await readdir(input, { recursive: true })
+
+const inputFormats = getSharpFormats('input').map(format => format.value)
+const validExtensions = new Set(inputFormats)
+
+const images = allFiles.filter(file => {
+	const { ext } = parse(file)
+	return validExtensions.has(ext.toLowerCase())
+})
+
+if (images.length === 0) {
+	log.error('yikes! no valid images found in the input folder 😭')
+	outro('please add some images to the input folder and try again 👋')
+	process.exit(1)
+}
+
 note(`found ${images.length} images to process! 🚀`)
 
 const output = await getOutputPath(cli.output)
@@ -46,6 +61,7 @@ const promises = images.map(image =>
 		} catch (error: unknown) {
 			const message = getMessage(error)
 			spinnies.fail(image, { text: message })
+			throw error
 		}
 	})
 )
