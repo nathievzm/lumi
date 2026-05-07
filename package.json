@@ -41,7 +41,7 @@
 		"fmt:check": "oxfmt --check",
 		"lint": "oxlint",
 		"lint:fix": "oxlint --fix",
-		"prepare": "bunx husky",
+		"postinstall": "lefthook install",
 		"start": "bun run src/index.ts"
 	},
 	"dependencies": {
@@ -55,10 +55,11 @@
 		"@commitlint/config-conventional": "^20.5.3",
 		"@types/bun": "latest",
 		"@types/spinnies": "^0.5.3",
-		"husky": "^9.1.7",
+		"lefthook": "^2.1.6",
 		"oxfmt": "^0.47.0",
 		"oxlint": "^1.62.0",
 		"oxlint-tsgolint": "^0.22.1",
 		"typescript": "^6.0.3"
 	}
 }
+

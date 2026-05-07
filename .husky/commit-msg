@@ -1,4 +1,0 @@
-#!/usr/bin/env bun
-
-# enforce conventional commits to keep the git history aesthetic 💅
-bunx --bun commitlint --edit $1
