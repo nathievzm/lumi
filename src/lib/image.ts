@@ -52,12 +52,14 @@ const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
 /**
  * Retrieves the list of image formats supported by Sharp for output.
  *
- * @returns An array of Clack prompt options representing supported formats.
+ * @param type - The type of formats to retrieve ('input' or 'output').
+ *
+ * @returns An array of options representing the supported formats for the specified type.
  */
-const getSharpFormats = () => {
+export const getSharpFormats = (type: 'input' | 'output') => {
 	const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
 	const formats: Option<string>[] = sharpFormats
-		.filter(format => format.output.file)
+		.filter(format => (type === 'input' ? format.input.file : format.output.file))
 		.map(format => ({ label: format.id, value: `.${format.id}` }))
 
 	return formats
@@ -111,7 +113,7 @@ export const getExtensions = (images: readonly string[], format?: string) => {
 		)
 	].filter(Boolean)
 
-	const formats = getSharpFormats()
+	const formats = getSharpFormats('output')
 	return askExtensions(extensions, formats)
 }
 
