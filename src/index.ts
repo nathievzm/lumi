@@ -12,7 +12,7 @@ import { getMessage } from '@/error'
 import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
 import { getExtensions, getWidthAndHeight, resize } from '@/image'
 
-intro('✨ welcome to media-processor ✨')
+intro('✨ welcome to lumi ✨')
 
 const input = await getInputPath(cli.input)
 
@@ -30,7 +30,7 @@ const spinnies = new Spinnies({
 	succeedColor: 'green'
 })
 
-const extensions = await getExtensions(images)
+const extensions = await getExtensions(images, cli.format)
 const limit = pLimit({ concurrency: cli.limit || 10, rejectOnClear: true })
 
 const promises = images.map(image =>

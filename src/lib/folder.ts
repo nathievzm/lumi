@@ -14,8 +14,8 @@ import { askInputPath, askOutputPath } from '@/prompt'
  *
  * @returns A promise that resolves to the chosen input path string.
  */
-export const getInputPath = (input: string) => {
-	if (input) {
+export const getInputPath = (input?: string) => {
+	if (input !== undefined && input !== '') {
 		log.info(`input folder provided: ${input}`)
 		return Promise.resolve(input)
 	}
@@ -33,8 +33,8 @@ export const getInputPath = (input: string) => {
  *
  * @returns A promise that resolves to the chosen output path string.
  */
-export const getOutputPath = (output: string) => {
-	if (output) {
+export const getOutputPath = (output?: string) => {
+	if (output !== undefined && output !== '') {
 		log.info(`output folder provided: ${output}`)
 		return Promise.resolve(output)
 	}

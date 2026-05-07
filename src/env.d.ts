@@ -3,26 +3,26 @@ declare module 'bun' {
 		/**
 		 * Default target width for resized images.
 		 */
-		WIDTH: string
+		WIDTH?: string
 		/**
 		 * Default target height for resized images.
 		 */
-		HEIGHT: string
+		HEIGHT?: string
 		/**
 		 * Default path to the input folder containing images.
 		 */
-		INPUT_FOLDER: string
+		INPUT_FOLDER?: string
 		/**
 		 * Default path where processed images will be saved.
 		 */
-		OUTPUT_FOLDER: string
+		OUTPUT_FOLDER?: string
 		/**
 		 * Default global output format (e.g., '.webp', '.png').
 		 */
-		FORMAT: string
+		FORMAT?: string
 		/**
 		 * Default concurrent processing limit.
 		 */
-		LIMIT: string
+		LIMIT?: string
 	}
 }
