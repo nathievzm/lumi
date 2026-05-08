@@ -16,7 +16,7 @@ import { askOutputPath } from '@/prompt'
  */
 export const getInputPath = (input?: string) => {
 	if (input !== undefined && input !== '') {
-		log.info(`input folder provided: ${input}`)
+		log.info(`input folder provided: ${input} 📂`)
 		return input
 	}
 
