@@ -86,34 +86,44 @@ export const askOutputPath = async () => {
  * @returns A promise that resolves to an object containing the numeric width and height.
  */
 export const askWidthAndHeight = async () => {
-	const { width, height } = await group({
-		height: () =>
-			text({
-				message: 'what height do you want to use for the output images? 📐',
-				placeholder: 'e.g. 600',
-				validate: value => {
-					const number = Number(value)
-					if (isNaN(number) || number <= 0) {
-						return 'please enter a valid positive number for height 🚫'
-					}
-					return undefined
-				}
-			}),
-		width: () =>
-			text({
-				message: 'what width do you want to use for the output images? 📏',
-				placeholder: 'e.g. 800',
-				validate: value => {
-					const number = Number(value)
-					if (isNaN(number) || number <= 0) {
-						return 'please enter a valid positive number for width 🚫'
-					}
-					return undefined
-				}
-			})
+	const regex = /\d+/gv
+
+	const result = await text({
+		message: 'what dimensions do you want for the output images? 📐',
+		placeholder: 'e.g. "1080" (square) or "1920 1080" (width x height)',
+		validate: value => {
+			const matches = value?.match(regex)
+
+			if (!matches || matches.length === 0) {
+				return 'please enter at least one valid positive number 🚫'
+			}
+
+			if (matches.length > 2) {
+				return 'please enter at most two numbers (width and height) 🚫'
+			}
+
+			const width = Number(matches[0])
+			const height = matches.length === 2 ? Number(matches[1]) : width
+
+			if (width <= 0 || height <= 0) {
+				return 'dimensions must be greater than zero 🚫'
+			}
+
+			return undefined
+		}
 	})
 
-	return { height: Number(height), width: Number(width) }
+	if (typeof result === 'symbol') {
+		cancel('operation cancelled by the user! 💀')
+		process.exit(0)
+	}
+
+	const matches = result.match(regex) ?? []
+
+	const width = Number(matches[0])
+	const height = matches.length === 2 ? Number(matches[1]) : width
+
+	return { height, width }
 }
 
 /**
