@@ -4,13 +4,14 @@ import { readdir } from 'node:fs/promises'
 import { parse } from 'node:path'
 
 import { intro, log, note, outro } from '@clack/prompts'
+import imageExtensions from 'image-extensions'
 import pLimit from 'p-limit'
 import Spinnies from 'spinnies'
 
 import { cli } from '@/args'
 import { getMessage } from '@/error'
 import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
-import { getExtensions, getSharpFormats, getWidthAndHeight, resize } from '@/image'
+import { getExtensions, getWidthAndHeight, resize } from '@/image'
 
 intro('✨ welcome to lumi ✨')
 
@@ -18,7 +19,7 @@ const input = await getInputPath(cli.input)
 
 const allFiles = await readdir(input, { recursive: true })
 
-const inputFormats = getSharpFormats('input').map(format => format.value)
+const inputFormats = imageExtensions.map(format => `.${format}`)
 const validExtensions = new Set(inputFormats)
 
 const images = allFiles.filter(file => {
