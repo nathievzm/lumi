@@ -15,7 +15,7 @@ import { getExtensions, getWidthAndHeight, resize } from '@/image'
 
 intro('✨ welcome to lumi ✨')
 
-const input = await getInputPath(cli.input)
+const input = getInputPath(cli.input)
 
 const allFiles = await readdir(input, { recursive: true })
 

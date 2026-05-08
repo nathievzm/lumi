@@ -3,35 +3,6 @@ import { join } from 'node:path'
 import { type Option, cancel, group, path, select, text } from '@clack/prompts'
 
 /**
- * Prompts the user to select the input directory containing images.
- *
- * Uses a directory picker with validation to ensure a non-empty path is provided.
- * If the user cancels the prompt, the process exits.
- *
- * @returns A promise that resolves to the selected input path string.
- */
-export const askInputPath = async () => {
-	const result = await path({
-		directory: true,
-		message: 'where are the images you want to transform? 📂',
-		root: process.cwd(),
-		validate: value => {
-			if (value === null || value?.trim().length === 0) {
-				return 'folder path is required'
-			}
-			return undefined
-		}
-	})
-
-	if (typeof result === 'symbol') {
-		cancel('operation cancelled by the user! 💀')
-		process.exit(0)
-	}
-
-	return result
-}
-
-/**
  * Prompts the user for the output location and folder name.
  *
  * Combines two prompts: one for the parent directory and another for the new folder's name.
