@@ -56,10 +56,10 @@ const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
  *
  * @returns An array of options representing the supported formats for the specified type.
  */
-export const getSharpFormats = (type: 'input' | 'output') => {
+export const getSharpFormats = () => {
 	const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
 	const formats: Option<string>[] = sharpFormats
-		.filter(format => (type === 'input' ? format.input.file : format.output.file))
+		.filter(format => format.output.file)
 		.map(format => ({ label: format.id, value: `.${format.id}` }))
 
 	return formats
@@ -113,7 +113,7 @@ export const getExtensions = (images: readonly string[], format?: string) => {
 		)
 	].filter(Boolean)
 
-	const formats = getSharpFormats('output')
+	const formats = getSharpFormats()
 	return askExtensions(extensions, formats)
 }
 
