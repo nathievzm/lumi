@@ -1,41 +1,31 @@
 #!/usr/bin/env bun
 
-import { readdir } from 'node:fs/promises'
 import { parse } from 'node:path'
+import { exit } from 'node:process'
 
 import { intro, log, note, outro } from '@clack/prompts'
-import imageExtensions from 'image-extensions'
 import pLimit from 'p-limit'
 import Spinnies from 'spinnies'
 
 import { cli } from '@/args'
 import { getMessage } from '@/error'
 import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
-import { getExtensions, getWidthAndHeight, resize } from '@/image'
+import { getExtensions, getValidImages, getWidthAndHeight, resize } from '@/image'
 
 intro('✨ welcome to lumi ✨')
 
 const input = getInputPath(cli.input)
-
-const allFiles = await readdir(input, { recursive: true })
-
-const inputFormats = imageExtensions.map(format => `.${format}`)
-const validExtensions = new Set(inputFormats)
-
-const images = allFiles.filter(file => {
-	const { ext } = parse(file)
-	return validExtensions.has(ext.toLowerCase())
-})
+const images = await getValidImages(input)
 
 if (images.length === 0) {
 	log.error('yikes! no valid images found in the input folder 😭')
 	outro('please add some images to the input folder and try again 👋')
-	process.exit(1)
+	exit(1)
 }
 
 note(`found ${images.length} images to process! 🚀`)
 
-const output = await getOutputPath(cli.output)
+const output = getOutputPath(cli.output)
 await ensureOutputExists(output)
 
 const { width, height } = await getWidthAndHeight(cli.width, cli.height)
@@ -51,7 +41,7 @@ const limit = pLimit({ concurrency: cli.limit || 10, rejectOnClear: true })
 
 const promises = images.map(image =>
 	limit(async () => {
-		spinnies.add(image, { text: `🔃 processing: ${image}` })
+		spinnies.add(image, { text: `processing: ${image}` })
 
 		const { name, ext } = parse(image)
 		const extension = extensions['default'] ?? extensions[ext] ?? '.png'

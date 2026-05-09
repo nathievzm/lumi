@@ -1,8 +1,8 @@
 import { exists, mkdir } from 'node:fs/promises'
+import { resolve } from 'node:path'
+import { cwd } from 'node:process'
 
 import { log } from '@clack/prompts'
-
-import { askOutputPath } from '@/prompt'
 
 /**
  * Resolves the input directory path.
@@ -20,7 +20,7 @@ export const getInputPath = (input?: string) => {
 		return input
 	}
 
-	const currentFolder = process.cwd()
+	const currentFolder = cwd()
 	log.info(`using current folder as input: ${currentFolder} 📂`)
 
 	return currentFolder
@@ -38,10 +38,14 @@ export const getInputPath = (input?: string) => {
  */
 export const getOutputPath = (output?: string) => {
 	if (output !== undefined && output !== '') {
-		log.info(`output folder provided: ${output}`)
-		return Promise.resolve(output)
+		log.info(`output folder provided: ${output} 📂`)
+		return output
 	}
-	return askOutputPath()
+
+	const defaultOutput = resolve('output')
+	log.info(`using default output folder: ${defaultOutput} 📂`)
+
+	return defaultOutput
 }
 
 /**

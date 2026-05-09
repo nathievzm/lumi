@@ -1,9 +1,11 @@
+import { readdir } from 'node:fs/promises'
 import { join, parse } from 'node:path'
 
 import { type Option } from '@clack/prompts'
+import imageExtensions from 'image-extensions'
 import sharp, { type AvailableFormatInfo } from 'sharp'
 
-import { askExtensions, askWidthAndHeight } from '@/prompt'
+import { askExtensions, askWidthAndHeight } from './prompt'
 
 /**
  * Parameters for the image resizing operation.
@@ -117,6 +119,20 @@ export const getExtensions = (images: readonly string[], format?: string) => {
 	return askExtensions(extensions, formats)
 }
 
+export const getValidImages = async (input: string) => {
+	const allFiles = await readdir(input, { recursive: true })
+
+	const inputFormats = imageExtensions.map(format => `.${format}`)
+	const validExtensions = new Set(inputFormats)
+
+	const images = allFiles.filter(file => {
+		const { ext } = parse(file)
+		return validExtensions.has(ext.toLowerCase())
+	})
+
+	return images
+}
+
 /**
  * Resizes an image using the Sharp library.
  *
@@ -139,8 +155,8 @@ export const resize = async (params: ResizeParams) => {
 			.resize(width, height, { background: 'transparent', fit: 'contain' })
 			.toFile(outputPath)
 
-		return `✅ processed and saved: ${name}${extension} `
+		return `processed and saved: ${name}${extension} `
 	} catch (error: any) {
-		throw new Error(`❌ error processing ${image} `, { cause: error })
+		throw new Error(`error processing ${image} `, { cause: error })
 	}
 }

@@ -1,53 +1,6 @@
-import { join } from 'node:path'
+import { exit } from 'node:process'
 
-import { type Option, cancel, group, path, select, text } from '@clack/prompts'
-
-/**
- * Prompts the user for the output location and folder name.
- *
- * Combines two prompts: one for the parent directory and another for the new folder's name.
- * The results are joined to create a complete output path.
- * If the user cancels either prompt, the process exits.
- *
- * @returns A promise that resolves to the combined output directory path.
- */
-export const askOutputPath = async () => {
-	const { location, name } = await group(
-		{
-			location: () =>
-				path({
-					directory: true,
-					message: 'where do you want to save the images? 📂',
-					root: process.cwd(),
-					validate: value => {
-						if (value === null || value?.trim().length === 0) {
-							return 'folder path is required'
-						}
-						return undefined
-					}
-				}),
-			name: () =>
-				text({
-					message: 'how do you wish to name the output folder? 🏷️',
-					placeholder: 'output',
-					validate: value => {
-						if (value === null || value?.trim().length === 0) {
-							return 'folder name is required'
-						}
-						return undefined
-					}
-				})
-		},
-		{
-			onCancel: () => {
-				cancel('operation cancelled by the user! 💀')
-				process.exit(0)
-			}
-		}
-	)
-
-	return join(location, name)
-}
+import { type Option, cancel, group, select, text } from '@clack/prompts'
 
 /**
  * Prompts the user for the target width and height of the images.
@@ -86,7 +39,7 @@ export const askWidthAndHeight = async () => {
 
 	if (typeof result === 'symbol') {
 		cancel('operation cancelled by the user! 💀')
-		process.exit(0)
+		exit(0)
 	}
 
 	const matches = result.match(regex) ?? []
@@ -126,7 +79,7 @@ export const askExtensions = (extensions: readonly string[], formats: readonly R
 	return group(promptGroups, {
 		onCancel: () => {
 			cancel('operation cancelled by the user! 💀')
-			process.exit(0)
+			exit(0)
 		}
 	})
 }
