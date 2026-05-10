@@ -3,7 +3,7 @@ pre-commit:
   parallel: true
   jobs:
     - name: format
-      run: bun fmt
+      run: bun fmt && git add .
 
     - name: lint
       run: bun lint

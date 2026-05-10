@@ -9,13 +9,13 @@
  * @returns The error message if it's an Error instance or a string; otherwise, a default message.
  */
 export const getMessage = (error: unknown) => {
-	if (error instanceof Error) {
-		return error.message
-	}
+    if (error instanceof Error) {
+        return error.message
+    }
 
-	if (typeof error === 'string') {
-		return error
-	}
+    if (typeof error === 'string') {
+        return error
+    }
 
-	return 'an unknown error occurred'
+    return 'an unknown error occurred'
 }
