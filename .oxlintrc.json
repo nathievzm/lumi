@@ -1,35 +1,35 @@
 {
-	"$schema": "./node_modules/oxlint/configuration_schema.json",
-	"plugins": ["typescript", "unicorn", "oxc", "eslint", "import", "jsdoc", "node", "promise"],
-	"categories": {
-		"correctness": "error",
-		"suspicious": "error",
-		"pedantic": "warn",
-		"perf": "warn",
-		"style": "warn",
-		"restriction": "off",
-		"nursery": "off"
-	},
-	"rules": {
-		"no-nodejs-modules": "off",
-		"no-magic-numbers": "off",
-		"no-ternary": "off",
-		"sort-imports": ["warn", { "ignoreDeclarationSort": true }],
-		"consistent-type-specifier-style": ["warn", "prefer-inline"],
-		"prefer-default-export": "off",
-		"no-named-export": "off",
-		"prefer-readonly-parameter-types": ["warn", { "ignoreInferredTypes": true }],
-		"group-exports": "off",
-		"unicorn/no-useless-undefined": "off",
-		"no-continue": "off",
-		"require-param-type": "off",
-		"require-returns-type": "off"
-	},
-	"env": {
-		"builtin": true
-	},
-	"options": {
-		"typeAware": true,
-		"typeCheck": true
-	}
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "plugins": ["typescript", "unicorn", "oxc", "eslint", "import", "jsdoc", "node", "promise"],
+    "categories": {
+        "correctness": "error",
+        "suspicious": "error",
+        "pedantic": "warn",
+        "perf": "warn",
+        "style": "warn",
+        "restriction": "off",
+        "nursery": "off"
+    },
+    "rules": {
+        "no-nodejs-modules": "off",
+        "no-magic-numbers": "off",
+        "no-ternary": "off",
+        "sort-imports": ["warn", { "ignoreDeclarationSort": true }],
+        "consistent-type-specifier-style": ["warn", "prefer-inline"],
+        "prefer-default-export": "off",
+        "no-named-export": "off",
+        "prefer-readonly-parameter-types": ["warn", { "ignoreInferredTypes": true }],
+        "group-exports": "off",
+        "unicorn/no-useless-undefined": "off",
+        "no-continue": "off",
+        "require-param-type": "off",
+        "require-returns-type": "off"
+    },
+    "env": {
+        "builtin": true
+    },
+    "options": {
+        "typeAware": true,
+        "typeCheck": true
+    }
 }

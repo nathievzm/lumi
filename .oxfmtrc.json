@@ -1,32 +1,39 @@
 {
-	"$schema": "./node_modules/oxfmt/configuration_schema.json",
-	"arrowParens": "avoid",
-	"bracketSameLine": true,
-	"bracketSpacing": true,
-	"embeddedLanguageFormatting": "auto",
-	"endOfLine": "crlf",
-	"insertFinalNewline": true,
-	"jsdoc": {
-		"bracketSpacing": true,
-		"lineWrappingStyle": "balance",
-		"separateReturnsFromParam": true,
-		"capitalizeDescriptions": true,
-		"descriptionWithDot": false,
-		"commentLineStrategy": "multiline"
-	},
-	"objectWrap": "preserve",
-	"printWidth": 120,
-	"proseWrap": "always",
-	"quoteProps": "consistent",
-	"semi": false,
-	"singleQuote": true,
-	"sortImports": {
-		"newlinesBetween": true
-	},
-	"sortPackageJson": {
-		"sortScripts": true
-	},
-	"tabWidth": 4,
-	"trailingComma": "none",
-	"useTabs": true
+    "$schema": "./node_modules/oxfmt/configuration_schema.json",
+    "arrowParens": "avoid",
+    "bracketSameLine": true,
+    "bracketSpacing": true,
+    "embeddedLanguageFormatting": "auto",
+    "endOfLine": "lf",
+    "insertFinalNewline": true,
+    "jsdoc": {
+        "bracketSpacing": true,
+        "lineWrappingStyle": "balance",
+        "separateReturnsFromParam": true,
+        "capitalizeDescriptions": true,
+        "descriptionWithDot": false,
+        "commentLineStrategy": "multiline"
+    },
+    "objectWrap": "preserve",
+    "printWidth": 120,
+    "proseWrap": "always",
+    "quoteProps": "consistent",
+    "semi": false,
+    "singleQuote": true,
+    "sortImports": {
+        "newlinesBetween": true
+    },
+    "sortPackageJson": {
+        "sortScripts": true
+    },
+    "tabWidth": 4,
+    "trailingComma": "none",
+    "overrides": [
+        {
+            "files": ["*.yml", "*.yaml"],
+            "options": {
+                "tabWidth": 2
+            }
+        }
+    ]
 }
