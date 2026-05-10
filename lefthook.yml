@@ -3,7 +3,8 @@ pre-commit:
   parallel: true
   jobs:
     - name: format
-      run: bun fmt && git add .
+      glob: '*.{ts,js,json,yml,yaml,md}'
+      run: bun fmt {staged_files} && git add {staged_files}
 
     - name: lint
       run: bun lint
