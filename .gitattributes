@@ -1,0 +1,2 @@
+# force git to always use lf for all text files, no matter the os
+* text=auto eol=lf
