@@ -10,44 +10,44 @@ import { type Option, cancel, group, select, text } from '@clack/prompts'
  * @returns A promise that resolves to an object containing the numeric width and height.
  */
 export const askWidthAndHeight = async () => {
-	const regex = /\d+/gv
+    const regex = /\d+/gv
 
-	const result = await text({
-		message: 'what dimensions do you want for the output images? 📐',
-		placeholder: 'e.g. "1080" (square) or "1920 1080" (width x height)',
-		validate: value => {
-			const matches = value?.match(regex)
+    const result = await text({
+        message: 'what dimensions do you want for the output images? 📐',
+        placeholder: 'e.g. "1080" (square) or "1920 1080" (width x height)',
+        validate: value => {
+            const matches = value?.match(regex)
 
-			if (!matches || matches.length === 0) {
-				return 'please enter at least one valid positive number 🚫'
-			}
+            if (!matches || matches.length === 0) {
+                return 'please enter at least one valid positive number 🚫'
+            }
 
-			if (matches.length > 2) {
-				return 'please enter at most two numbers (width and height) 🚫'
-			}
+            if (matches.length > 2) {
+                return 'please enter at most two numbers (width and height) 🚫'
+            }
 
-			const width = Number(matches[0])
-			const height = matches.length === 2 ? Number(matches[1]) : width
+            const width = Number(matches[0])
+            const height = matches.length === 2 ? Number(matches[1]) : width
 
-			if (width <= 0 || height <= 0) {
-				return 'dimensions must be greater than zero 🚫'
-			}
+            if (width <= 0 || height <= 0) {
+                return 'dimensions must be greater than zero 🚫'
+            }
 
-			return undefined
-		}
-	})
+            return undefined
+        }
+    })
 
-	if (typeof result === 'symbol') {
-		cancel('operation cancelled by the user! 💀')
-		exit(0)
-	}
+    if (typeof result === 'symbol') {
+        cancel('operation cancelled by the user! 💀')
+        exit(0)
+    }
 
-	const matches = result.match(regex) ?? []
+    const matches = result.match(regex) ?? []
 
-	const width = Number(matches[0])
-	const height = matches.length === 2 ? Number(matches[1]) : width
+    const width = Number(matches[0])
+    const height = matches.length === 2 ? Number(matches[1]) : width
 
-	return { height, width }
+    return { height, width }
 }
 
 /**
@@ -62,24 +62,24 @@ export const askWidthAndHeight = async () => {
  * @returns A promise that resolves to a record mapping each original extension to its chosen output format.
  */
 export const askExtensions = (extensions: readonly string[], formats: readonly Readonly<Option<string>>[]) => {
-	const promptGroups: Record<string, () => Promise<string | symbol>> = {}
+    const promptGroups: Record<string, () => Promise<string | symbol>> = {}
 
-	for (const extension of extensions) {
-		if (!extension) {
-			continue
-		}
+    for (const extension of extensions) {
+        if (!extension) {
+            continue
+        }
 
-		promptGroups[extension] = () =>
-			select({
-				message: `what format do you want to use for ${extension} files? 🎨`,
-				options: [...formats]
-			})
-	}
+        promptGroups[extension] = () =>
+            select({
+                message: `what format do you want to use for ${extension} files? 🎨`,
+                options: [...formats]
+            })
+    }
 
-	return group(promptGroups, {
-		onCancel: () => {
-			cancel('operation cancelled by the user! 💀')
-			exit(0)
-		}
-	})
+    return group(promptGroups, {
+        onCancel: () => {
+            cancel('operation cancelled by the user! 💀')
+            exit(0)
+        }
+    })
 }

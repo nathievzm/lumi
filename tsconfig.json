@@ -1,40 +1,40 @@
 {
-	"compilerOptions": {
-		// Environment setup & latest features
-		"lib": ["ESNext"],
-		"target": "ESNext",
-		"module": "Preserve",
-		"moduleDetection": "force",
-		"jsx": "react-jsx",
-		"allowJs": true,
-		"types": ["bun"],
+    "compilerOptions": {
+        // Environment setup & latest features
+        "lib": ["ESNext"],
+        "target": "ESNext",
+        "module": "Preserve",
+        "moduleDetection": "force",
+        "jsx": "react-jsx",
+        "allowJs": true,
+        "types": ["bun"],
 
-		// Bundler mode
-		"moduleResolution": "bundler",
-		"allowImportingTsExtensions": true,
-		"verbatimModuleSyntax": true,
-		"noEmit": true,
+        // Bundler mode
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "verbatimModuleSyntax": true,
+        "noEmit": true,
 
-		// Best practices
-		"strict": true,
-		"skipLibCheck": true,
-		"noFallthroughCasesInSwitch": true,
-		"noUncheckedIndexedAccess": true,
-		"noImplicitOverride": true,
+        // Best practices
+        "strict": true,
+        "skipLibCheck": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedIndexedAccess": true,
+        "noImplicitOverride": true,
 
-		// Some stricter flags (disabled by default)
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noImplicitReturns": true,
-		"noImplicitAny": true,
-		"noImplicitThis": true,
-		"noUncheckedSideEffectImports": true,
-		"noPropertyAccessFromIndexSignature": true,
+        // Some stricter flags (disabled by default)
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "noUncheckedSideEffectImports": true,
+        "noPropertyAccessFromIndexSignature": true,
 
-		// Paths
-		"paths": {
-			"@/*": ["./src/lib/*"]
-		}
-	},
-	"include": ["**/*.ts", "**/*.d.ts"]
+        // Paths
+        "paths": {
+            "@/*": ["./src/lib/*"]
+        }
+    },
+    "include": ["**/*.ts", "**/*.d.ts"]
 }

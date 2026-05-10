@@ -11,34 +11,34 @@ import { askExtensions, askWidthAndHeight } from './prompt'
  * Parameters for the image resizing operation.
  */
 interface ResizeParams {
-	/**
-	 * The relative path of the image within the input directory.
-	 */
-	readonly image: string
-	/**
-	 * The absolute or relative path to the input directory.
-	 */
-	readonly input: string
-	/**
-	 * The absolute or relative path to the output directory.
-	 */
-	readonly output: string
-	/**
-	 * The target width for the resized image.
-	 */
-	readonly width: number
-	/**
-	 * The target height for the resized image.
-	 */
-	readonly height: number
-	/**
-	 * The filename (without extension) for the output file.
-	 */
-	readonly name: string
-	/**
-	 * The target file extension (e.g., '.png', '.webp') for the output file.
-	 */
-	readonly extension: string
+    /**
+     * The relative path of the image within the input directory.
+     */
+    readonly image: string
+    /**
+     * The absolute or relative path to the input directory.
+     */
+    readonly input: string
+    /**
+     * The absolute or relative path to the output directory.
+     */
+    readonly output: string
+    /**
+     * The target width for the resized image.
+     */
+    readonly width: number
+    /**
+     * The target height for the resized image.
+     */
+    readonly height: number
+    /**
+     * The filename (without extension) for the output file.
+     */
+    readonly name: string
+    /**
+     * The target file extension (e.g., '.png', '.webp') for the output file.
+     */
+    readonly extension: string
 }
 
 /**
@@ -49,7 +49,7 @@ interface ResizeParams {
  * @returns True if the value matches the AvailableFormatInfo structure.
  */
 const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
-	typeof value === 'object' && value !== null && 'output' in value && 'id' in value
+    typeof value === 'object' && value !== null && 'output' in value && 'id' in value
 
 /**
  * Retrieves the list of image formats supported by Sharp for output.
@@ -59,12 +59,12 @@ const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
  * @returns An array of options representing the supported formats for the specified type.
  */
 export const getSharpFormats = () => {
-	const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
-	const formats: Option<string>[] = sharpFormats
-		.filter(format => format.output.file)
-		.map(format => ({ label: format.id, value: `.${format.id}` }))
+    const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
+    const formats: Option<string>[] = sharpFormats
+        .filter(format => format.output.file)
+        .map(format => ({ label: format.id, value: `.${format.id}` }))
 
-	return formats
+    return formats
 }
 
 /**
@@ -79,14 +79,14 @@ export const getSharpFormats = () => {
  * @returns A promise that resolves to an object containing the width and height.
  */
 export const getWidthAndHeight = (width: number, height: number) => {
-	const notWidth = isNaN(width) || width <= 0
-	const notHeight = isNaN(height) || height <= 0
+    const notWidth = isNaN(width) || width <= 0
+    const notHeight = isNaN(height) || height <= 0
 
-	if (notWidth && notHeight) {
-		return askWidthAndHeight()
-	}
+    if (notWidth && notHeight) {
+        return askWidthAndHeight()
+    }
 
-	return Promise.resolve({ height, width })
+    return Promise.resolve({ height, width })
 }
 
 /**
@@ -102,35 +102,35 @@ export const getWidthAndHeight = (width: number, height: number) => {
  * @returns A promise that resolves to a record mapping input extensions to output formats.
  */
 export const getExtensions = (images: readonly string[], format?: string) => {
-	if (format !== undefined && format !== '') {
-		return Promise.resolve({ default: format } as Record<string, string>)
-	}
+    if (format !== undefined && format !== '') {
+        return Promise.resolve({ default: format } as Record<string, string>)
+    }
 
-	const extensions = [
-		...new Set(
-			images.flatMap(image => {
-				const file = parse(image)
-				return file.ext ? file.ext.toLowerCase() : ''
-			})
-		)
-	].filter(Boolean)
+    const extensions = [
+        ...new Set(
+            images.flatMap(image => {
+                const file = parse(image)
+                return file.ext ? file.ext.toLowerCase() : ''
+            })
+        )
+    ].filter(Boolean)
 
-	const formats = getSharpFormats()
-	return askExtensions(extensions, formats)
+    const formats = getSharpFormats()
+    return askExtensions(extensions, formats)
 }
 
 export const getValidImages = async (input: string) => {
-	const allFiles = await readdir(input, { recursive: true })
+    const allFiles = await readdir(input, { recursive: true })
 
-	const inputFormats = imageExtensions.map(format => `.${format}`)
-	const validExtensions = new Set(inputFormats)
+    const inputFormats = imageExtensions.map(format => `.${format}`)
+    const validExtensions = new Set(inputFormats)
 
-	const images = allFiles.filter(file => {
-		const { ext } = parse(file)
-		return validExtensions.has(ext.toLowerCase())
-	})
+    const images = allFiles.filter(file => {
+        const { ext } = parse(file)
+        return validExtensions.has(ext.toLowerCase())
+    })
 
-	return images
+    return images
 }
 
 /**
@@ -145,18 +145,18 @@ export const getValidImages = async (input: string) => {
  * @throws Error if the image processing fails.
  */
 export const resize = async (params: ResizeParams) => {
-	const { image, input, output, width, height, name, extension } = params
+    const { image, input, output, width, height, name, extension } = params
 
-	try {
-		const inputPath = join(input, image)
-		const outputPath = join(output, `${name}${extension}`)
+    try {
+        const inputPath = join(input, image)
+        const outputPath = join(output, `${name}${extension}`)
 
-		await sharp(inputPath, { animated: true })
-			.resize(width, height, { background: 'transparent', fit: 'contain' })
-			.toFile(outputPath)
+        await sharp(inputPath, { animated: true })
+            .resize(width, height, { background: 'transparent', fit: 'contain' })
+            .toFile(outputPath)
 
-		return `processed and saved: ${name}${extension} `
-	} catch (error: any) {
-		throw new Error(`error processing ${image} `, { cause: error })
-	}
+        return `processed and saved: ${name}${extension} `
+    } catch (error: any) {
+        throw new Error(`error processing ${image} `, { cause: error })
+    }
 }

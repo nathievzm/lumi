@@ -15,15 +15,15 @@ import { log } from '@clack/prompts'
  * @returns A promise that resolves to the chosen input path string.
  */
 export const getInputPath = (input?: string) => {
-	if (input !== undefined && input !== '') {
-		log.info(`input folder provided: ${input} 📂`)
-		return input
-	}
+    if (input !== undefined && input !== '') {
+        log.info(`input folder provided: ${input} 📂`)
+        return input
+    }
 
-	const currentFolder = cwd()
-	log.info(`using current folder as input: ${currentFolder} 📂`)
+    const currentFolder = cwd()
+    log.info(`using current folder as input: ${currentFolder} 📂`)
 
-	return currentFolder
+    return currentFolder
 }
 
 /**
@@ -37,15 +37,15 @@ export const getInputPath = (input?: string) => {
  * @returns A promise that resolves to the chosen output path string.
  */
 export const getOutputPath = (output?: string) => {
-	if (output !== undefined && output !== '') {
-		log.info(`output folder provided: ${output} 📂`)
-		return output
-	}
+    if (output !== undefined && output !== '') {
+        log.info(`output folder provided: ${output} 📂`)
+        return output
+    }
 
-	const defaultOutput = resolve('output')
-	log.info(`using default output folder: ${defaultOutput} 📂`)
+    const defaultOutput = resolve('output')
+    log.info(`using default output folder: ${defaultOutput} 📂`)
 
-	return defaultOutput
+    return defaultOutput
 }
 
 /**
@@ -59,11 +59,11 @@ export const getOutputPath = (output?: string) => {
  * @returns A promise that resolves when the directory is verified or created.
  */
 export const ensureOutputExists = async (output: string) => {
-	const outputExists = await exists(output)
+    const outputExists = await exists(output)
 
-	if (!outputExists) {
-		await mkdir(output, { recursive: true })
-	}
+    if (!outputExists) {
+        await mkdir(output, { recursive: true })
+    }
 
-	log.info(`output folder ready: ${output} ✅\n`, { spacing: 0 })
+    log.info(`output folder ready: ${output} ✅\n`, { spacing: 0 })
 }
