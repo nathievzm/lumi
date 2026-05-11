@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 import { readdir } from 'node:fs/promises'
-import { parse } from 'node:path'
+import { basename, extname } from 'node:path'
 import { exit } from 'node:process'
 
 import { intro, log, note, outro, spinner } from '@clack/prompts'
@@ -41,7 +41,8 @@ let processed = 0
 
 const promises = images.map(image =>
     limit(async () => {
-        const { name, ext } = parse(image)
+        const ext = extname(image)
+        const name = basename(image, ext)
         const extension = extensions['default'] ?? extensions[ext] ?? '.png'
 
         await resize({ extension, height, image, input, name, output, width })

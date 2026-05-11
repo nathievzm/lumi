@@ -1,4 +1,4 @@
-import { join, parse } from 'node:path'
+import { extname, join } from 'node:path'
 
 import { type Option } from '@clack/prompts'
 import imageExtensions from 'image-extensions'
@@ -76,7 +76,7 @@ export const getImages = (files: readonly string[]) => {
     const validExtensions = new Set(inputFormats)
 
     const images = files.filter(file => {
-        const { ext } = parse(file)
+        const ext = extname(file)
         return validExtensions.has(ext.toLowerCase())
     })
 
@@ -125,8 +125,8 @@ export const getExtensions = (images: readonly string[], format?: string) => {
     const extensions = [
         ...new Set(
             images.flatMap(image => {
-                const file = parse(image)
-                return file.ext ? file.ext.toLowerCase() : ''
+                const ext = extname(image)
+                return ext ? ext.toLowerCase() : ''
             })
         )
     ].filter(Boolean)
