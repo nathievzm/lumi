@@ -1,5 +1,6 @@
 #!/usr/bin/env bun
 
+import { readdir } from 'node:fs/promises'
 import { parse } from 'node:path'
 import { exit } from 'node:process'
 
@@ -15,7 +16,9 @@ import { getExtensions, getImages, getWidthAndHeight, resize } from '@/image'
 intro('✨ welcome to lumi ✨')
 
 const input = getInputPath(cli.input)
-const images = await getImages(input)
+
+const allFiles = await readdir(input, { recursive: cli.recursive })
+const images = getImages(allFiles)
 
 if (images.length === 0) {
     log.error('yikes! no valid images found in the input folder 😭')

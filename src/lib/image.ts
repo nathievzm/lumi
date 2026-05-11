@@ -1,11 +1,9 @@
-import { readdir } from 'node:fs/promises'
 import { join, parse } from 'node:path'
 
 import { type Option } from '@clack/prompts'
 import imageExtensions from 'image-extensions'
 import sharp, { type AvailableFormatInfo } from 'sharp'
 
-import { cli } from './args'
 import { askExtensions, askWidthAndHeight } from './prompt'
 
 /**
@@ -55,11 +53,9 @@ const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
 /**
  * Retrieves the list of image formats supported by Sharp for output.
  *
- * @param type - The type of formats to retrieve ('input' or 'output').
- *
- * @returns An array of options representing the supported formats for the specified type.
+ * @returns An array of options representing the supported formats.
  */
-export const getSharpFormats = () => {
+const getSharpFormats = () => {
     const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
     const formats: Option<string>[] = sharpFormats
         .filter(format => format.output.file)
@@ -68,13 +64,18 @@ export const getSharpFormats = () => {
     return formats
 }
 
-export const getImages = async (input: string) => {
-    const allFiles = await readdir(input, { recursive: cli.recursive })
-
+/**
+ * Filters a list of files to return only those with supported image extensions.
+ *
+ * @param files - An array of file paths to filter.
+ *
+ * @returns An array of file paths that are recognized as images.
+ */
+export const getImages = (files: readonly string[]) => {
     const inputFormats = imageExtensions.map(format => `.${format}`)
     const validExtensions = new Set(inputFormats)
 
-    const images = allFiles.filter(file => {
+    const images = files.filter(file => {
         const { ext } = parse(file)
         return validExtensions.has(ext.toLowerCase())
     })

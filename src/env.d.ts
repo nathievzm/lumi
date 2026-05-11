@@ -24,6 +24,9 @@ declare module 'bun' {
          * Default concurrent processing limit.
          */
         LIMIT?: string
+        /**
+         * Whether to process the input directory recursively by default.
+         */
         RECURSIVE?: string
     }
 }
