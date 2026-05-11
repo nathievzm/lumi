@@ -5,6 +5,7 @@ import { parse } from 'node:path'
 import { exit } from 'node:process'
 
 import { intro, log, note, outro, spinner } from '@clack/prompts'
+import { Temporal } from '@js-temporal/polyfill'
 import pLimit from 'p-limit'
 
 import { cli } from '@/args'
@@ -39,6 +40,8 @@ progressSpinner.start(`processing: 0/${images.length} images 🔃`)
 
 let processed = 0
 
+const startTime = Temporal.Now.instant()
+
 const promises = images.map(image =>
     limit(async () => {
         const { name, ext } = parse(image)
@@ -54,13 +57,17 @@ const promises = images.map(image =>
 log.message()
 
 const result = await Promise.allSettled(promises)
+
+const endTime = Temporal.Now.instant()
+const duration = startTime.until(endTime).total('seconds').toFixed(2)
+
 let outroMessage = ''
 
 if (result.some(pr => pr.status === 'rejected')) {
-    progressSpinner.error(`yikes! finished with errors. processed ${processed}/${images.length} images 😢`)
-    outroMessage = 'please check the error messages above and try again 🛠️'
+    progressSpinner.error(`yikes! finished with errors. processed ${processed}/${images.length} images in ${duration} seconds 😢`)
+    outroMessage = 'please check your input files and try again 🛠️'
 } else {
-    progressSpinner.stop(`yay! all ${images.length} images processed and saved successfully! 💖`)
+    progressSpinner.stop(`yay! ${images.length} images processed in ${duration} seconds! ⚡`)
     outroMessage = 'bye 👋'
 }
 
