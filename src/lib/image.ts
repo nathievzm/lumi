@@ -5,6 +5,7 @@ import { type Option } from '@clack/prompts'
 import imageExtensions from 'image-extensions'
 import sharp, { type AvailableFormatInfo } from 'sharp'
 
+import { cli } from './args'
 import { askExtensions, askWidthAndHeight } from './prompt'
 
 /**
@@ -67,6 +68,20 @@ export const getSharpFormats = () => {
     return formats
 }
 
+export const getImages = async (input: string) => {
+    const allFiles = await readdir(input, { recursive: cli.recursive })
+
+    const inputFormats = imageExtensions.map(format => `.${format}`)
+    const validExtensions = new Set(inputFormats)
+
+    const images = allFiles.filter(file => {
+        const { ext } = parse(file)
+        return validExtensions.has(ext.toLowerCase())
+    })
+
+    return images
+}
+
 /**
  * Resolves the target width and height for image processing.
  *
@@ -117,20 +132,6 @@ export const getExtensions = (images: readonly string[], format?: string) => {
 
     const formats = getSharpFormats()
     return askExtensions(extensions, formats)
-}
-
-export const getValidImages = async (input: string) => {
-    const allFiles = await readdir(input, { recursive: true })
-
-    const inputFormats = imageExtensions.map(format => `.${format}`)
-    const validExtensions = new Set(inputFormats)
-
-    const images = allFiles.filter(file => {
-        const { ext } = parse(file)
-        return validExtensions.has(ext.toLowerCase())
-    })
-
-    return images
 }
 
 /**

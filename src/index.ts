@@ -10,12 +10,12 @@ import Spinnies from 'spinnies'
 import { cli } from '@/args'
 import { getMessage } from '@/error'
 import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
-import { getExtensions, getValidImages, getWidthAndHeight, resize } from '@/image'
+import { getExtensions, getImages, getWidthAndHeight, resize } from '@/image'
 
 intro('✨ welcome to lumi ✨')
 
 const input = getInputPath(cli.input)
-const images = await getValidImages(input)
+const images = await getImages(input)
 
 if (images.length === 0) {
     log.error('yikes! no valid images found in the input folder 😭')

@@ -24,5 +24,6 @@ declare module 'bun' {
          * Default concurrent processing limit.
          */
         LIMIT?: string
+        RECURSIVE?: string
     }
 }
