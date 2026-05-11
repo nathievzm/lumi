@@ -4,12 +4,10 @@ import { readdir } from 'node:fs/promises'
 import { parse } from 'node:path'
 import { exit } from 'node:process'
 
-import { intro, log, note, outro } from '@clack/prompts'
+import { intro, log, note, outro, spinner } from '@clack/prompts'
 import pLimit from 'p-limit'
-import Spinnies from 'spinnies'
 
 import { cli } from '@/args'
-import { getMessage } from '@/error'
 import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
 import { getExtensions, getImages, getWidthAndHeight, resize } from '@/image'
 
@@ -33,30 +31,23 @@ await ensureOutputExists(output)
 
 const { width, height } = await getWidthAndHeight(cli.width, cli.height)
 
-const spinnies = new Spinnies({
-    failColor: 'red',
-    spinnerColor: 'magenta',
-    succeedColor: 'green'
-})
-
 const extensions = await getExtensions(images, cli.format)
 const limit = pLimit({ concurrency: cli.limit || 10, rejectOnClear: true })
 
+const progressSpinner = spinner()
+progressSpinner.start(`processing: 0/${images.length} images 🔃`)
+
+let processed = 0
+
 const promises = images.map(image =>
     limit(async () => {
-        spinnies.add(image, { text: `processing: ${image}` })
-
         const { name, ext } = parse(image)
         const extension = extensions['default'] ?? extensions[ext] ?? '.png'
 
-        try {
-            const result = await resize({ extension, height, image, input, name, output, width })
-            spinnies.succeed(image, { text: result })
-        } catch (error: unknown) {
-            const message = getMessage(error)
-            spinnies.fail(image, { text: message })
-            throw error
-        }
+        await resize({ extension, height, image, input, name, output, width })
+
+        processed++
+        progressSpinner.message(`processing: ${processed}/${images.length} images 🔃`)
     })
 )
 
@@ -66,10 +57,10 @@ const result = await Promise.allSettled(promises)
 let outroMessage = ''
 
 if (result.some(pr => pr.status === 'rejected')) {
-    log.error('yikes, some images failed to process! 😢')
+    progressSpinner.error(`yikes! finished with errors. processed ${processed}/${images.length} images 😢`)
     outroMessage = 'please check the error messages above and try again 🛠️'
 } else {
-    log.success('yay! all images processed and saved successfully! 💖')
+    progressSpinner.stop(`yay! all ${images.length} images processed and saved successfully! 💖`)
     outroMessage = 'bye 👋'
 }
 
