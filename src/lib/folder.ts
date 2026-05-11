@@ -65,5 +65,5 @@ export const ensureOutputExists = async (output: string) => {
         await mkdir(output, { recursive: true })
     }
 
-    log.info(`output folder ready: ${output} ✅\n`, { spacing: 0 })
+    log.info(`output folder ready: ${output} ✅`, { spacing: 0 })
 }
