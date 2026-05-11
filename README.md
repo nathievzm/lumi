@@ -7,6 +7,7 @@ A fast, interactive CLI tool for batch image processing. Resize, convert, and op
 
 - **Batch Processing:** Process hundreds of images in seconds with high concurrency.
 - **Interactive UI:** User-friendly prompts for missing configurations using `@clack/prompts`.
+- **Recursive Processing:** Automatically finds all images in the input folder and its subdirectories.
 - **Progress Tracking:** Real-time feedback with `spinnies` progress indicators.
 - **Smart Resizing:** Automatically fits images while maintaining aspect ratio (`contain` fit).
 - **Multi-Format Support:** Convert between all formats supported by Sharp (WebP, PNG, JPEG, GIF, AVIF, etc.).
@@ -38,9 +39,14 @@ lumi [options]
 
 ### Interactive Mode
 
-If you run **lumi** without providing required flags (like input/output folders or dimensions), it will guide you
-through the configuration using cute, interactive prompts. You can even choose specific output formats for each unique
-extension found!
+If you run **lumi** without providing required flags (like dimensions or output formats), it will guide you through the
+configuration using cute, interactive prompts.
+
+- **Dimensions:** You can enter a single number for square images (e.g., `1080`) or two numbers for custom dimensions
+  (e.g., `1920 1080`).
+- **Formats:** Choose specific output formats for each unique extension found in your input!
+- **Folders:** By default, **lumi** uses your current directory as the input and creates an `output` folder for the
+  results.
 
 ### CLI Options
 
@@ -50,15 +56,15 @@ You can bypass the prompts by providing the flags directly:
 bunx @nathievzm/lumi -i ./my-vacation-pics -s 1080 -f .webp
 ```
 
-| Flag       | Shortcut | Description                   | Default             |
-| :--------- | :------- | :---------------------------- | :------------------ |
-| `--input`  | `-i`     | Input directory path          | `INPUT_FOLDER` env  |
-| `--output` | `-o`     | Output directory path         | `OUTPUT_FOLDER` env |
-| `--width`  | `-w`     | Target width in pixels        | `WIDTH` env         |
-| `--height` | `-h`     | Target height in pixels       | `HEIGHT` env        |
-| `--size`   | `-s`     | Sets both width and height    | -                   |
-| `--format` | `-f`     | Output format (e.g., `.webp`) | `FORMAT` env        |
-| `--limit`  | `-l`     | Max concurrent operations     | `LIMIT` env         |
+| Flag       | Shortcut | Description                   | Default / Env                |
+| :--------- | :------- | :---------------------------- | :--------------------------- |
+| `--input`  | `-i`     | Input directory path          | `.` / `INPUT_FOLDER`         |
+| `--output` | `-o`     | Output directory path         | `./output` / `OUTPUT_FOLDER` |
+| `--width`  | `-w`     | Target width in pixels        | Prompt / `WIDTH`             |
+| `--height` | `-h`     | Target height in pixels       | Prompt / `HEIGHT`            |
+| `--size`   | `-s`     | Sets both width and height    | -                            |
+| `--format` | `-f`     | Output format (e.g., `.webp`) | Prompt / `FORMAT`            |
+| `--limit`  | `-l`     | Max concurrent operations     | `10` / `LIMIT`               |
 
 ### 🌍 Environment Variables
 
@@ -97,11 +103,12 @@ bun install
 
 - `bun start`: Run the application.
 - `bun dev`: Start with hot reloading.
-- `bun lint`: Check for code quality issues.
+- `bun lint`: Check for code quality issues using `oxlint`.
 - `bun lint:fix`: Fix linting issues automatically.
-- `bun fmt`: Format the codebase.
+- `bun fmt`: Format the codebase using `oxfmt`.
 - `bun fmt:check`: Check for formatting issues.
-- `bun prepare`: Setup husky hooks.
+- `bun changelog`: Update the changelog.
+- `bun release`: Release a new version with `bumpp` and update the changelog.
 
 ## 📄 License
 
