@@ -45,6 +45,14 @@ const { values } = parseArgs({
             type: 'string'
         },
         /**
+         * Whether to process the input directory recursively. Defaults to `RECURSIVE` env var.
+         */
+        recursive: {
+            default: Boolean(Bun.env.RECURSIVE),
+            short: 'r',
+            type: 'boolean'
+        },
+        /**
          * Shortcut to set both width and height to the same value.
          */
         size: {
@@ -71,10 +79,10 @@ const rawHeight = hasSize ? values.size : values.height
 const width = Number(rawWidth)
 const height = Number(rawHeight)
 const limit = Number(values.limit)
-const { input, output, format } = values
+const { input, output, format, recursive } = values
 
 /**
  * The consolidated CLI configuration object.
  * Contains resolved paths, dimensions, and processing limits.
  */
-export const cli = { format, height, input, limit, output, width }
+export const cli = { format, height, input, limit, output, recursive, width }

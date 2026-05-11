@@ -1,4 +1,3 @@
-import { readdir } from 'node:fs/promises'
 import { join, parse } from 'node:path'
 
 import { type Option } from '@clack/prompts'
@@ -54,17 +53,34 @@ const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
 /**
  * Retrieves the list of image formats supported by Sharp for output.
  *
- * @param type - The type of formats to retrieve ('input' or 'output').
- *
- * @returns An array of options representing the supported formats for the specified type.
+ * @returns An array of options representing the supported formats.
  */
-export const getSharpFormats = () => {
+const getSharpFormats = () => {
     const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
     const formats: Option<string>[] = sharpFormats
         .filter(format => format.output.file)
         .map(format => ({ label: format.id, value: `.${format.id}` }))
 
     return formats
+}
+
+/**
+ * Filters a list of files to return only those with supported image extensions.
+ *
+ * @param files - An array of file paths to filter.
+ *
+ * @returns An array of file paths that are recognized as images.
+ */
+export const getImages = (files: readonly string[]) => {
+    const inputFormats = imageExtensions.map(format => `.${format}`)
+    const validExtensions = new Set(inputFormats)
+
+    const images = files.filter(file => {
+        const { ext } = parse(file)
+        return validExtensions.has(ext.toLowerCase())
+    })
+
+    return images
 }
 
 /**
@@ -117,20 +133,6 @@ export const getExtensions = (images: readonly string[], format?: string) => {
 
     const formats = getSharpFormats()
     return askExtensions(extensions, formats)
-}
-
-export const getValidImages = async (input: string) => {
-    const allFiles = await readdir(input, { recursive: true })
-
-    const inputFormats = imageExtensions.map(format => `.${format}`)
-    const validExtensions = new Set(inputFormats)
-
-    const images = allFiles.filter(file => {
-        const { ext } = parse(file)
-        return validExtensions.has(ext.toLowerCase())
-    })
-
-    return images
 }
 
 /**

@@ -1,5 +1,6 @@
 #!/usr/bin/env bun
 
+import { readdir } from 'node:fs/promises'
 import { parse } from 'node:path'
 import { exit } from 'node:process'
 
@@ -10,12 +11,14 @@ import Spinnies from 'spinnies'
 import { cli } from '@/args'
 import { getMessage } from '@/error'
 import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
-import { getExtensions, getValidImages, getWidthAndHeight, resize } from '@/image'
+import { getExtensions, getImages, getWidthAndHeight, resize } from '@/image'
 
 intro('✨ welcome to lumi ✨')
 
 const input = getInputPath(cli.input)
-const images = await getValidImages(input)
+
+const allFiles = await readdir(input, { recursive: cli.recursive })
+const images = getImages(allFiles)
 
 if (images.length === 0) {
     log.error('yikes! no valid images found in the input folder 😭')
