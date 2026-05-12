@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/nathievzm/lumi/compare/v1.1.0...v1.1.1) (2026-05-12)
+
+### Bug Fixes
+
+- intro banner and use lightning emoji in outro message
+  ([a3d4f33](https://github.com/nathievzm/lumi/commit/a3d4f3362d847fd8415027c9a73f6fc486dcd770))
+
 # [1.1.0](https://github.com/nathievzm/lumi/compare/v1.0.1...v1.1.0) (2026-05-12)
 
 ### Features
