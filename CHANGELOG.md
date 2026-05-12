@@ -1,3 +1,26 @@
+# [1.1.0](https://github.com/nathievzm/lumi/compare/v1.0.1...v1.1.0) (2026-05-12)
+
+### Features
+
+- add colors to logs ([#44](https://github.com/nathievzm/lumi/issues/44))
+  ([2dcca2e](https://github.com/nathievzm/lumi/commit/2dcca2e3df40ac577ca5fdaeddbaedecd67d3256))
+- add recursive arg to toggle the recursiveness when reading the input folder
+  ([#25](https://github.com/nathievzm/lumi/issues/25))
+  ([3644d34](https://github.com/nathievzm/lumi/commit/3644d346569aa40a2d6b7007ece64be6b787dc42))
+- clear console on start and add a cute banner at the beginning
+  ([1ad4ade](https://github.com/nathievzm/lumi/commit/1ad4adef1090224915b724374f0e537f371a93a7))
+- **image, index:** make getImages function pure by removing any side effect
+  ([addea55](https://github.com/nathievzm/lumi/commit/addea5542f6b923c36d093797d0b9387c199cfc3))
+- **index:** replace spinnies with clack spinner for cleaner cli ([#42](https://github.com/nathievzm/lumi/issues/42))
+  ([6c59c5a](https://github.com/nathievzm/lumi/commit/6c59c5a62af9d3ac13c94997f063842591f9a799))
+- show the seconds that took to process the files in the result log ([#43](https://github.com/nathievzm/lumi/issues/43))
+  ([439482e](https://github.com/nathievzm/lumi/commit/439482e075af4aaba70da2967743250456b35b20))
+
+### Performance Improvements
+
+- optimize path parsing by using extname and basename instead of parse
+  ([962299f](https://github.com/nathievzm/lumi/commit/962299ffc519826d1c023275290525d92b7d4db2))
+
 ## [1.0.1](https://github.com/nathievzm/lumi/compare/v1.0.0...v1.0.1) (2026-05-10)
 
 ### Bug Fixes
