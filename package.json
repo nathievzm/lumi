@@ -61,12 +61,11 @@
         "@commitlint/cli": "^20.5.3",
         "@commitlint/config-conventional": "^20.5.3",
         "@types/bun": "latest",
-        "@types/spinnies": "^0.5.3",
         "bumpp": "^11.1.0",
         "conventional-changelog-cli": "^5.0.0",
         "lefthook": "^2.1.6",
         "oxfmt": "^0.47.0",
-        "oxlint": "^1.62.0",
+        "oxlint": "^1.64.0",
         "oxlint-tsgolint": "^0.22.1",
         "typescript": "^6.0.3"
     }
