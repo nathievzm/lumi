@@ -102,6 +102,12 @@ export const getWidthAndHeight = (width: number, height: number) => {
         return askWidthAndHeight()
     }
 
+    // Sentinel: Prevent resource exhaustion by limiting image sizes
+    // eslint-disable-next-line oxlint/unicorn/numeric-separators-style
+    if (width > 16383 || height > 16383) {
+        throw new Error('dimensions must be less than 16384 pixels 🚫')
+    }
+
     return Promise.resolve({ height, width })
 }
 

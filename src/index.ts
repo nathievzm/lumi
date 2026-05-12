@@ -31,7 +31,21 @@ note(`found ${color.magenta(images.length)} images to process! 🚀`)
 const output = getOutputPath(cli.output)
 await ensureOutputExists(output)
 
-const { width, height } = await getWidthAndHeight(cli.width, cli.height)
+let width = 0
+let height = 0
+
+try {
+    const dimensions = await getWidthAndHeight(cli.width, cli.height)
+    // eslint-disable-next-line oxlint/eslint/prefer-destructuring
+    width = dimensions.width
+    // eslint-disable-next-line oxlint/eslint/prefer-destructuring
+    height = dimensions.height
+} catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'an unknown error occurred'
+    log.error(message)
+    outro('please check your input dimensions and try again 🛠️')
+    exit(1)
+}
 
 const extensions = await getExtensions(images, cli.format)
 const limit = pLimit({ concurrency: cli.limit || 10, rejectOnClear: true })
