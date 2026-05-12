@@ -3,6 +3,7 @@ import { resolve } from 'node:path'
 import { cwd } from 'node:process'
 
 import { log } from '@clack/prompts'
+import color from 'picocolors'
 
 /**
  * Resolves the input directory path.
@@ -16,12 +17,12 @@ import { log } from '@clack/prompts'
  */
 export const getInputPath = (input?: string) => {
     if (input !== undefined && input !== '') {
-        log.info(`input folder provided: ${input} 📂`)
+        log.info(`input folder provided: ${color.cyan(input)} 📂`)
         return input
     }
 
     const currentFolder = cwd()
-    log.info(`using current folder as input: ${currentFolder} 📂`)
+    log.info(`using current folder as input: ${color.cyan(currentFolder)} 📂`)
 
     return currentFolder
 }
@@ -38,12 +39,12 @@ export const getInputPath = (input?: string) => {
  */
 export const getOutputPath = (output?: string) => {
     if (output !== undefined && output !== '') {
-        log.info(`output folder provided: ${output} 📂`)
+        log.info(`output folder provided: ${color.cyan(output)} 📂`)
         return output
     }
 
     const defaultOutput = resolve('output')
-    log.info(`using default output folder: ${defaultOutput} 📂`)
+    log.info(`using default output folder: ${color.cyan(defaultOutput)} 📂`)
 
     return defaultOutput
 }
@@ -65,5 +66,5 @@ export const ensureOutputExists = async (output: string) => {
         await mkdir(output, { recursive: true })
     }
 
-    log.info(`output folder ready: ${output} ✅`, { spacing: 0 })
+    log.info(`output folder ready: ${color.cyan(output)} ✅`, { spacing: 0 })
 }

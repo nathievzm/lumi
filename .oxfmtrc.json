@@ -15,7 +15,7 @@
         "commentLineStrategy": "multiline"
     },
     "objectWrap": "preserve",
-    "printWidth": 140,
+    "printWidth": 120,
     "proseWrap": "always",
     "quoteProps": "consistent",
     "semi": false,
