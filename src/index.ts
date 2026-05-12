@@ -7,6 +7,7 @@ import { exit } from 'node:process'
 import { intro, log, note, outro, spinner } from '@clack/prompts'
 import { Temporal } from '@js-temporal/polyfill'
 import pLimit from 'p-limit'
+import color from 'picocolors'
 
 import { cli } from '@/args'
 import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
@@ -25,7 +26,7 @@ if (images.length === 0) {
     exit(1)
 }
 
-note(`found ${images.length} images to process! 🚀`)
+note(`found ${color.magenta(images.length)} images to process! 🚀`)
 
 const output = getOutputPath(cli.output)
 await ensureOutputExists(output)
@@ -35,8 +36,8 @@ const { width, height } = await getWidthAndHeight(cli.width, cli.height)
 const extensions = await getExtensions(images, cli.format)
 const limit = pLimit({ concurrency: cli.limit || 10, rejectOnClear: true })
 
-const progressSpinner = spinner()
-progressSpinner.start(`processing: 0/${images.length} images 🔃`)
+const spin = spinner()
+spin.start(`processing: ${color.magenta(0)}/${color.magenta(images.length)} images 🔃`)
 
 let processed = 0
 
@@ -51,7 +52,7 @@ const promises = images.map(image =>
         await resize({ extension, height, image, input, name, output, width })
 
         processed++
-        progressSpinner.message(`processing: ${processed}/${images.length} images 🔃`)
+        spin.message(`processing: ${color.green(processed)}/${color.magenta(images.length)} images 🔃`)
     })
 )
 
@@ -65,10 +66,12 @@ const duration = startTime.until(endTime).total('seconds').toFixed(2)
 let outroMessage = ''
 
 if (result.some(pr => pr.status === 'rejected')) {
-    progressSpinner.error(`yikes! finished with errors. processed ${processed}/${images.length} images in ${duration} seconds 😢`)
+    spin.error(
+        `yikes! finished with errors. processed ${color.red(processed)}/${color.red(images.length)} images in ${color.yellow(duration)} seconds 😢`
+    )
     outroMessage = 'please check your input files and try again 🛠️'
 } else {
-    progressSpinner.stop(`yay! ${images.length} images processed in ${duration} seconds! ⚡`)
+    spin.stop(`yay! ${color.green(images.length)} images processed in ${color.green(duration)} seconds! ⚡`)
     outroMessage = 'bye 👋'
 }
 

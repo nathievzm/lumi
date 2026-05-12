@@ -54,6 +54,7 @@
         "@js-temporal/polyfill": "^0.5.1",
         "image-extensions": "^1.1.0",
         "p-limit": "^7.3.0",
+        "picocolors": "^1.1.1",
         "sharp": "^0.34.5"
     },
     "devDependencies": {

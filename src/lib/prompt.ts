@@ -1,6 +1,7 @@
 import { exit } from 'node:process'
 
 import { type Option, cancel, group, select, text } from '@clack/prompts'
+import color from 'picocolors'
 
 /**
  * Prompts the user for the target width and height of the images.
@@ -13,7 +14,7 @@ export const askWidthAndHeight = async () => {
     const regex = /\d+/gv
 
     const result = await text({
-        message: 'what dimensions do you want for the output images? 📐',
+        message: `what ${color.magenta('dimensions')} do you want for the ${color.magenta('output')} images? 📐`,
         placeholder: 'e.g. "1080" (square) or "1920 1080" (width x height)',
         validate: value => {
             const matches = value?.match(regex)
@@ -71,7 +72,7 @@ export const askExtensions = (extensions: readonly string[], formats: readonly R
 
         promptGroups[extension] = () =>
             select({
-                message: `what format do you want to use for ${extension} files? 🎨`,
+                message: `what ${color.magenta('format')} do you want to use for ${color.cyan(extension)} files? 🎨`,
                 options: [...formats]
             })
     }
