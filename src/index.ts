@@ -13,7 +13,21 @@ import { cli } from '@/args'
 import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
 import { getExtensions, getImages, getWidthAndHeight, resize } from '@/image'
 
-intro('✨ welcome to lumi ✨')
+import pkg from '../package.json'
+
+console.clear()
+
+const banner = `
+${color.magenta('╭──────────────────────────────╮')}
+${color.magenta('│')}                              ${color.magenta('│')}
+${color.magenta('│')}          🩷  ${color.magenta('lumi')} 🩷           ${color.magenta('│')}
+${color.magenta('│')}                              ${color.magenta('│')}
+${color.magenta('╰──────────────────────────────╯')}
+`
+
+console.log(banner)
+
+intro(color.magenta(`welcome to lumi v${pkg.version} 🩷`))
 
 const input = getInputPath(cli.input)
 
@@ -71,8 +85,8 @@ if (result.some(pr => pr.status === 'rejected')) {
     )
     outroMessage = 'please check your input files and try again 🛠️'
 } else {
-    spin.stop(`yay! ${color.green(images.length)} images processed in ${color.green(duration)} seconds! ⚡`)
+    spin.stop(`yay! ${color.green(images.length)} images processed in ${color.green(duration)} seconds! 💡`)
     outroMessage = 'bye 👋'
 }
 
-outro(outroMessage)
+outro(color.magenta(outroMessage))
