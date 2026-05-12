@@ -69,6 +69,13 @@ if (result.some(pr => pr.status === 'rejected')) {
     spin.error(
         `yikes! finished with errors. processed ${color.red(processed)}/${color.red(images.length)} images in ${color.yellow(duration)} seconds 😢`
     )
+
+    for (const pr of result) {
+        if (pr.status === 'rejected') {
+            log.error(pr.reason instanceof Error ? pr.reason.message : String(pr.reason))
+        }
+    }
+
     outroMessage = 'please check your input files and try again 🛠️'
 } else {
     spin.stop(`yay! ${color.green(images.length)} images processed in ${color.green(duration)} seconds! ⚡`)
