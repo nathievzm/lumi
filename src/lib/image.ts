@@ -64,6 +64,9 @@ const getSharpFormats = () => {
     return formats
 }
 
+const inputFormats = imageExtensions.map(format => `.${format}`)
+const validExtensions = new Set(inputFormats)
+
 /**
  * Filters a list of files to return only those with supported image extensions.
  *
@@ -72,9 +75,6 @@ const getSharpFormats = () => {
  * @returns An array of file paths that are recognized as images.
  */
 export const getImages = (files: readonly string[]) => {
-    const inputFormats = imageExtensions.map(format => `.${format}`)
-    const validExtensions = new Set(inputFormats)
-
     const images = files.filter(file => {
         const ext = extname(file)
         return validExtensions.has(ext.toLowerCase())
@@ -122,14 +122,14 @@ export const getExtensions = (images: readonly string[], format?: string) => {
         return Promise.resolve({ default: format } as Record<string, string>)
     }
 
-    const extensions = [
-        ...new Set(
-            images.flatMap(image => {
-                const ext = extname(image)
-                return ext ? ext.toLowerCase() : ''
-            })
-        )
-    ].filter(Boolean)
+    const extensionsSet = new Set<string>()
+    for (const image of images) {
+        const ext = image ? extname(image) : ''
+        if (ext) {
+            extensionsSet.add(ext.toLowerCase())
+        }
+    }
+    const extensions = [...extensionsSet]
 
     const formats = getSharpFormats()
     return askExtensions(extensions, formats)
