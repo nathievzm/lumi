@@ -1,3 +1,5 @@
+## [1.1.4](https://github.com/nathievzm/lumi/compare/v1.1.3...v1.1.4) (2026-05-13)
+
 ## [1.1.3](https://github.com/nathievzm/lumi/compare/v1.1.2...v1.1.3) (2026-05-13)
 
 ### Features
