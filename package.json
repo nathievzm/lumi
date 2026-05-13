@@ -45,7 +45,7 @@
         "fmt:check": "oxfmt --check",
         "lint": "oxlint",
         "lint:fix": "oxlint --fix",
-        "prepare": "lefthook install",
+        "prepare": "bunx lefthook install",
         "release": "bumpp --execute \"bun changelog\" --all",
         "start": "bun src/index.ts"
     },
