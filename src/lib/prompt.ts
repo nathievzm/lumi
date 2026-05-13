@@ -16,6 +16,7 @@ export const askWidthAndHeight = async () => {
     const result = await text({
         message: `what ${color.magenta('dimensions')} do you want for the ${color.magenta('output')} images? 📐`,
         placeholder: 'e.g. "1080" (square) or "1920 1080" (width x height)',
+        // eslint-disable-next-line max-statements
         validate: value => {
             const matches = value?.match(regex)
 
@@ -30,8 +31,13 @@ export const askWidthAndHeight = async () => {
             const width = Number(matches[0])
             const height = matches.length === 2 ? Number(matches[1]) : width
 
-            if (width <= 0 || height <= 0) {
-                return 'dimensions must be greater than zero 🚫'
+            const isNegative = width <= 0 || height <= 0
+            const isTooLarge = width > 16_383 || height > 16_383
+
+            if (isNegative || isTooLarge) {
+                return isTooLarge
+                    ? 'dimensions cannot exceed 16383 pixels to prevent resource exhaustion 🚫'
+                    : 'dimensions must be greater than zero 🚫'
             }
 
             return undefined

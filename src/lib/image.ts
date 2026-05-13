@@ -1,6 +1,7 @@
 import { extname, join } from 'node:path'
+import { exit } from 'node:process'
 
-import { type Option } from '@clack/prompts'
+import { type Option, log } from '@clack/prompts'
 import imageExtensions from 'image-extensions'
 import sharp, { type AvailableFormatInfo } from 'sharp'
 
@@ -100,6 +101,11 @@ export const getWidthAndHeight = (width: number, height: number) => {
 
     if (notWidth && notHeight) {
         return askWidthAndHeight()
+    }
+
+    if (width > 16_383 || height > 16_383) {
+        log.error('yikes! dimensions cannot exceed 16383 pixels to prevent resource exhaustion 🚫')
+        exit(1)
     }
 
     return Promise.resolve({ height, width })
