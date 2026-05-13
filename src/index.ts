@@ -6,6 +6,7 @@ import { exit } from 'node:process'
 
 import { intro, log, note, outro, spinner } from '@clack/prompts'
 import { Temporal } from '@js-temporal/polyfill'
+import boxen from 'boxen'
 import pLimit from 'p-limit'
 import color from 'picocolors'
 
@@ -17,15 +18,15 @@ import pkg from '../package.json'
 
 console.clear()
 
-const banner = color.magenta(`
-╭──────────────────────────────╮
-│                              │
-│          🩷 lumi 🩷          │
-│                              │
-╰──────────────────────────────╯
-    `)
+const banner = boxen('lumi', {
+    backgroundColor: 'magenta',
+    borderColor: 'magenta',
+    borderStyle: 'round',
+    padding: { bottom: 2, left: 15, right: 15, top: 2 },
+    textAlignment: 'center'
+})
 
-console.log(banner)
+console.log(banner, '\n')
 
 intro(color.magenta(`welcome to lumi v${pkg.version} 🩷`))
 
