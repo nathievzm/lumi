@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/nathievzm/lumi/compare/v1.1.2...v1.1.3) (2026-05-13)
+
+### Features
+
+- add update notifier to notify when there'a a new version ([#67](https://github.com/nathievzm/lumi/issues/67))
+  ([b567f03](https://github.com/nathievzm/lumi/commit/b567f03b3c6617b18bdc34587d65055c5726bcfc))
+
 ## [1.1.2](https://github.com/nathievzm/lumi/compare/v1.1.1...v1.1.2) (2026-05-13)
 
 ### Bug Fixes
