@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/nathievzm/lumi/compare/v1.1.1...v1.1.2) (2026-05-13)
+
+### Bug Fixes
+
+- use boxen to fix the intro banner
+  ([e3e8085](https://github.com/nathievzm/lumi/commit/e3e80853251b584aab892b688eb12c8c6b7799d4))
+
 ## [1.1.1](https://github.com/nathievzm/lumi/compare/v1.1.0...v1.1.1) (2026-05-12)
 
 ### Bug Fixes
