@@ -9,12 +9,18 @@ import { Temporal } from '@js-temporal/polyfill'
 import boxen from 'boxen'
 import pLimit from 'p-limit'
 import color from 'picocolors'
+import updateNotifier from 'update-notifier'
 
 import { cli } from '@/args'
 import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
 import { getExtensions, getImages, getWidthAndHeight, resize } from '@/image'
 
-import pkg from '../package.json'
+import pkg from '../package.json' with { type: 'json' }
+
+const notifier = updateNotifier({ pkg })
+notifier.notify({
+    boxenOptions: { borderColor: 'magenta', borderStyle: 'round', padding: 1 }
+})
 
 console.clear()
 
