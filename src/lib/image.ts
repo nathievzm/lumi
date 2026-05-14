@@ -64,6 +64,9 @@ const getSharpFormats = () => {
     return formats
 }
 
+// ⚡ Bolt: Cache valid extensions at module level to avoid recreating on every call
+const VALID_EXTENSIONS = new Set(imageExtensions.map(format => `.${format}`))
+
 /**
  * Filters a list of files to return only those with supported image extensions.
  *
@@ -72,12 +75,9 @@ const getSharpFormats = () => {
  * @returns An array of file paths that are recognized as images.
  */
 export const getImages = (files: readonly string[]) => {
-    const inputFormats = imageExtensions.map(format => `.${format}`)
-    const validExtensions = new Set(inputFormats)
-
     const images = files.filter(file => {
         const ext = extname(file)
-        return validExtensions.has(ext.toLowerCase())
+        return VALID_EXTENSIONS.has(ext.toLowerCase())
     })
 
     return images
@@ -122,14 +122,15 @@ export const getExtensions = (images: readonly string[], format?: string) => {
         return Promise.resolve({ default: format } as Record<string, string>)
     }
 
-    const extensions = [
-        ...new Set(
-            images.flatMap(image => {
-                const ext = extname(image)
-                return ext ? ext.toLowerCase() : ''
-            })
-        )
-    ].filter(Boolean)
+    // ⚡ Bolt: Use a Set to avoid intermediate array allocations and map directly
+    const extSet = new Set<string>()
+    for (const image of images) {
+        const ext = extname(image)
+        if (ext) {
+            extSet.add(ext.toLowerCase())
+        }
+    }
+    const extensions = [...extSet]
 
     const formats = getSharpFormats()
     return askExtensions(extensions, formats)
