@@ -104,9 +104,12 @@ if (result.some(pr => pr.status === 'rejected')) {
     )
 
     for (const pr of result) {
-        if (pr.status === 'rejected') {
-            log.error(pr.reason instanceof Error ? pr.reason.message : String(pr.reason))
+        if (pr.status === 'fulfilled') {
+            continue
         }
+
+        const message = getMessage(pr.reason)
+        log.error(message)
     }
 
     outroMessage = 'please check your input files and try again 🛠️'
