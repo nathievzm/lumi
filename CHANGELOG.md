@@ -1,3 +1,19 @@
+## [1.1.4](https://github.com/nathievzm/lumi/compare/v1.1.3...v1.1.4) (2026-05-13)
+
+## [1.1.3](https://github.com/nathievzm/lumi/compare/v1.1.2...v1.1.3) (2026-05-13)
+
+### Features
+
+- add update notifier to notify when there'a a new version ([#67](https://github.com/nathievzm/lumi/issues/67))
+  ([b567f03](https://github.com/nathievzm/lumi/commit/b567f03b3c6617b18bdc34587d65055c5726bcfc))
+
+## [1.1.2](https://github.com/nathievzm/lumi/compare/v1.1.1...v1.1.2) (2026-05-13)
+
+### Bug Fixes
+
+- use boxen to fix the intro banner
+  ([e3e8085](https://github.com/nathievzm/lumi/commit/e3e80853251b584aab892b688eb12c8c6b7799d4))
+
 ## [1.1.1](https://github.com/nathievzm/lumi/compare/v1.1.0...v1.1.1) (2026-05-12)
 
 ### Bug Fixes

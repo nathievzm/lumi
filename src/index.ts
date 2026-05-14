@@ -6,26 +6,34 @@ import { exit } from 'node:process'
 
 import { intro, log, note, outro, spinner } from '@clack/prompts'
 import { Temporal } from '@js-temporal/polyfill'
+import boxen from 'boxen'
 import pLimit from 'p-limit'
 import color from 'picocolors'
+import updateNotifier from 'update-notifier'
 
 import { cli } from '@/args'
+import { getMessage } from '@/error'
 import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
 import { getExtensions, getImages, getWidthAndHeight, resize } from '@/image'
 
-import pkg from '../package.json'
+import pkg from '../package.json' with { type: 'json' }
+
+const notifier = updateNotifier({ pkg })
+notifier.notify({
+    boxenOptions: { borderColor: 'magenta', borderStyle: 'round', padding: 1 }
+})
 
 console.clear()
 
-const banner = color.magenta(`
-╭──────────────────────────────╮
-│                              │
-│          🩷 lumi 🩷          │
-│                              │
-╰──────────────────────────────╯
-    `)
+const banner = boxen('lumi', {
+    backgroundColor: 'magenta',
+    borderColor: 'magenta',
+    borderStyle: 'round',
+    padding: { bottom: 2, left: 15, right: 15, top: 2 },
+    textAlignment: 'center'
+})
 
-console.log(banner)
+console.log(banner, '\n')
 
 intro(color.magenta(`welcome to lumi v${pkg.version} 🩷`))
 
@@ -55,7 +63,18 @@ note(`found ${color.magenta(images.length)} images to process! 🚀`)
 const output = getOutputPath(cli.output)
 await ensureOutputExists(output)
 
-const { width, height } = await getWidthAndHeight(cli.width, cli.height)
+let dimensions = { height: 0, width: 0 }
+
+try {
+    dimensions = await getWidthAndHeight(cli.width, cli.height)
+} catch (error: unknown) {
+    const message = getMessage(error)
+    log.error(message)
+    outro('please check your input dimensions and try again 🛠️')
+    exit(1)
+}
+
+const { width, height } = dimensions
 
 const extensions = await getExtensions(images, cli.format)
 const limit = pLimit({ concurrency: cli.limit || 10, rejectOnClear: true })
@@ -93,6 +112,16 @@ if (result.some(pr => pr.status === 'rejected')) {
     spin.error(
         `yikes! finished with errors. processed ${color.red(processed)}/${color.red(images.length)} images in ${color.yellow(duration)} seconds 😢`
     )
+
+    for (const pr of result) {
+        if (pr.status === 'fulfilled') {
+            continue
+        }
+
+        const message = getMessage(pr.reason)
+        log.error(message)
+    }
+
     outroMessage = 'please check your input files and try again 🛠️'
 } else {
     spin.stop(`yay! ${color.green(images.length)} images processed in ${color.green(duration)} seconds! \u26A1\uFE0F`)
