@@ -1,59 +1,63 @@
-import { extname, join, resolve, sep } from 'node:path'
+import { extname, join } from 'node:path'
 
 import { type Option } from '@clack/prompts'
 import imageExtensions from 'image-extensions'
 import sharp, { type AvailableFormatInfo } from 'sharp'
 
+import { guard } from './folder'
 import { askExtensions, askWidthAndHeight } from './prompt'
 
 /**
- * Parameters for the image resizing operation.
+ * Configuration parameters required for the image resizing and conversion operation.
  */
 interface ResizeParams {
     /**
-     * The relative path of the image within the input directory.
+     * The relative file path of the source image within the input directory.
      */
     readonly image: string
     /**
-     * The absolute or relative path to the input directory.
+     * The absolute or relative path to the source directory containing the input images.
      */
     readonly input: string
     /**
-     * The absolute or relative path to the output directory.
+     * The absolute or relative path to the destination directory for the processed images.
      */
     readonly output: string
     /**
-     * The target width for the resized image.
+     * The target width in pixels for the resized image.
      */
     readonly width: number
     /**
-     * The target height for the resized image.
+     * The target height in pixels for the resized image.
      */
     readonly height: number
     /**
-     * The filename (without extension) for the output file.
+     * The desired filename for the output file, excluding the extension.
      */
     readonly name: string
     /**
-     * The target file extension (e.g., '.png', '.webp') for the output file.
+     * The target file extension (e.g., '.png', '.webp') dictating the output format.
      */
     readonly extension: string
 }
 
+const inputFormats = imageExtensions.map(format => `.${format}`)
+const validExtensions = new Set(inputFormats)
+
 /**
- * Type guard to check if a value is a Sharp AvailableFormatInfo object.
+ * A type guard to verify if an unknown value conforms to the `AvailableFormatInfo` structure from Sharp.
  *
- * @param value - The value to check.
+ * @param value - The unknown value to evaluate.
  *
- * @returns True if the value matches the AvailableFormatInfo structure.
+ * @returns `true` if the value is a valid `AvailableFormatInfo` object, otherwise `false`.
  */
 const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
     typeof value === 'object' && value !== null && 'output' in value && 'id' in value
 
 /**
- * Retrieves the list of image formats supported by Sharp for output.
+ * Retrieves a list of image formats supported by the Sharp library for output processing.
  *
- * @returns An array of options representing the supported formats.
+ * @returns An array of prompt-compatible `Option` objects representing the supported output formats.
  */
 const getSharpFormats = () => {
     const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
@@ -64,15 +68,12 @@ const getSharpFormats = () => {
     return formats
 }
 
-const inputFormats = imageExtensions.map(format => `.${format}`)
-const validExtensions = new Set(inputFormats)
-
 /**
- * Filters a list of files to return only those with supported image extensions.
+ * Filters an array of file paths, returning only those with recognized image extensions.
  *
- * @param files - An array of file paths to filter.
+ * @param files - A readonly array of file paths or filenames to filter.
  *
- * @returns An array of file paths that are recognized as images.
+ * @returns An array containing only the file paths that correspond to supported image formats.
  */
 export const getImages = (files: readonly string[]) => {
     const images = files.filter(file => {
@@ -84,15 +85,16 @@ export const getImages = (files: readonly string[]) => {
 }
 
 /**
- * Resolves the target width and height for image processing.
+ * Resolves the target width and height for the image processing operation.
  *
- * If both dimensions are provided via CLI and are valid, they are used.
- * Otherwise, it prompts the user to enter the desired dimensions.
+ * If valid dimensions (greater than 0) are provided via CLI arguments, they are utilized.
+ * If either dimension is missing or invalid, an interactive prompt will request the dimensions from the user.
  *
- * @param width - The width provided via CLI.
- * @param height - The height provided via CLI.
+ * @param width - The target width parsed from CLI arguments.
+ * @param height - The target height parsed from CLI arguments.
  *
- * @returns A promise that resolves to an object containing the width and height.
+ * @returns A promise resolving to an object containing the validated `width` and `height`.
+ * @throws { Error } If the provided or prompted dimensions exceed Sharp's 16383 pixel limit.
  */
 export const getWidthAndHeight = (width: number, height: number) => {
     const notWidth = isNaN(width) || width <= 0
@@ -110,16 +112,16 @@ export const getWidthAndHeight = (width: number, height: number) => {
 }
 
 /**
- * Determines the output extensions for a set of images.
+ * Determines the target output formats for a collection of input images.
  *
- * If a global format is specified, it returns that format as the default for all images.
- * Otherwise, it identifies the unique extensions present in the input images and prompts
- * the user to map each original extension to a desired output format.
+ * If a global format flag is provided, it dictates the default output format for all images.
+ * In the absence of a global format, it extracts the unique extensions from the input images
+ * and prompts the user to map each original extension to a specific output format interactively.
  *
- * @param images - An array of image filenames to analyze.
- * @param format - An optional global output format.
+ * @param images - A readonly array of input image filenames to analyze for unique extensions.
+ * @param format - An optional global output format string provided via CLI arguments.
  *
- * @returns A promise that resolves to a record mapping input extensions to output formats.
+ * @returns A promise resolving to a record that maps input extensions (or 'default') to their chosen output formats.
  */
 export const getExtensions = (images: readonly string[], format?: string) => {
     if (format !== undefined && format !== '') {
@@ -140,17 +142,16 @@ export const getExtensions = (images: readonly string[], format?: string) => {
 }
 
 /**
- * Resizes an image using the Sharp library.
+ * Processes an image by resizing and potentially converting its format using the Sharp library.
  *
- * Handles both static and animated images (e.g., GIFs, WebP), maintaining
- * aspect ratio with a 'contain' fit and transparent background where applicable.
+ * This operation supports both static and animated images (e.g., GIFs, WebP). It maintains
+ * the original aspect ratio utilizing a 'contain' fit and applies a transparent background where necessary.
  *
- * @param params - The parameters for the resize operation.
+ * @param params - The configuration parameters dictating the resize and conversion operations.
  *
- * @returns A promise that resolves to a success message string.
- * @throws Error if the image processing fails.
+ * @returns A promise that resolves to a descriptive success message upon completion.
+ * @throws { Error } If the image processing fails or if a path traversal attempt is detected during output resolution.
  */
-// eslint-disable-next-line max-statements
 export const resize = async (params: ResizeParams) => {
     const { image, input, output, width, height, name, extension } = params
 
@@ -158,13 +159,7 @@ export const resize = async (params: ResizeParams) => {
         const inputPath = join(input, image)
         const outputPath = join(output, `${name}${extension}`)
 
-        const resolvedOutput = resolve(output)
-        const resolvedOutputPath = resolve(outputPath)
-        const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
-
-        if (!resolvedOutputPath.startsWith(normalizedOutput)) {
-            throw new Error('path traversal detected 🚫')
-        }
+        guard(output, outputPath)
 
         await sharp(inputPath, { animated: true })
             .resize(width, height, { background: 'transparent', fit: 'contain' })
