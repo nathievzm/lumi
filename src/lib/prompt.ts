@@ -4,6 +4,45 @@ import { type Option, cancel, group, select, text } from '@clack/prompts'
 import color from 'picocolors'
 
 /**
+ * Validates the number of matches found in the user input.
+ *
+ * @param matches - An array of numeric strings extracted from the input, or null/undefined.
+ *
+ * @returns An error message string if validation fails, or undefined if it passes.
+ */
+const validateMatches = (matches: readonly string[] | null | undefined) => {
+    if (!matches || matches.length === 0) {
+        return 'please enter at least one valid positive number 🚫'
+    }
+
+    if (matches.length > 2) {
+        return 'please enter at most two numbers (width and height) 🚫'
+    }
+
+    return undefined
+}
+
+/**
+ * Validates that the provided dimensions are within acceptable limits for image processing.
+ *
+ * @param width - The target width in pixels.
+ * @param height - The target height in pixels.
+ *
+ * @returns An error message string if the dimensions are invalid, or undefined if they pass.
+ */
+const validateLimits = (width: number, height: number) => {
+    if (width <= 0 || height <= 0) {
+        return 'dimensions must be greater than zero 🚫'
+    }
+
+    if (width > 16_383 || height > 16_383) {
+        return 'dimensions must be less than 16_384 pixels 🚫'
+    }
+
+    return undefined
+}
+
+/**
  * Prompts the user for the target width and height of the images.
  *
  * Validates that both inputs are positive numbers.
@@ -16,32 +55,20 @@ export const askWidthAndHeight = async () => {
     const result = await text({
         message: `what ${color.magenta('dimensions')} do you want for the ${color.magenta('output')} images? 📐`,
         placeholder: 'e.g. "1080" (square) or "1920 1080" (width x height)',
-        // eslint-disable-next-line oxlint/eslint/max-statements
         validate: value => {
             const matches = value?.match(regex)
+            const matchError = validateMatches(matches)
 
-            if (!matches || matches.length === 0) {
-                return 'please enter at least one valid positive number 🚫'
-            }
-
-            if (matches.length > 2) {
-                return 'please enter at most two numbers (width and height) 🚫'
+            // If the regex parsing failed or gave bad counts, return the error early 🛡️
+            if (matchError !== undefined || !matches) {
+                return matchError
             }
 
             const width = Number(matches[0])
-            const height = matches.length === 2 ? Number(matches[1]) : width
+            const height = matches[1] === undefined ? width : Number(matches[1])
 
-            if (width <= 0 || height <= 0) {
-                return 'dimensions must be greater than zero 🚫'
-            }
-
-            // Sentinel: Prevent resource exhaustion by limiting image sizes
-            // eslint-disable-next-line oxlint/unicorn/numeric-separators-style
-            if (width > 16383 || height > 16383) {
-                return 'dimensions must be less than 16384 pixels 🚫'
-            }
-
-            return undefined
+            // Delegate the final math check to our helper ✨
+            return validateLimits(width, height)
         }
     })
 
@@ -53,7 +80,7 @@ export const askWidthAndHeight = async () => {
     const matches = result.match(regex) ?? []
 
     const width = Number(matches[0])
-    const height = matches.length === 2 ? Number(matches[1]) : width
+    const height = matches[1] === undefined ? width : Number(matches[1])
 
     return { height, width }
 }

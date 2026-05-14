@@ -10,6 +10,7 @@ import pLimit from 'p-limit'
 import color from 'picocolors'
 
 import { cli } from '@/args'
+import { getMessage } from '@/error'
 import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
 import { getExtensions, getImages, getWidthAndHeight, resize } from '@/image'
 
@@ -31,21 +32,18 @@ note(`found ${color.magenta(images.length)} images to process! 🚀`)
 const output = getOutputPath(cli.output)
 await ensureOutputExists(output)
 
-let width = 0
-let height = 0
+let dimensions = { height: 0, width: 0 }
 
 try {
-    const dimensions = await getWidthAndHeight(cli.width, cli.height)
-    // eslint-disable-next-line oxlint/eslint/prefer-destructuring
-    width = dimensions.width
-    // eslint-disable-next-line oxlint/eslint/prefer-destructuring
-    height = dimensions.height
+    dimensions = await getWidthAndHeight(cli.width, cli.height)
 } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'an unknown error occurred'
+    const message = getMessage(error)
     log.error(message)
     outro('please check your input dimensions and try again 🛠️')
     exit(1)
 }
+
+const { width, height } = dimensions
 
 const extensions = await getExtensions(images, cli.format)
 const limit = pLimit({ concurrency: cli.limit || 10, rejectOnClear: true })
