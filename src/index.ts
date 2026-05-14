@@ -12,6 +12,7 @@ import color from 'picocolors'
 import updateNotifier from 'update-notifier'
 
 import { cli } from '@/args'
+import { getMessage } from '@/error'
 import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
 import { getExtensions, getImages, getWidthAndHeight, resize } from '@/image'
 
@@ -52,7 +53,18 @@ note(`found ${color.magenta(images.length)} images to process! 🚀`)
 const output = getOutputPath(cli.output)
 await ensureOutputExists(output)
 
-const { width, height } = await getWidthAndHeight(cli.width, cli.height)
+let dimensions = { height: 0, width: 0 }
+
+try {
+    dimensions = await getWidthAndHeight(cli.width, cli.height)
+} catch (error: unknown) {
+    const message = getMessage(error)
+    log.error(message)
+    outro('please check your input dimensions and try again 🛠️')
+    exit(1)
+}
+
+const { width, height } = dimensions
 
 const extensions = await getExtensions(images, cli.format)
 const limit = pLimit({ concurrency: cli.limit || 10, rejectOnClear: true })

@@ -102,6 +102,10 @@ export const getWidthAndHeight = (width: number, height: number) => {
         return askWidthAndHeight()
     }
 
+    if (width > 16_383 || height > 16_383) {
+        throw new Error('dimensions must be less than 16384 pixels 🚫')
+    }
+
     return Promise.resolve({ height, width })
 }
 
