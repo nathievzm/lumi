@@ -1,6 +1,6 @@
 {
     "name": "@nathievzm/lumi",
-    "version": "1.1.4",
+    "version": "1.1.5",
     "description": "a concurrent cli tool to resize and convert images using bun and sharp",
     "keywords": [
         "bun",

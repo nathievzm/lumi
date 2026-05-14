@@ -1,3 +1,26 @@
+## [1.1.5](https://github.com/nathievzm/lumi/compare/v1.1.4...v1.1.5) (2026-05-14)
+
+### Bug Fixes
+
+- restrict image dimensions to prevent resource exhaustion
+  ([40e65f3](https://github.com/nathievzm/lumi/commit/40e65f34f04f22cea1d7f543beddc6d45c66d87a))
+
+### Features
+
+- provide smart default for CLI format selection prompt
+  ([7e31044](https://github.com/nathievzm/lumi/commit/7e31044e841610b660388258a5cc971246ad2884))
+- **ux:** improve error handling for missing input folders
+  ([b4ad267](https://github.com/nathievzm/lumi/commit/b4ad26711348c3f0c38f990531c4f2ea0b3ad0ff))
+
+### Performance Improvements
+
+- improve readability of code suggested by jules
+  ([aa11125](https://github.com/nathievzm/lumi/commit/aa11125156cec42f97a3e3ab08cdf98fb63aa432))
+- **index:** use getMessage function to get the error message
+  ([5571325](https://github.com/nathievzm/lumi/commit/557132529d782af777fa9df3bac03b1fa800f48c))
+- remove oxlint disabled comments by jules
+  ([7f6ece6](https://github.com/nathievzm/lumi/commit/7f6ece6379c944504e08865a34bfd0c28819566c))
+
 ## [1.1.4](https://github.com/nathievzm/lumi/compare/v1.1.3...v1.1.4) (2026-05-13)
 
 ## [1.1.3](https://github.com/nathievzm/lumi/compare/v1.1.2...v1.1.3) (2026-05-13)
