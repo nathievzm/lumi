@@ -4,13 +4,12 @@ run-name: syncing ${{ github.head_ref }} pull request with the linked issue 🔄
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, edited, synchronize]
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ toJson(github) }}
       - name: dump context with js
         uses: actions/github-script@v7
         with:
