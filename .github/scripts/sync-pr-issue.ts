@@ -18,6 +18,22 @@ if (!isPullRequest(pullRequest)) {
     throw new Error('this event does not contain a pull request! 😢')
 }
 
-const issueNumber = /\w+\/(\d+)-\w+/v.exec(pullRequest.head.ref)
+const branch = /\w+\/(\d+)-\w+/v.exec(pullRequest.head.ref)
 
-console.log({ issueNumber, octokit })
+if (branch === null || branch.length < 2 || branch[1] === undefined) {
+    throw new Error('branch name does not match the expected format! 😕')
+}
+
+const issueNumber = Number(branch[1])
+
+const { data: issue, status } = await octokit.rest.issues.get({
+    issue_number: issueNumber,
+    owner: pullRequest.head.repo?.owner.login ?? '',
+    repo: pullRequest.head.repo?.name ?? ''
+})
+
+if (status !== 200) {
+    throw new Error('failed to fetch the issue! 😟')
+}
+
+console.log({ issue })

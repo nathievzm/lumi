@@ -1,6 +1,6 @@
 name: sync pull request metadata with issue
 
-run-name: syncing ${{ github.base_ref }} pull request with the linked issue 🔄
+run-name: syncing ${{ github.ref_name }} pull request with the linked issue 🔄
 
 on:
   pull_request:
