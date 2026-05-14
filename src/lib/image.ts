@@ -51,21 +51,39 @@ const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
     typeof value === 'object' && value !== null && 'output' in value && 'id' in value
 
 /**
+ * ⚡ Bolt: Cache sharp formats at the module level to avoid recalculating them on each call.
+ * This also replaces multiple array allocations (.filter().filter().map()) with a single pass.
+ */
+let cachedSharpFormats: Option<string>[] | undefined = undefined
+
+/**
  * Retrieves the list of image formats supported by Sharp for output.
  *
  * @returns An array of options representing the supported formats.
  */
 const getSharpFormats = () => {
-    const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
-    const formats: Option<string>[] = sharpFormats
-        .filter(format => format.output.file)
-        .map(format => ({ label: format.id, value: `.${format.id}` }))
+    if (cachedSharpFormats) {
+        return cachedSharpFormats
+    }
 
+    const formats: Option<string>[] = []
+    for (const format of Object.values(sharp.format)) {
+        if (isFormatInfo(format) && format.output.file) {
+            formats.push({ label: format.id, value: `.${format.id}` })
+        }
+    }
+
+    cachedSharpFormats = formats
     return formats
 }
 
-const inputFormats = imageExtensions.map(format => `.${format}`)
-const validExtensions = new Set(inputFormats)
+/**
+ * ⚡ Bolt: Avoid intermediate array allocations by directly adding items to the Set.
+ */
+const validExtensions = new Set<string>()
+for (const format of imageExtensions) {
+    validExtensions.add(`.${format}`)
+}
 
 /**
  * Filters a list of files to return only those with supported image extensions.
@@ -75,10 +93,17 @@ const validExtensions = new Set(inputFormats)
  * @returns An array of file paths that are recognized as images.
  */
 export const getImages = (files: readonly string[]) => {
-    const images = files.filter(file => {
+    /**
+     * ⚡ Bolt: Use a single-pass for...of loop instead of .filter() to reduce intermediate
+     * array allocations and callback overhead when handling a large number of files.
+     */
+    const images: string[] = []
+    for (const file of files) {
         const ext = extname(file)
-        return validExtensions.has(ext.toLowerCase())
-    })
+        if (validExtensions.has(ext.toLowerCase())) {
+            images.push(file)
+        }
+    }
 
     return images
 }
