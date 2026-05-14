@@ -24,7 +24,7 @@
         "no-continue": "off",
         "require-param-type": "off",
         "require-returns-type": "off",
-        "max-dependencies": ["warn", { "max": 12 }]
+        "max-dependencies": ["warn", { "max": 16 }]
     },
     "env": {
         "builtin": true

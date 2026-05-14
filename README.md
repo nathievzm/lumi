@@ -7,8 +7,8 @@ A fast, interactive CLI tool for batch image processing. Resize, convert, and op
 
 - **Batch Processing:** Process hundreds of images in seconds with high concurrency.
 - **Interactive UI:** User-friendly prompts for missing configurations using `@clack/prompts`.
-- **Recursive Processing:** Automatically finds all images in the input folder and its subdirectories.
-- **Progress Tracking:** Real-time feedback with `spinnies` progress indicators.
+- **Recursive Processing:** Optionally find all images in subdirectories using the recursive flag.
+- **Progress Tracking:** Real-time feedback with interactive progress indicators.
 - **Smart Resizing:** Automatically fits images while maintaining aspect ratio (`contain` fit).
 - **Multi-Format Support:** Convert between all formats supported by Sharp (WebP, PNG, JPEG, GIF, AVIF, etc.).
 - **Animated Support:** Seamlessly handles animated GIFs and WebP files.
@@ -56,15 +56,16 @@ You can bypass the prompts by providing the flags directly:
 bunx @nathievzm/lumi -i ./my-vacation-pics -s 1080 -f .webp
 ```
 
-| Flag       | Shortcut | Description                   | Default / Env                |
-| :--------- | :------- | :---------------------------- | :--------------------------- |
-| `--input`  | `-i`     | Input directory path          | `.` / `INPUT_FOLDER`         |
-| `--output` | `-o`     | Output directory path         | `./output` / `OUTPUT_FOLDER` |
-| `--width`  | `-w`     | Target width in pixels        | Prompt / `WIDTH`             |
-| `--height` | `-h`     | Target height in pixels       | Prompt / `HEIGHT`            |
-| `--size`   | `-s`     | Sets both width and height    | -                            |
-| `--format` | `-f`     | Output format (e.g., `.webp`) | Prompt / `FORMAT`            |
-| `--limit`  | `-l`     | Max concurrent operations     | `10` / `LIMIT`               |
+| Flag          | Shortcut | Description                   | Default / Env                |
+| :------------ | :------- | :---------------------------- | :--------------------------- |
+| `--input`     | `-i`     | Input directory path          | `.` / `INPUT_FOLDER`         |
+| `--output`    | `-o`     | Output directory path         | `./output` / `OUTPUT_FOLDER` |
+| `--width`     | `-w`     | Target width in pixels        | Prompt / `WIDTH`             |
+| `--height`    | `-h`     | Target height in pixels       | Prompt / `HEIGHT`            |
+| `--size`      | `-s`     | Sets both width and height    | -                            |
+| `--format`    | `-f`     | Output format (e.g., `.webp`) | Prompt / `FORMAT`            |
+| `--limit`     | `-l`     | Max concurrent operations     | `10` / `LIMIT`               |
+| `--recursive` | `-r`     | Process subdirectories        | `false` / `RECURSIVE`        |
 
 ### 🌍 Environment Variables
 
@@ -78,6 +79,7 @@ INPUT_FOLDER = './input'
 OUTPUT_FOLDER = './output'
 FORMAT = '.webp'
 LIMIT = '10'
+RECURSIVE = 'false'
 ```
 
 ---
