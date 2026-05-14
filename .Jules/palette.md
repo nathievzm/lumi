@@ -11,3 +11,10 @@
   actionable.
 - **Action:** Always output detailed errors for individual batch items when a batch process fails, even if it adds to
   terminal noise, because the user needs to correct specific items.
+
+## 2026-05-14 - Default CLI Prompt Values
+
+- **Learning:** When prompting users for repeated or common file conversions, failing to default to the original format
+  creates unnecessary friction. Users expect smart defaults that save keystrokes.
+- **Action:** Always set an `initialValue` in CLI selection prompts (`@clack/prompts`) where a logical default exists,
+  such as defaulting to a file's original extension during conversion options.

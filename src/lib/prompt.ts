@@ -104,11 +104,14 @@ export const askExtensions = (extensions: readonly string[], formats: readonly R
             continue
         }
 
-        promptGroups[extension] = () =>
-            select({
+        promptGroups[extension] = () => {
+            const initialValue = formats.some(format => format.value === extension) ? extension : undefined
+            return select({
+                initialValue,
                 message: `what ${color.magenta('format')} do you want to use for ${color.cyan(extension)} files? 🎨`,
                 options: [...formats]
             })
+        }
     }
 
     return group(promptGroups, {
