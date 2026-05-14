@@ -44,7 +44,7 @@ let allFiles: string[] = []
 try {
     allFiles = await readdir(input, { recursive: cli.recursive })
 } catch (error) {
-    const message = error instanceof Error ? error.message : String(error)
+    const message = getMessage(error)
     log.error(`yikes! couldn't read the input folder: ${message} 😢`)
     outro('please check your input path and try again 👋')
     exit(1)
