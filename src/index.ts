@@ -13,7 +13,7 @@ import updateNotifier from 'update-notifier'
 
 import { cli } from '@/args'
 import { getMessage } from '@/error'
-import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
+import { getInput, getOutput, prepare } from '@/folder'
 import { getExtensions, getImages, getWidthAndHeight, resize } from '@/image'
 
 import pkg from '../package.json' with { type: 'json' }
@@ -37,7 +37,9 @@ console.log(banner, '\n')
 
 intro(color.magenta(`welcome to lumi v${pkg.version} 🩷`))
 
-const input = getInputPath(cli.input)
+const input = getInput(cli.input)
+const output = getOutput(cli.output)
+await prepare(output)
 
 let allFiles: string[] = []
 
@@ -59,9 +61,6 @@ if (images.length === 0) {
 }
 
 note(`found ${color.magenta(images.length)} images to process! 🚀`)
-
-const output = getOutputPath(cli.output)
-await ensureOutputExists(output)
 
 let dimensions = { height: 0, width: 0 }
 

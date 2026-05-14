@@ -1,12 +1,12 @@
 /**
- * Extracts a human-readable error message from an unknown error type.
+ * Safely extracts a human-readable error message from an unknown error.
  *
- * This utility is used to safely handle errors caught in catch blocks,
- * ensuring that the output is always a string that can be displayed or logged.
+ * Designed for use in catch blocks where the error type is unknown,
+ * ensuring a consistent string output for logging or user feedback.
  *
- * @param error - The error to extract the message from.
+ * @param error - The caught error to process.
  *
- * @returns The error message if it's an Error instance or a string; otherwise, a default message.
+ * @returns The error message string, or a fallback message if the type is unrecognized.
  */
 export const getMessage = (error: unknown) => {
     if (error instanceof Error) {
