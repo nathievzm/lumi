@@ -1,5 +1,7 @@
 name: auto assign author
 
+run-name: ${{ github.actor }} is automatically assigned to the issue or pr they just opened ✅
+
 on:
   issues:
     types: [opened]
