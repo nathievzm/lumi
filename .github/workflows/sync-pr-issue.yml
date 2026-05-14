@@ -1,6 +1,6 @@
 name: sync pull request metadata with issue
 
-run-name: syncing ${{ github.ref_name }} pull request with the linked issue 🔄
+run-name: syncing ${{ github.head_ref }} pull request with the linked issue 🔄
 
 on:
   pull_request:
@@ -11,5 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{ toJson(github) }}
-      - run: |
-          console.log(JSON.stringify(context, null, 2));
+      - name: dump context with js
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log(JSON.stringify(context, null, 2))
