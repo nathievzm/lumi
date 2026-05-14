@@ -6,15 +6,36 @@ import { exit } from 'node:process'
 
 import { intro, log, note, outro, spinner } from '@clack/prompts'
 import { Temporal } from '@js-temporal/polyfill'
+import boxen from 'boxen'
 import pLimit from 'p-limit'
 import color from 'picocolors'
+import updateNotifier from 'update-notifier'
 
 import { cli } from '@/args'
 import { getMessage } from '@/error'
 import { ensureOutputExists, getInputPath, getOutputPath } from '@/folder'
 import { getExtensions, getImages, getWidthAndHeight, resize } from '@/image'
 
-intro('✨ welcome to lumi ✨')
+import pkg from '../package.json' with { type: 'json' }
+
+const notifier = updateNotifier({ pkg })
+notifier.notify({
+    boxenOptions: { borderColor: 'magenta', borderStyle: 'round', padding: 1 }
+})
+
+console.clear()
+
+const banner = boxen('lumi', {
+    backgroundColor: 'magenta',
+    borderColor: 'magenta',
+    borderStyle: 'round',
+    padding: { bottom: 2, left: 15, right: 15, top: 2 },
+    textAlignment: 'center'
+})
+
+console.log(banner, '\n')
+
+intro(color.magenta(`welcome to lumi v${pkg.version} 🩷`))
 
 const input = getInputPath(cli.input)
 
@@ -83,8 +104,8 @@ if (result.some(pr => pr.status === 'rejected')) {
     )
     outroMessage = 'please check your input files and try again 🛠️'
 } else {
-    spin.stop(`yay! ${color.green(images.length)} images processed in ${color.green(duration)} seconds! ⚡`)
+    spin.stop(`yay! ${color.green(images.length)} images processed in ${color.green(duration)} seconds! \u26A1\uFE0F`)
     outroMessage = 'bye 👋'
 }
 
-outro(outroMessage)
+outro(color.magenta(outroMessage))
