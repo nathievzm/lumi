@@ -1,4 +1,4 @@
-import { extname, join } from 'node:path'
+import { extname, join, resolve, sep } from 'node:path'
 
 import { type Option } from '@clack/prompts'
 import imageExtensions from 'image-extensions'
@@ -150,12 +150,21 @@ export const getExtensions = (images: readonly string[], format?: string) => {
  * @returns A promise that resolves to a success message string.
  * @throws Error if the image processing fails.
  */
+// eslint-disable-next-line max-statements
 export const resize = async (params: ResizeParams) => {
     const { image, input, output, width, height, name, extension } = params
 
     try {
         const inputPath = join(input, image)
         const outputPath = join(output, `${name}${extension}`)
+
+        const resolvedOutput = resolve(output)
+        const resolvedOutputPath = resolve(outputPath)
+        const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
+
+        if (!resolvedOutputPath.startsWith(normalizedOutput)) {
+            throw new Error('path traversal detected 🚫')
+        }
 
         await sharp(inputPath, { animated: true })
             .resize(width, height, { background: 'transparent', fit: 'contain' })
