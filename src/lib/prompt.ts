@@ -4,11 +4,14 @@ import { type Option, cancel, group, select, text } from '@clack/prompts'
 import color from 'picocolors'
 
 /**
- * Validates the number of matches found in the user input.
+ * Validates the quantity of numeric matches extracted from the user's dimension input.
  *
- * @param matches - An array of numeric strings extracted from the input, or null/undefined.
+ * Ensures the user provides at least one and at most two valid numeric strings.
  *
- * @returns An error message string if validation fails, or undefined if it passes.
+ * @param matches - A readonly array of numeric strings extracted via regex, or `null`/`undefined` if no matches were
+ *   found.
+ *
+ * @returns An error message string if the validation fails, or `undefined` if the matches are valid.
  */
 const validateMatches = (matches: readonly string[] | null | undefined) => {
     if (!matches || matches.length === 0) {
@@ -23,12 +26,14 @@ const validateMatches = (matches: readonly string[] | null | undefined) => {
 }
 
 /**
- * Validates that the provided dimensions are within acceptable limits for image processing.
+ * Verifies that the parsed dimensions fall within the acceptable boundaries for image processing.
+ *
+ * Enforces that both dimensions are strictly positive and do not exceed Sharp's maximum pixel limit.
  *
  * @param width - The target width in pixels.
  * @param height - The target height in pixels.
  *
- * @returns An error message string if the dimensions are invalid, or undefined if they pass.
+ * @returns An error message string detailing the failure reason, or `undefined` if the dimensions are valid.
  */
 const validateLimits = (width: number, height: number) => {
     if (width <= 0 || height <= 0) {
@@ -43,11 +48,12 @@ const validateLimits = (width: number, height: number) => {
 }
 
 /**
- * Prompts the user for the target width and height of the images.
+ * Interactively prompts the user to provide the target width and height for the processed images.
  *
- * Validates that both inputs are positive numbers.
+ * Parses the input to support either a single value (for square dimensions) or two values
+ * (for specific width and height). If the user cancels the prompt, the process exits.
  *
- * @returns A promise that resolves to an object containing the numeric width and height.
+ * @returns A promise resolving to an object containing the validated, numeric `width` and `height`.
  */
 export const askWidthAndHeight = async () => {
     const regex = /\d+/gv
@@ -86,15 +92,15 @@ export const askWidthAndHeight = async () => {
 }
 
 /**
- * Prompts the user to select an output format for each unique file extension found.
+ * Interactively prompts the user to select a desired output format for each unique input file extension.
  *
- * Dynamically generates a group of selection prompts based on the provided extensions.
- * If the user cancels any selection, the process exits.
+ * Dynamically constructs a series of selection prompts based on the provided list of extensions.
+ * If the user cancels any of the prompts, the process exits.
  *
- * @param extensions - An array of unique file extensions found in the input.
- * @param formats - An array of available output formats supported by the system.
+ * @param extensions - A readonly array of unique file extensions detected in the input images.
+ * @param formats - A readonly array of output format options supported by the Sharp library.
  *
- * @returns A promise that resolves to a record mapping each original extension to its chosen output format.
+ * @returns A promise resolving to a record that maps each original file extension to its selected output format string.
  */
 export const askExtensions = (extensions: readonly string[], formats: readonly Readonly<Option<string>>[]) => {
     const promptGroups: Record<string, () => Promise<string | symbol>> = {}
