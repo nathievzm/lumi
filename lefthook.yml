@@ -4,7 +4,7 @@ pre-commit:
   jobs:
     - name: format
       glob: '*.{ts,js,json,yml,yaml,md}'
-      run: bun fmt {staged_files} && git add {staged_files}
+      run: bun fmt
 
     - name: lint
       run: bun lint
