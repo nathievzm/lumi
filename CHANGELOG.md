@@ -1,3 +1,49 @@
+## [1.1.4](https://github.com/nathievzm/lumi/compare/v1.1.3...v1.1.4) (2026-05-13)
+
+## [1.1.3](https://github.com/nathievzm/lumi/compare/v1.1.2...v1.1.3) (2026-05-13)
+
+### Features
+
+- add update notifier to notify when there'a a new version ([#67](https://github.com/nathievzm/lumi/issues/67))
+  ([b567f03](https://github.com/nathievzm/lumi/commit/b567f03b3c6617b18bdc34587d65055c5726bcfc))
+
+## [1.1.2](https://github.com/nathievzm/lumi/compare/v1.1.1...v1.1.2) (2026-05-13)
+
+### Bug Fixes
+
+- use boxen to fix the intro banner
+  ([e3e8085](https://github.com/nathievzm/lumi/commit/e3e80853251b584aab892b688eb12c8c6b7799d4))
+
+## [1.1.1](https://github.com/nathievzm/lumi/compare/v1.1.0...v1.1.1) (2026-05-12)
+
+### Bug Fixes
+
+- intro banner and use lightning emoji in outro message
+  ([a3d4f33](https://github.com/nathievzm/lumi/commit/a3d4f3362d847fd8415027c9a73f6fc486dcd770))
+
+# [1.1.0](https://github.com/nathievzm/lumi/compare/v1.0.1...v1.1.0) (2026-05-12)
+
+### Features
+
+- add colors to logs ([#44](https://github.com/nathievzm/lumi/issues/44))
+  ([2dcca2e](https://github.com/nathievzm/lumi/commit/2dcca2e3df40ac577ca5fdaeddbaedecd67d3256))
+- add recursive arg to toggle the recursiveness when reading the input folder
+  ([#25](https://github.com/nathievzm/lumi/issues/25))
+  ([3644d34](https://github.com/nathievzm/lumi/commit/3644d346569aa40a2d6b7007ece64be6b787dc42))
+- clear console on start and add a cute banner at the beginning
+  ([1ad4ade](https://github.com/nathievzm/lumi/commit/1ad4adef1090224915b724374f0e537f371a93a7))
+- **image, index:** make getImages function pure by removing any side effect
+  ([addea55](https://github.com/nathievzm/lumi/commit/addea5542f6b923c36d093797d0b9387c199cfc3))
+- **index:** replace spinnies with clack spinner for cleaner cli ([#42](https://github.com/nathievzm/lumi/issues/42))
+  ([6c59c5a](https://github.com/nathievzm/lumi/commit/6c59c5a62af9d3ac13c94997f063842591f9a799))
+- show the seconds that took to process the files in the result log ([#43](https://github.com/nathievzm/lumi/issues/43))
+  ([439482e](https://github.com/nathievzm/lumi/commit/439482e075af4aaba70da2967743250456b35b20))
+
+### Performance Improvements
+
+- optimize path parsing by using extname and basename instead of parse
+  ([962299f](https://github.com/nathievzm/lumi/commit/962299ffc519826d1c023275290525d92b7d4db2))
+
 ## [1.0.1](https://github.com/nathievzm/lumi/compare/v1.0.0...v1.0.1) (2026-05-10)
 
 ### Bug Fixes
