@@ -36,5 +36,5 @@
             "@/*": ["./src/lib/*"]
         }
     },
-    "include": ["**/*.ts", "**/*.d.ts"]
+    "include": ["**/*.ts", "**/*.d.ts", ".github/**/*.ts", ".github/**/*.d.ts"]
 }

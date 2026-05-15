@@ -1,0 +1,20 @@
+name: add labels from issue to pull request
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  add-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out repository code
+        uses: actions/checkout@v6
+      - name: set up bun
+        uses: oven-sh/setup-bun@v2
+      - name: install dependencies
+        run: bun install
+      - name: run bun script to add labels from issue to pull request
+        run: bun .github/scripts/add-labels-pr
+        env:
+          GITHUB_TOKEN: ${{ secrets.LUMI_ADD_LABELS_PR }}
