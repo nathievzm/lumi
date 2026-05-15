@@ -28,8 +28,8 @@ const issueNumber = Number(branch[1])
 
 const { data: issue, status } = await octokit.rest.issues.get({
     issue_number: issueNumber,
-    owner: pullRequest.head.repo?.owner.login ?? '',
-    repo: pullRequest.head.repo?.name ?? ''
+    owner: context.repo.owner,
+    repo: context.repo.repo
 })
 
 if (status !== 200) {
@@ -41,8 +41,8 @@ const labels = issue.labels
     .filter((name): name is string => typeof name === 'string' && name.length > 0)
 
 await octokit.rest.issues.addLabels({
-    issue_number: pullRequest.number,
+    issue_number: context.issue.number,
     labels,
-    owner: pullRequest.head.repo?.owner.login ?? '',
-    repo: pullRequest.head.repo?.name ?? ''
+    owner: context.repo.owner,
+    repo: context.repo.repo
 })

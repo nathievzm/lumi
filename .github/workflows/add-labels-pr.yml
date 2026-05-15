@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: check out repository code
         uses: actions/checkout@v6
-      - name: set up Bun
+      - name: set up bun
         uses: oven-sh/setup-bun@v2
       - name: install dependencies
         run: bun install
