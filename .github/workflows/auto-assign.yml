@@ -1,4 +1,6 @@
-name: auto assign author
+name: auto assign author to issue or pr
+
+run-name: ${{ github.actor }} is automatically assigned to the issue or pr they just opened ✅
 
 on:
   issues:
@@ -9,22 +11,14 @@ on:
 jobs:
   assign:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      pull-requests: write
     steps:
-      - name: assign the user who opened the ticket or pr
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            // grab the username of the person who triggered the action
-            const author = context.actor
-
-            // tell github's api to assign the ticket to that username
-            await github.rest.issues.addAssignees({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              assignees: [author]
-            })
+      - name: check out repository code
+        uses: actions/checkout@v6
+      - name: set up bun
+        uses: oven-sh/setup-bun@v2
+      - name: install dependencies
+        run: bun install
+      - name: run bun script to auto-assign the author
+        run: bun .github/scripts/auto-assign
+        env:
+          GITHUB_TOKEN: ${{ secrets.LUMI_AUTOASSIGN }}
