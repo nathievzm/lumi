@@ -39,7 +39,15 @@ intro(color.magenta(`welcome to lumi v${pkg.version} 🩷`))
 
 const input = getInput(cli.input)
 const output = getOutput(cli.output)
-await prepare(output)
+
+try {
+    await prepare(output)
+} catch (error) {
+    const message = getMessage(error)
+    log.error(`yikes! couldn't prepare the output folder: ${message} 😢`)
+    outro('please check your output path permissions and try again 👋')
+    exit(1)
+}
 
 let allFiles: string[] = []
 
