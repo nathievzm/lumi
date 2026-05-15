@@ -67,12 +67,10 @@ const getSharpFormats = () => {
         return cachedSharpFormats
     }
 
-    const formats: Option<string>[] = []
-    for (const format of Object.values(sharp.format)) {
-        if (isFormatInfo(format) && format.output.file) {
-            formats.push({ label: format.id, value: `.${format.id}` })
-        }
-    }
+    const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
+    const formats: Option<string>[] = sharpFormats
+        .filter(format => format.output.file)
+        .map(format => ({ label: format.id, value: `.${format.id}` }))
 
     cachedSharpFormats = formats
     return formats
