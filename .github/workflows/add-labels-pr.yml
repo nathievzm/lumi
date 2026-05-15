@@ -5,7 +5,7 @@ on:
     types: [opened]
 
 jobs:
-  sync:
+  add-labels:
     runs-on: ubuntu-latest
     steps:
       - name: check out repository code
@@ -14,7 +14,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
       - name: install dependencies
         run: bun install
-      - name: run bun script to sync labels from issue to pull request
-        run: bun .github/scripts/sync-pr-issue
+      - name: run bun script to add labels from issue to pull request
+        run: bun .github/scripts/add-labels-pr
         env:
-          GITHUB_TOKEN: ${{ secrets.LUMI_SYNC_PR_ISSUE }}
+          GITHUB_TOKEN: ${{ secrets.LUMI_ADD_LABELS_PR }}
