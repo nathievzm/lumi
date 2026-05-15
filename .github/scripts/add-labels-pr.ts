@@ -40,11 +40,9 @@ const labels = issue.labels
     .map(label => (typeof label === 'string' ? label : label.name))
     .filter((name): name is string => typeof name === 'string' && name.length > 0)
 
-const result = await octokit.rest.issues.addLabels({
+await octokit.rest.issues.addLabels({
     issue_number: pullRequest.number,
     labels,
     owner: pullRequest.head.repo?.owner.login ?? '',
     repo: pullRequest.head.repo?.name ?? ''
 })
-
-console.log({ result })

@@ -1,0 +1,20 @@
+name: add labels from issue to pull request
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out repository code
+        uses: actions/checkout@v6
+      - name: set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: install dependencies
+        run: bun install
+      - name: run bun script to sync labels from issue to pull request
+        run: bun .github/scripts/sync-pr-issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.LUMI_SYNC_PR_ISSUE }}
