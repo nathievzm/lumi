@@ -15,3 +15,6 @@
 - **Action:** Always consider the application's lifecycle (e.g., long-running server vs. short-lived CLI script) before
   introducing caching or memoization. Prefer pure functions, readability, and KISS/YAGNI principles over
   micro-optimizations that create global mutable state without a measurable benefit in the specific execution context.
+## 2025-05-16 - [Linter Restrictions]
+**Learning:** The linter (`oxlint`) enforce `unicorn(no-null)` rule which strictly forbids the use of `null` literals.
+**Action:** Use `undefined` instead of `null` when initializing unset variables or caches to avoid lint errors.
