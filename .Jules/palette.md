@@ -18,3 +18,8 @@
   creates unnecessary friction. Users expect smart defaults that save keystrokes.
 - **Action:** Always set an `initialValue` in CLI selection prompts (`@clack/prompts`) where a logical default exists,
   such as defaulting to a file's original extension during conversion options.
+
+## 2026-05-16 - Text Input Prompts Default Values
+
+- **Learning:** Text input prompts for users to provide numerical dimensions is repetitive and adds friction, especially when standard sizes are desired.
+- **Action:** Added `defaultValue` and `initialValue` to text prompts asking for dimensions to reduce keystrokes and friction for typical use-cases.
