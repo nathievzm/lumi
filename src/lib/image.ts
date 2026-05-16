@@ -54,17 +54,25 @@ const validExtensions = new Set(inputFormats)
 const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
     typeof value === 'object' && value !== null && 'output' in value && 'id' in value
 
+let cachedFormats: Option<string>[] | undefined = undefined
+
 /**
  * Retrieves a list of image formats supported by the Sharp library for output processing.
+ * Caches the result to avoid redundant computation as the supported formats are static.
  *
  * @returns An array of prompt-compatible `Option` objects representing the supported output formats.
  */
 const getSharpFormats = () => {
+    if (cachedFormats !== undefined) {
+        return cachedFormats
+    }
+
     const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
     const formats: Option<string>[] = sharpFormats
         .filter(format => format.output.file)
         .map(format => ({ label: format.id, value: `.${format.id}` }))
 
+    cachedFormats = formats
     return formats
 }
 
