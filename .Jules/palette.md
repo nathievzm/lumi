@@ -18,3 +18,7 @@
   creates unnecessary friction. Users expect smart defaults that save keystrokes.
 - **Action:** Always set an `initialValue` in CLI selection prompts (`@clack/prompts`) where a logical default exists,
   such as defaulting to a file's original extension during conversion options.
+## 2024-05-17 - Add initialValue to dimensions prompt
+
+- **Learning:** Found a micro-UX pattern of providing sensible defaults (`initialValue`) in @clack/prompts text inputs. This improves usability by reducing repetitive typing for common values (like 1080px).
+- **Action:** Added `initialValue: '1080'` to the dimensions prompt in `src/lib/prompt.ts`. Will continue looking for similar opportunities to reduce friction in CLI tools by leveraging `defaultValue` or `initialValue` options.
