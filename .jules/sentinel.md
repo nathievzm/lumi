@@ -17,3 +17,8 @@
   directory.
 - **Prevention:** Always validate constructed file paths. Before performing any file operation, resolve the final output
   path and check if it strictly starts with the resolved target directory path to prevent path traversals.
+
+## 2024-05-17 - [Path Traversal & Structure Preservation Bug]
+**Vulnerability:** Output file path was created by extracting `basename(image)` and losing the recursive directory structure. Consequently, `lumi` wrote files directly in the root output folder. This opened up the application to structured issues where different folders' files collided, and could pose structural risks.
+**Learning:** `basename(path)` completely discards directories. In a recursive operation returning partial paths, you must preserve `dirname(image)` and concatenate it with the output folder safely.
+**Prevention:** Always maintain intermediate directories by using `dirname` + `mkdir({ recursive: true })` before converting or saving recursive files, and run path containment tests to verify that outputs remain within designated areas without collision.

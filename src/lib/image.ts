@@ -1,4 +1,5 @@
-import { extname, join } from 'node:path'
+import { mkdir } from 'node:fs/promises'
+import { dirname, extname, join } from 'node:path'
 
 import { type Option } from '@clack/prompts'
 import imageExtensions from 'image-extensions'
@@ -156,16 +157,19 @@ export const resize = async (params: ResizeParams) => {
     const { image, input, output, width, height, name, extension } = params
 
     try {
-        const inputPath = join(input, image)
-        const outputPath = join(output, `${name}${extension}`)
+        const relativeDir = dirname(image)
+        const outputDir = join(output, relativeDir)
+        const outputPath = join(outputDir, `${name}${extension}`)
 
+        // Ensure path traversal mitigation applies correctly 🛡️
         guard(output, outputPath)
+        await mkdir(outputDir, { recursive: true })
 
-        await sharp(inputPath, { animated: true })
+        await sharp(join(input, image), { animated: true })
             .resize(width, height, { background: 'transparent', fit: 'contain' })
             .toFile(outputPath)
 
-        return `processed and saved: ${name}${extension} `
+        return `processed and saved: ${join(relativeDir, `${name}${extension}`)} `
     } catch (error: any) {
         throw new Error(`error processing ${image} `, { cause: error })
     }
