@@ -97,18 +97,24 @@ export const getImages = (files: readonly string[]) => {
  * @throws { Error } If the provided or prompted dimensions exceed Sharp's 16383 pixel limit.
  */
 export const getWidthAndHeight = (width: number, height: number) => {
-    const notWidth = isNaN(width) || width <= 0
-    const notHeight = isNaN(height) || height <= 0
+    let finalWidth = width
+    let finalHeight = height
+
+    const notWidth = isNaN(finalWidth) || finalWidth <= 0
+    const notHeight = isNaN(finalHeight) || finalHeight <= 0
 
     if (notWidth && notHeight) {
         return askWidthAndHeight()
     }
 
-    if (width > 16_383 || height > 16_383) {
+    finalWidth = notWidth ? finalHeight : finalWidth
+    finalHeight = notHeight ? finalWidth : finalHeight
+
+    if (finalWidth > 16_383 || finalHeight > 16_383) {
         throw new Error('dimensions must be less than 16384 pixels 🚫')
     }
 
-    return Promise.resolve({ height, width })
+    return Promise.resolve({ height: finalHeight, width: finalWidth })
 }
 
 /**
