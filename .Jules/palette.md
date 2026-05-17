@@ -18,11 +18,3 @@
   creates unnecessary friction. Users expect smart defaults that save keystrokes.
 - **Action:** Always set an `initialValue` in CLI selection prompts (`@clack/prompts`) where a logical default exists,
   such as defaulting to a file's original extension during conversion options.
-
-## 2026-05-15 - Smart Defaults for Text Prompts
-
-- **Learning:** Initializing text prompts with a sensible default (`initialValue`) significantly reduces user friction
-  for common inputs (e.g. 1080p square images). Placeholder text isn't enough; allowing users to just press Enter is far
-  better UX.
-- **Action:** Always set an `initialValue` on text inputs in CLI tools where a logical default exists to save
-  keystrokes.
