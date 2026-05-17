@@ -4,6 +4,7 @@ import { type Option } from '@clack/prompts'
 import imageExtensions from 'image-extensions'
 import sharp, { type AvailableFormatInfo } from 'sharp'
 
+import { ImageError } from './error'
 import { guard } from './folder'
 import { askExtensions, askWidthAndHeight } from './prompt'
 
@@ -94,7 +95,7 @@ export const getImages = (files: readonly string[]) => {
  * @param height - The target height parsed from CLI arguments.
  *
  * @returns A promise resolving to an object containing the validated `width` and `height`.
- * @throws { Error } If the provided or prompted dimensions exceed Sharp's 16383 pixel limit.
+ * @throws { ImageError } If the provided or prompted dimensions exceed Sharp's 16383 pixel limit.
  */
 export const getWidthAndHeight = (width: number, height: number) => {
     const notWidth = isNaN(width) || width <= 0
@@ -105,7 +106,7 @@ export const getWidthAndHeight = (width: number, height: number) => {
     }
 
     if (width > 16_383 || height > 16_383) {
-        throw new Error('dimensions must be less than 16384 pixels 🚫')
+        throw new ImageError('dimensions must be less than 16384 pixels 🚫')
     }
 
     return Promise.resolve({ height, width })
@@ -166,7 +167,7 @@ export const resize = async (params: ResizeParams) => {
             .toFile(outputPath)
 
         return `processed and saved: ${name}${extension} `
-    } catch (error: any) {
-        throw new Error(`error processing ${image} `, { cause: error })
+    } catch (error: unknown) {
+        throw new ImageError(`error processing ${image} `, error)
     }
 }
