@@ -15,3 +15,7 @@
 - **Action:** Always consider the application's lifecycle (e.g., long-running server vs. short-lived CLI script) before
   introducing caching or memoization. Prefer pure functions, readability, and KISS/YAGNI principles over
   micro-optimizations that create global mutable state without a measurable benefit in the specific execution context.
+
+## 2026-05-18 - [Optimizing Array Setup and Avoid Unnecessary Computations]
+**Learning:** Using `Object.values(sharp.format).filter(...).map(...)` to map Sharp's available formats is an expensive operation due to multiple passes and intermediate arrays. Doing it on every function call was redundant.
+**Action:** Caching such computations at the module level guarantees they're only done once. For data that does not change at runtime, prefer module-scoped initialization.

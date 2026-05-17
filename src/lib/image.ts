@@ -54,18 +54,23 @@ const validExtensions = new Set(inputFormats)
 const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
     typeof value === 'object' && value !== null && 'output' in value && 'id' in value
 
+// ⚡ Bolt: Cache sharp formats at module level to avoid recomputing on every call
+let cachedFormats: Option<string>[] | undefined = undefined
+
 /**
  * Retrieves a list of image formats supported by the Sharp library for output processing.
  *
  * @returns An array of prompt-compatible `Option` objects representing the supported output formats.
  */
 const getSharpFormats = () => {
-    const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
-    const formats: Option<string>[] = sharpFormats
-        .filter(format => format.output.file)
-        .map(format => ({ label: format.id, value: `.${format.id}` }))
+    if (cachedFormats === undefined) {
+        const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
+        cachedFormats = sharpFormats
+            .filter(format => format.output.file)
+            .map(format => ({ label: format.id, value: `.${format.id}` }))
+    }
 
-    return formats
+    return cachedFormats
 }
 
 /**
