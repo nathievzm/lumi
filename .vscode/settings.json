@@ -5,7 +5,9 @@
     "oxc.enable.oxlint": true,
     "oxc.enable.oxfmt": true,
     "editor.codeActionsOnSave": {
-        "source.fixAll.oxc": "always"
+        "source.fixAll.oxc": "always",
+        "source.format.oxc": "always",
+        "source.fixAll": "always"
     },
     "files.insertFinalNewline": false,
     "files.trimTrailingWhitespace": true

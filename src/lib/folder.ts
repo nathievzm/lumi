@@ -5,6 +5,8 @@ import { cwd } from 'node:process'
 import { log } from '@clack/prompts'
 import color from 'picocolors'
 
+import { FolderError } from './error'
+
 /**
  * Resolves the input directory path.
  *
@@ -76,7 +78,8 @@ export const prepare = async (output: string) => {
  * @param path - The target path to verify.
  *
  * @returns `true` if the target path is securely contained within the base folder.
- * @throws { Error } If the target path resolves outside the base folder, indicating a potential path traversal attempt.
+ * @throws { FolderError } If the target path resolves outside the base folder, indicating a potential path traversal
+ *   attempt.
  */
 export const guard = (folder: string, path: string) => {
     const resolved = resolve(folder)
@@ -84,7 +87,7 @@ export const guard = (folder: string, path: string) => {
     const normalized = resolved.endsWith(sep) ? resolved : resolved + sep
 
     if (!resolvedPath.startsWith(normalized)) {
-        throw new Error('path traversal detected 🚫')
+        throw new FolderError('path traversal detected 🚫')
     }
 
     return true

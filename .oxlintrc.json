@@ -24,7 +24,8 @@
         "no-continue": "off",
         "require-param-type": "off",
         "require-returns-type": "off",
-        "max-dependencies": ["warn", { "max": 16 }]
+        "max-dependencies": ["warn", { "max": 16 }],
+        "max-classes-per-file": ["warn", { "max": 3 }]
     },
     "env": {
         "builtin": true

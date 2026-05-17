@@ -1,21 +1,32 @@
-/**
- * Safely extracts a human-readable error message from an unknown error.
- *
- * Designed for use in catch blocks where the error type is unknown,
- * ensuring a consistent string output for logging or user feedback.
- *
- * @param error - The caught error to process.
- *
- * @returns The error message string, or a fallback message if the type is unrecognized.
- */
-export const getMessage = (error: unknown) => {
-    if (error instanceof Error) {
-        return error.message
+export class LumiError extends Error {
+    constructor(message: string, error?: unknown) {
+        super(message, { cause: error })
+        this.name = 'LumiError'
     }
 
-    if (typeof error === 'string') {
-        return error
-    }
+    static getMessage(error: unknown) {
+        if (error instanceof Error) {
+            return error.message
+        }
 
-    return 'an unknown error occurred'
+        if (typeof error === 'string') {
+            return error
+        }
+
+        return 'an unknown error occurred'
+    }
+}
+
+export class FolderError extends LumiError {
+    constructor(message: string, error?: unknown) {
+        super(message, { cause: error })
+        this.name = 'FolderError'
+    }
+}
+
+export class ImageError extends LumiError {
+    constructor(message: string, error?: unknown) {
+        super(message, { cause: error })
+        this.name = 'ImageError'
+    }
 }
