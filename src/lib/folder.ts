@@ -1,4 +1,4 @@
-import { exists, mkdir } from 'node:fs/promises'
+import { exists, mkdir, readdir } from 'node:fs/promises'
 import { resolve, sep } from 'node:path'
 import { cwd } from 'node:process'
 
@@ -62,13 +62,34 @@ export const getOutput = (output?: string) => {
  * @returns A promise that resolves when the directory is verified or successfully created.
  */
 export const prepare = async (output: string) => {
-    const outputExists = await exists(output)
+    try {
+        const outputExists = await exists(output)
 
-    if (!outputExists) {
-        await mkdir(output, { recursive: true })
+        if (!outputExists) {
+            await mkdir(output, { recursive: true })
+        }
+
+        log.info(`output folder ready: ${color.cyan(output)} ✨`, { spacing: 0 })
+    } catch (error) {
+        throw new FolderError(`could not prepare the output folder: ${output}`, error)
     }
+}
 
-    log.info(`output folder ready: ${color.cyan(output)} ✅`, { spacing: 0 })
+/**
+ * Reads the contents of a directory.
+ *
+ * @param input - The path to the directory to read.
+ * @param recursive - Whether to read the directory recursively. Defaults to `false`.
+ *
+ * @returns A promise that resolves to an array of file names or relative paths.
+ * @throws { FolderError } If the directory cannot be read.
+ */
+export const readFiles = async (input: string, recursive = false) => {
+    try {
+        return await readdir(input, { recursive })
+    } catch (error) {
+        throw new FolderError(`could not read the input folder: ${input}`, error)
+    }
 }
 
 /**

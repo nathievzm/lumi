@@ -14,6 +14,7 @@ A fast, interactive CLI tool for batch image processing. Resize, convert, and op
 - **Animated Support:** Seamlessly handles animated GIFs and WebP files.
 - **Concurrency Control:** Fine-tune performance with configurable processing limits.
 - **Environment Driven:** Fully configurable via `.env` files or CLI flags.
+- **Update Notifications:** Automatically alerts you when a new version is available.
 
 ## 📦 Installation
 
@@ -111,6 +112,7 @@ bun install
 - `bun fmt:check`: Check for formatting issues.
 - `bun changelog`: Update the changelog.
 - `bun release`: Release a new version with `bumpp` and update the changelog.
+- `bun prepare`: Install git hooks with `lefthook`.
 
 ## 📄 License
 

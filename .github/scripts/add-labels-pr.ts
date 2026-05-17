@@ -1,16 +1,11 @@
-import { context, getOctokit } from '@actions/github'
+import { exit } from 'node:process'
+
 import { type PullRequest } from '@octokit/webhooks-types'
+
+import { context, octokit } from './octokit'
 
 const isPullRequest = (data: unknown): data is PullRequest =>
     typeof data === 'object' && data !== null && 'head' in data
-
-const token = Bun.env.GITHUB_TOKEN
-
-if (token === undefined) {
-    throw new Error('GITHUB_TOKEN is missing! 😭')
-}
-
-const octokit = getOctokit(token)
 
 const pullRequest = context.payload.pull_request
 
@@ -21,7 +16,8 @@ if (!isPullRequest(pullRequest)) {
 const branch = /\w+\/(\d+)-\w+/v.exec(pullRequest.head.ref)
 
 if (branch === null || branch.length < 2 || branch[1] === undefined) {
-    throw new Error('branch name does not match the expected format! 😕')
+    console.log(`skipping: branch ${pullRequest.head.ref} does not match the issue format. ⏭️`)
+    exit(0)
 }
 
 const issueNumber = Number(branch[1])

@@ -1,6 +1,5 @@
 #!/usr/bin/env bun
 
-import { readdir } from 'node:fs/promises'
 import { basename, extname } from 'node:path'
 import { exit } from 'node:process'
 
@@ -13,7 +12,7 @@ import updateNotifier from 'update-notifier'
 
 import { cli } from '@/args'
 import { FolderError, ImageError, LumiError } from '@/error'
-import { getInput, getOutput, prepare } from '@/folder'
+import { getInput, getOutput, prepare, readFiles } from '@/folder'
 import { getExtensions, getImages, getWidthAndHeight, resize } from '@/image'
 
 import pkg from '../package.json' with { type: 'json' }
@@ -42,7 +41,7 @@ try {
     const output = getOutput(cli.output)
     await prepare(output)
 
-    const allFiles = await readdir(input, { recursive: cli.recursive })
+    const allFiles = await readFiles(input, cli.recursive)
     const images = getImages(allFiles)
 
     if (images.length === 0) {
@@ -52,8 +51,12 @@ try {
     note(`found ${color.magenta(images.length)} images to process! 🚀`)
 
     const { width, height } = await getWidthAndHeight(cli.width, cli.height)
-
     const extensions = await getExtensions(images, cli.format)
+
+    if (cli.limit <= 0) {
+        throw new ImageError('the concurrency limit must be a positive number! 🚫')
+    }
+
     const limit = pLimit({ concurrency: cli.limit || 10, rejectOnClear: true })
 
     const spin = spinner()
@@ -96,7 +99,7 @@ try {
             }
 
             const message = LumiError.getMessage(pr.reason)
-            log.error(message)
+            log.error(color.red(message))
         }
 
         outroMessage = 'please check your input files and try again 🛠️'
@@ -112,11 +115,11 @@ try {
     const message = LumiError.getMessage(error)
 
     if (error instanceof FolderError) {
-        log.error(`folder issue: ${message}`)
+        log.error(color.red(`folder issue: ${message}`))
     } else if (error instanceof ImageError) {
-        log.error(`image issue: ${message}`)
+        log.error(color.red(`image issue: ${message}`))
     } else {
-        log.error(`unexpected anomaly: ${message} 👽`)
+        log.error(color.red(`unexpected anomaly: ${message} 👽`))
     }
 
     outro(color.magenta('please check your configuration and try again 👋'))
