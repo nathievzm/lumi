@@ -18,3 +18,12 @@
   creates unnecessary friction. Users expect smart defaults that save keystrokes.
 - **Action:** Always set an `initialValue` in CLI selection prompts (`@clack/prompts`) where a logical default exists,
   such as defaulting to a file's original extension during conversion options.
+
+## 2026-05-14 - Rejected Default Value for Dimensions
+
+**Learning:** Adding a strict `defaultValue` (e.g., '1080') to the dimensions prompt overrides the helpful `placeholder`
+text visually in the UI, making the interface less descriptive and potentially confusing for users who need custom
+sizes.
+
+**Action:** Prioritize descriptive placeholders over hardcoded default values for free-text inputs where the user might
+legitimately need a wide variety of formats (like dimensions).
