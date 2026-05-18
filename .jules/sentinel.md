@@ -17,3 +17,13 @@
   directory.
 - **Prevention:** Always validate constructed file paths. Before performing any file operation, resolve the final output
   path and check if it strictly starts with the resolved target directory path to prevent path traversals.
+
+## 2024-03-24 - [Path Traversal in Input Resolution]
+
+- **Vulnerability:** The application was vulnerable to path traversal because it resolved the input image path via
+  `join(input, image)` and passed it directly to `sharp` without validation.
+- **Learning:** Even though the `outputPath` was properly guarded against path traversal, the missing guard on
+  `inputPath` could allow an attacker to read arbitrary files off the filesystem by specifying a malicious `image`
+  filename with `../` sequences.
+- **Prevention:** Always sanitize and guard both input and output paths to ensure they strictly reside within the
+  intended boundaries.
