@@ -15,3 +15,7 @@
 - **Action:** Always consider the application's lifecycle (e.g., long-running server vs. short-lived CLI script) before
   introducing caching or memoization. Prefer pure functions, readability, and KISS/YAGNI principles over
   micro-optimizations that create global mutable state without a measurable benefit in the specific execution context.
+
+## 2024-05-18 - [Replace Heavy Polyfills with Native APIs]
+**Learning:** Using heavy polyfills like `@js-temporal/polyfill` solely for simple duration measurement introduces significant (~90ms) startup overhead, which is detrimental to CLI performance.
+**Action:** Always prefer native APIs like `performance.now()` for simple duration tracking to avoid the overhead of parsing and instantiating large external libraries.
