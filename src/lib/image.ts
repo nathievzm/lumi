@@ -160,6 +160,7 @@ export const resize = async (params: ResizeParams) => {
         const inputPath = join(input, image)
         const outputPath = join(output, `${name}${extension}`)
 
+        guard(input, inputPath)
         guard(output, outputPath)
 
         await sharp(inputPath, { animated: true })
