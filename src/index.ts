@@ -4,7 +4,6 @@ import { basename, extname } from 'node:path'
 import { exit } from 'node:process'
 
 import { intro, log, note, outro, spinner } from '@clack/prompts'
-import { Temporal } from '@js-temporal/polyfill'
 import boxen from 'boxen'
 import pLimit from 'p-limit'
 import color from 'picocolors'
@@ -53,10 +52,6 @@ try {
     const { width, height } = await getWidthAndHeight(cli.width, cli.height)
     const extensions = await getExtensions(images, cli.format)
 
-    if (cli.limit <= 0) {
-        throw new ImageError('the concurrency limit must be a positive number! 🚫')
-    }
-
     const limit = pLimit({ concurrency: cli.limit || 10, rejectOnClear: true })
 
     const spin = spinner()
@@ -64,7 +59,7 @@ try {
 
     let processed = 0
 
-    const startTime = Temporal.Now.instant()
+    const startTime = performance.now()
 
     const promises = images.map(image =>
         limit(async () => {
@@ -83,8 +78,8 @@ try {
 
     const result = await Promise.allSettled(promises)
 
-    const endTime = Temporal.Now.instant()
-    const duration = startTime.until(endTime).total('seconds').toFixed(2)
+    const endTime = performance.now()
+    const duration = ((endTime - startTime) / 1000).toFixed(2)
 
     let outroMessage = ''
 
