@@ -13,7 +13,7 @@ import { FolderError } from './error'
  * If a path is provided via CLI arguments, it resolves to that path and logs the action.
  * Otherwise, it defaults to the current working directory.
  *
- * @param input - An optional input path provided via CLI arguments.
+ * @param input - An input path provided via CLI arguments.
  *
  * @returns The resolved input directory path.
  */
@@ -35,7 +35,7 @@ export const getInput = (input?: string) => {
  * If a path is provided via CLI arguments, it resolves to that path and logs the action.
  * Otherwise, it defaults to an 'output' directory in the current working directory.
  *
- * @param output - An optional output path provided via CLI arguments.
+ * @param output - An output path provided via CLI arguments.
  *
  * @returns The resolved output directory path.
  */

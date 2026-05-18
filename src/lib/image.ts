@@ -60,7 +60,7 @@ const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
  *
  * @returns An array of prompt-compatible `Option` objects representing the supported output formats.
  */
-const getSharpFormats = () => {
+const getSharpFormats = (): Option<string>[] => {
     const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
     const formats: Option<string>[] = sharpFormats
         .filter(format => format.output.file)
@@ -120,7 +120,7 @@ export const getWidthAndHeight = (width: number, height: number) => {
  * and prompts the user to map each original extension to a specific output format interactively.
  *
  * @param images - A readonly array of input image filenames to analyze for unique extensions.
- * @param format - An optional global output format string provided via CLI arguments.
+ * @param format - A global output format string provided via CLI arguments.
  *
  * @returns A promise resolving to a record that maps input extensions (or 'default') to their chosen output formats.
  */
@@ -151,7 +151,8 @@ export const getExtensions = (images: readonly string[], format?: string) => {
  * @param params - The configuration parameters dictating the resize and conversion operations.
  *
  * @returns A promise that resolves to a descriptive success message upon completion.
- * @throws { Error } If the image processing fails or if a path traversal attempt is detected during output resolution.
+ * @throws { ImageError } If the image processing fails or if a path traversal attempt is detected during output
+ *   resolution.
  */
 export const resize = async (params: ResizeParams) => {
     const { image, input, output, width, height, name, extension } = params

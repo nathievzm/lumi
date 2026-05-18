@@ -1,13 +1,14 @@
 /**
  * Base error class for all Lumi-specific errors.
- * Extends the built-in Error class and allows for an optional underlying cause.
+ *
+ * Extends the built-in `Error` class and allows for an optional underlying cause.
  */
 export class LumiError extends Error {
     /**
-     * Creates a new LumiError instance.
+     * Creates a new `LumiError` instance.
      *
      * @param message - The error message.
-     * @param error - The underlying error or cause (optional).
+     * @param error - The underlying error or cause.
      */
     constructor(message: string, error?: unknown) {
         super(message, { cause: error })
@@ -39,10 +40,10 @@ export class LumiError extends Error {
  */
 export class FolderError extends LumiError {
     /**
-     * Creates a new FolderError instance.
+     * Creates a new `FolderError` instance.
      *
      * @param message - The error message.
-     * @param error - The underlying error or cause (optional).
+     * @param error - The underlying error or cause.
      */
     constructor(message: string, error?: unknown) {
         super(message, { cause: error })
@@ -55,10 +56,10 @@ export class FolderError extends LumiError {
  */
 export class ImageError extends LumiError {
     /**
-     * Creates a new ImageError instance.
+     * Creates a new `ImageError` instance.
      *
      * @param message - The error message.
-     * @param error - The underlying error or cause (optional).
+     * @param error - The underlying error or cause.
      */
     constructor(message: string, error?: unknown) {
         super(message, { cause: error })
