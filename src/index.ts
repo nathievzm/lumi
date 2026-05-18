@@ -52,10 +52,6 @@ try {
     const { width, height } = await getWidthAndHeight(cli.width, cli.height)
     const extensions = await getExtensions(images, cli.format)
 
-    if (cli.limit <= 0) {
-        throw new ImageError('the concurrency limit must be a positive number! 🚫')
-    }
-
     const limit = pLimit({ concurrency: cli.limit || 10, rejectOnClear: true })
 
     const spin = spinner()
@@ -63,9 +59,6 @@ try {
 
     let processed = 0
 
-    // ⚡ Bolt: Replace Temporal polyfill with native performance.now() to measure execution duration.
-    // This optimization bypasses the ~90ms overhead of parsing and instantiating the Temporal polyfill,
-    // making the CLI launch faster.
     const startTime = performance.now()
 
     const promises = images.map(image =>
