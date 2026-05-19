@@ -12,26 +12,13 @@ import { cli } from '@/args'
 import { FolderError, ImageError, LumiError } from '@/error'
 import { getInput, getOutput, prepare, readFiles } from '@/folder'
 import { getExtensions, getImages, getWidthAndHeight, resize } from '@/image'
+import { notifyUpdate } from '@/update'
 
 import pkg from '../package.json' with { type: 'json' }
 
-// ⚡ Bolt: Dynamically import update-notifier to avoid ~500ms startup penalty on CLI initialization
-const notifyUpdate = async () => {
-    try {
-        const { default: updateNotifier } = await import('update-notifier')
-        const notifier = updateNotifier({ pkg })
-        notifier.notify({
-            boxenOptions: { borderColor: 'magenta', borderStyle: 'round', padding: 1 }
-        })
-    } catch {
-        // Silently fail if update-notifier cannot be loaded
-    }
-}
-
-// eslint-disable-next-line unicorn/prefer-top-level-await, @typescript-eslint/no-floating-promises
-void notifyUpdate()
-
 try {
+    void notifyUpdate(pkg)
+
     console.clear()
 
     const banner = boxen('lumi', {
