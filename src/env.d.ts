@@ -1,27 +1,27 @@
 declare module 'bun' {
     interface Env {
         /**
-         * Default target width for resized images.
+         * The default target width in pixels for resized images.
          */
         WIDTH?: string
         /**
-         * Default target height for resized images.
+         * The default target height in pixels for resized images.
          */
         HEIGHT?: string
         /**
-         * Default path to the input folder containing images.
+         * The default path to the input directory containing source images.
          */
         INPUT_FOLDER?: string
         /**
-         * Default path where processed images will be saved.
+         * The default path to the destination directory where processed images will be saved.
          */
         OUTPUT_FOLDER?: string
         /**
-         * Default global output format (e.g., '.webp', '.png').
+         * The default global output format extension (e.g., `.webp`, `.png`).
          */
         FORMAT?: string
         /**
-         * Default concurrent processing limit.
+         * The default concurrent processing limit.
          */
         LIMIT?: string
         /**

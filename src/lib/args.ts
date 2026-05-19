@@ -5,7 +5,7 @@ const { values } = parseArgs({
     args: Bun.argv.slice(2),
     options: {
         /**
-         * Global output format. Defaults to `FORMAT` env var.
+         * Global output format. Defaults to the `FORMAT` environment variable.
          */
         format: {
             default: Bun.env.FORMAT,
@@ -13,7 +13,7 @@ const { values } = parseArgs({
             type: 'string'
         },
         /**
-         * Target height. Defaults to `HEIGHT` env var.
+         * Target height. Defaults to the `HEIGHT` environment variable.
          */
         height: {
             default: Bun.env.HEIGHT,
@@ -21,7 +21,7 @@ const { values } = parseArgs({
             type: 'string'
         },
         /**
-         * Input directory path. Defaults to `INPUT_FOLDER` env var.
+         * Input directory path. Defaults to the `INPUT_FOLDER` environment variable.
          */
         input: {
             default: Bun.env.INPUT_FOLDER,
@@ -29,7 +29,7 @@ const { values } = parseArgs({
             type: 'string'
         },
         /**
-         * Concurrent processing limit. Defaults to `LIMIT` env var.
+         * Concurrent processing limit. Defaults to the `LIMIT` environment variable.
          */
         limit: {
             default: Bun.env.LIMIT,
@@ -37,7 +37,7 @@ const { values } = parseArgs({
             type: 'string'
         },
         /**
-         * Output directory path. Defaults to `OUTPUT_FOLDER` env var.
+         * Output directory path. Defaults to the `OUTPUT_FOLDER` environment variable.
          */
         output: {
             default: Bun.env.OUTPUT_FOLDER,
@@ -45,7 +45,7 @@ const { values } = parseArgs({
             type: 'string'
         },
         /**
-         * Whether to process the input directory recursively. Defaults to `RECURSIVE` env var.
+         * Whether to process the input directory recursively. Defaults to the `RECURSIVE` environment variable.
          */
         recursive: {
             default: Boolean(Bun.env.RECURSIVE),
@@ -60,7 +60,7 @@ const { values } = parseArgs({
             type: 'string'
         },
         /**
-         * Target width. Defaults to `WIDTH` env var.
+         * Target width. Defaults to the `WIDTH` environment variable.
          */
         width: {
             default: Bun.env.WIDTH,
@@ -83,6 +83,7 @@ const { input, output, format, recursive } = values
 
 /**
  * The consolidated CLI configuration object.
+ *
  * Contains resolved paths, dimensions, and processing limits.
  */
 export const cli = { format, height, input, limit, output, recursive, width }
