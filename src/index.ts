@@ -7,20 +7,17 @@ import { intro, log, note, outro, spinner } from '@clack/prompts'
 import boxen from 'boxen'
 import pLimit from 'p-limit'
 import color from 'picocolors'
-import updateNotifier from 'update-notifier'
 
 import { cli } from '@/args'
 import { FolderError, ImageError, LumiError } from '@/error'
 import { getInput, getOutput, prepare, readFiles } from '@/folder'
 import { getExtensions, getImages, getWidthAndHeight, resize } from '@/image'
+import { notifyUpdate } from '@/update'
 
 import pkg from '../package.json' with { type: 'json' }
 
 try {
-    const notifier = updateNotifier({ pkg })
-    notifier.notify({
-        boxenOptions: { borderColor: 'magenta', borderStyle: 'round', padding: 1 }
-    })
+    void notifyUpdate(pkg)
 
     console.clear()
 
