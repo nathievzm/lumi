@@ -18,3 +18,6 @@
   creates unnecessary friction. Users expect smart defaults that save keystrokes.
 - **Action:** Always set an `initialValue` in CLI selection prompts (`@clack/prompts`) where a logical default exists,
   such as defaulting to a file's original extension during conversion options.
+## 2024-05-19 - Default Values in Prompts Reduce Friction
+**Learning:** Setting default values (`defaultValue`, `initialValue`) in interactive CLI prompts greatly improves the user experience by providing a logical starting point and reducing cognitive load or necessary keystrokes.
+**Action:** Always provide a logical default value in `@clack/prompts` and similar interactive interfaces when a common or safe default exists.

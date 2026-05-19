@@ -59,6 +59,8 @@ export const askWidthAndHeight = async () => {
     const regex = /\d+/gv
 
     const result = await text({
+        defaultValue: '1080',
+        initialValue: '1080',
         message: `what ${color.magenta('dimensions')} do you want for the ${color.magenta('output')} images? 📐`,
         placeholder: 'e.g. "1080" (square) or "1920 1080" (width x height)',
         validate: value => {
