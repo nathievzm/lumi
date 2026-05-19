@@ -7,7 +7,6 @@ import { intro, log, note, outro, spinner } from '@clack/prompts'
 import boxen from 'boxen'
 import pLimit from 'p-limit'
 import color from 'picocolors'
-import updateNotifier from 'update-notifier'
 
 import { cli } from '@/args'
 import { FolderError, ImageError, LumiError } from '@/error'
@@ -16,12 +15,23 @@ import { getExtensions, getImages, getWidthAndHeight, resize } from '@/image'
 
 import pkg from '../package.json' with { type: 'json' }
 
-try {
-    const notifier = updateNotifier({ pkg })
-    notifier.notify({
-        boxenOptions: { borderColor: 'magenta', borderStyle: 'round', padding: 1 }
-    })
+// ⚡ Bolt: Dynamically import update-notifier to avoid ~500ms startup penalty on CLI initialization
+const notifyUpdate = async () => {
+    try {
+        const { default: updateNotifier } = await import('update-notifier')
+        const notifier = updateNotifier({ pkg })
+        notifier.notify({
+            boxenOptions: { borderColor: 'magenta', borderStyle: 'round', padding: 1 }
+        })
+    } catch {
+        // Silently fail if update-notifier cannot be loaded
+    }
+}
 
+// eslint-disable-next-line unicorn/prefer-top-level-await, @typescript-eslint/no-floating-promises
+void notifyUpdate()
+
+try {
     console.clear()
 
     const banner = boxen('lumi', {

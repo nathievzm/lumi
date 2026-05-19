@@ -22,3 +22,11 @@
   significant (~90ms) startup overhead, which is detrimental to CLI performance.
 - **Action:** Always prefer native APIs like `performance.now()` for simple duration tracking to avoid the overhead of
   parsing and instantiating large external libraries.
+
+## 2024-05-19 - [Avoid Awaiting Dynamic Imports in Critical Path]
+
+- **Learning:** Using \`await import(...)\` for a heavy module during the synchronous CLI startup phase blocks
+  execution, failing to deliver the intended performance benefit of a dynamic import (it just shifts the penalty to a
+  different point).
+- **Action:** If deferring a heavy module for a non-critical side effect (like update checking), use promise chaining
+  (\`.then().catch()\`) without \`await\` to allow the main execution thread to continue immediately.
