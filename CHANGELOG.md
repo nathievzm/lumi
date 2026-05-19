@@ -1,3 +1,48 @@
+## [1.1.6](https://github.com/nathievzm/lumi/compare/v1.1.5...v1.1.6) (2026-05-19)
+
+### Bug Fixes
+
+- prevent path traversal on input image resolution
+  ([cfe9f2a](https://github.com/nathievzm/lumi/commit/cfe9f2a78d570b63fbfe2051bc21b13710930c0e))
+- **prompt:** remove defaultValue to prefer descriptive placeholder
+  ([bf63182](https://github.com/nathievzm/lumi/commit/bf631822bf0ab3c9bbc99600692ca7143d651bb6))
+- remove step that logs the whole github json
+  ([1ff461d](https://github.com/nathievzm/lumi/commit/1ff461d9192421c6562d85436e45d30fd0b22085))
+- revert changes from jules
+  ([2a4db48](https://github.com/nathievzm/lumi/commit/2a4db4843b381da26fb42b1c11839f469029e78e))
+
+### Features
+
+- add code to add the issue labels to the pr
+  ([d8b5d87](https://github.com/nathievzm/lumi/commit/d8b5d8789879f76a9969a67223593db89638a3ac))
+- add test workflow to sync pr with issue
+  ([a4f8e10](https://github.com/nathievzm/lumi/commit/a4f8e1032d12283a456003d5d274bef98914028f))
+- add ts script to get pull request
+  ([c7f0e2d](https://github.com/nathievzm/lumi/commit/c7f0e2d9b20b0040889d6dcae76b62eaf5fb17f9))
+- log found connected found issue
+  ([edb6375](https://github.com/nathievzm/lumi/commit/edb6375a3881361afc0819b27f71418d560d62b4))
+- move notify function to update module
+  ([d701256](https://github.com/nathievzm/lumi/commit/d701256b69b54eae195090ff23dd4ed64f2b0cc1))
+- **prompt:** add default value to dimension prompt
+  ([7271ae5](https://github.com/nathievzm/lumi/commit/7271ae5aaef008a8024b916deaae6d6465b9c7bc))
+- remove error when branch doesn't have correct format
+  ([03fc8fb](https://github.com/nathievzm/lumi/commit/03fc8fb50466cedd78b959b51c52cd5c52800144))
+- replace auto-assign workflow with ts script and bun action
+  ([aeda5fa](https://github.com/nathievzm/lumi/commit/aeda5fa6d09b030a50c079c0ca628ecbd1cd3d50))
+- replace small try/catch by global try/catch block with new errors
+  ([74f3d2c](https://github.com/nathievzm/lumi/commit/74f3d2cff8f95e7d521670d9eefca55510ccd3e9))
+- use gh script action to run js scripts
+  ([3afe134](https://github.com/nathievzm/lumi/commit/3afe134d76c5d7d14c7cd1dbdce384e0507d5f48))
+
+### Performance Improvements
+
+- cache sharp formats to avoid redundant computation
+  ([3eea037](https://github.com/nathievzm/lumi/commit/3eea037679b3b9677a13fa4898c2bb81ff31b0c9))
+- cache sharp formats to avoid redundant computation and fix CI
+  ([4eeea88](https://github.com/nathievzm/lumi/commit/4eeea88ce1daebafcf8417e996dde515aa6fbf86))
+- replace @js-temporal/polyfill with performance.now()
+  ([e28a380](https://github.com/nathievzm/lumi/commit/e28a38065d9f5bc08ea31d04fa37d7e171f42d29))
+
 ## [1.1.5](https://github.com/nathievzm/lumi/compare/v1.1.4...v1.1.5) (2026-05-14)
 
 ### Bug Fixes
