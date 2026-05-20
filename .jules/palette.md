@@ -33,6 +33,8 @@ legitimately need a wide variety of formats (like dimensions).
 
 ## 2026-05-20 - Rejected Initial Value for Dimensions
 
-**Learning:** Using `initialValue` for dimensions also overrides the `placeholder` text visually in the UI just like `defaultValue` does, making the interface less descriptive since users can't see that they can provide two values.
+**Learning:** Using `initialValue` for dimensions also overrides the `placeholder` text visually in the UI just like
+`defaultValue` does, making the interface less descriptive since users can't see that they can provide two values.
 
-**Action:** Avoid using `initialValue` or `defaultValue` in free-text inputs like dimensions, where a helpful placeholder explaining multiple formats is more valuable.
+**Action:** Avoid using `initialValue` or `defaultValue` in free-text inputs like dimensions, where a helpful
+placeholder explaining multiple formats is more valuable.

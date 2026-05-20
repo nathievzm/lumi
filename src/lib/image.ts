@@ -2,7 +2,7 @@ import { extname, join } from 'node:path'
 
 import { type Option } from '@clack/prompts'
 import imageExtensions from 'image-extensions'
-import sharp, { type AvailableFormatInfo } from 'sharp'
+import { type AvailableFormatInfo } from 'sharp'
 
 import { ImageError } from './error'
 import { guard } from './folder'
@@ -60,8 +60,10 @@ const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
  *
  * @returns An array of prompt-compatible `Option` objects representing the supported output formats.
  */
-const getSharpFormats = (): Option<string>[] => {
+const getSharpFormats = async () => {
+    const { default: sharp } = await import('sharp')
     const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
+
     const formats: Option<string>[] = sharpFormats
         .filter(format => format.output.file)
         .map(format => ({ label: format.id, value: `.${format.id}` }))
@@ -124,12 +126,13 @@ export const getWidthAndHeight = (width: number, height: number) => {
  *
  * @returns A promise resolving to a record that maps input extensions (or 'default') to their chosen output formats.
  */
-export const getExtensions = (images: readonly string[], format?: string) => {
+export const getExtensions = async (images: readonly string[], format?: string) => {
     if (format !== undefined && format !== '') {
-        return Promise.resolve({ default: format } as Record<string, string>)
+        return { default: format } as Record<string, string>
     }
 
     const extensionsSet = new Set<string>()
+
     for (const image of images) {
         const ext = image ? extname(image) : ''
         if (ext) {
@@ -138,7 +141,7 @@ export const getExtensions = (images: readonly string[], format?: string) => {
     }
     const extensions = [...extensionsSet]
 
-    const formats = getSharpFormats()
+    const formats = await getSharpFormats()
     return askExtensions(extensions, formats)
 }
 
@@ -163,6 +166,8 @@ export const resize = async (params: ResizeParams) => {
 
         guard(input, inputPath)
         guard(output, outputPath)
+
+        const { default: sharp } = await import('sharp')
 
         await sharp(inputPath, { animated: true })
             .resize(width, height, { background: 'transparent', fit: 'contain' })
