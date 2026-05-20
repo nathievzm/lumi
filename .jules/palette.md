@@ -31,6 +31,8 @@ sizes.
 **Action:** Prioritize descriptive placeholders over hardcoded default values for free-text inputs where the user might
 legitimately need a wide variety of formats (like dimensions).
 
-## 2026-05-20 - Default CLI Prompt Values for Dimensions
-**Learning:** Using `initialValue` for dimensions instead of `defaultValue` allows the user to see the default '1080' pre-filled while still being able to edit it, providing a sensible default that reduces user friction without hiding the options.
-**Action:** Always set an `initialValue` in text inputs where a logical default exists (e.g. '1080' for dimensions) to reduce keystrokes.
+## 2026-05-20 - Rejected Initial Value for Dimensions
+
+**Learning:** Using `initialValue` for dimensions also overrides the `placeholder` text visually in the UI just like `defaultValue` does, making the interface less descriptive since users can't see that they can provide two values.
+
+**Action:** Avoid using `initialValue` or `defaultValue` in free-text inputs like dimensions, where a helpful placeholder explaining multiple formats is more valuable.
