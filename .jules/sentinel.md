@@ -45,3 +45,15 @@ with null bytes can lead to bypassing directory containment checks.
 
 **Prevention:** Always explicitly check for and reject null bytes (`\0`) in user-supplied paths before using them in
 file system operations or path resolutions.
+
+## 2026-05-20 - [Null Byte Injection in Folder Parameter]
+
+**Vulnerability:** While the `guard` function previously checked for null bytes (`\0`) in the `path` parameter, it
+neglected to perform the same check on the `folder` parameter. This inconsistency left a potential path traversal bypass
+vector open if the base folder path itself originated from untrusted input.
+
+**Learning:** Null byte injection protections must be consistently applied to all path components involved in a security
+boundary check, not just the immediately obvious file path.
+
+**Prevention:** Ensure comprehensive null byte validation (`\0`) on all path inputs (both base directories and target
+paths) prior to resolving them with `node:path` functions.
