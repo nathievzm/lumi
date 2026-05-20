@@ -38,6 +38,7 @@ point).
 ## 2025-02-14 - [Dynamic Import of Heavy Modules in CLI]
 
 **Learning:** `sharp` is a heavyweight module that blocks execution for >130ms on import. This severely impacts the
-startup time of the CLI, making `lumi --help` and error reporting feel slow. **Action:** Used dynamic imports
-(`await import('sharp')`) to lazily load the library only when image processing methods (`resize` and `getSharpFormats`)
-are called. This avoids importing `sharp` during the synchronous CLI startup path.
+startup time of the CLI, making `lumi --help` and error reporting feel slow.
+
+**Action:** Used dynamic imports (`await import('sharp')`) to lazily load the library only when image processing methods
+(`resize` and `getSharpFormats`) are called. This avoids importing `sharp` during the synchronous CLI startup path.

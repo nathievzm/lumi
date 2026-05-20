@@ -60,9 +60,10 @@ const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
  *
  * @returns An array of prompt-compatible `Option` objects representing the supported output formats.
  */
-const getSharpFormats = async (): Promise<Option<string>[]> => {
+const getSharpFormats = async () => {
     const { default: sharp } = await import('sharp')
     const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
+
     const formats: Option<string>[] = sharpFormats
         .filter(format => format.output.file)
         .map(format => ({ label: format.id, value: `.${format.id}` }))
@@ -131,6 +132,7 @@ export const getExtensions = async (images: readonly string[], format?: string) 
     }
 
     const extensionsSet = new Set<string>()
+
     for (const image of images) {
         const ext = image ? extname(image) : ''
         if (ext) {
@@ -166,6 +168,7 @@ export const resize = async (params: ResizeParams) => {
         guard(output, outputPath)
 
         const { default: sharp } = await import('sharp')
+
         await sharp(inputPath, { animated: true })
             .resize(width, height, { background: 'transparent', fit: 'contain' })
             .toFile(outputPath)
