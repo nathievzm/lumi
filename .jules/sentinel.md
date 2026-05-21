@@ -57,3 +57,14 @@ boundary check, not just the immediately obvious file path.
 
 **Prevention:** Ensure comprehensive null byte validation (`\0`) on all path inputs (both base directories and target
 paths) prior to resolving them with `node:path` functions.
+
+## 2025-05-21 - Early Path Component Validation
+
+**Vulnerability:** Path traversal and null byte injection vectors existed because inputs to `node:path` functions were
+not sanitised early enough.
+
+**Learning:** By passing an unsanitised component into `node:path` functions like `join`, a null byte could prematurely
+terminate strings and bypass directory boundary checks.
+
+**Prevention:** Explicitly reject null bytes ('\0') in all user-provided path components before passing them to
+`node:path` functions or combining them.
