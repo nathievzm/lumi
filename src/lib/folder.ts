@@ -19,6 +19,10 @@ import { FolderError } from './error'
  */
 export const getInput = (input?: string) => {
     if (input !== undefined && input !== '') {
+        if (input.includes('\0')) {
+            throw new FolderError('path traversal detected 🚫')
+        }
+
         log.info(`input folder provided: ${color.cyan(input)} 📂`)
         return input
     }
@@ -41,6 +45,10 @@ export const getInput = (input?: string) => {
  */
 export const getOutput = (output?: string) => {
     if (output !== undefined && output !== '') {
+        if (output.includes('\0')) {
+            throw new FolderError('path traversal detected 🚫')
+        }
+
         log.info(`output folder provided: ${color.cyan(output)} 📂`)
         return output
     }

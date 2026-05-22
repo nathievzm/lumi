@@ -57,3 +57,11 @@ boundary check, not just the immediately obvious file path.
 
 **Prevention:** Ensure comprehensive null byte validation (`\0`) on all path inputs (both base directories and target
 paths) prior to resolving them with `node:path` functions.
+
+## 2024-05-22 - [Add null byte checks to CLI inputs]
+
+**Vulnerability:** Path Traversal via Null Byte Injection in CLI Input (`getInput` / `getOutput`). **Learning:**
+Although `guard` protected output resolution, raw input/output strings derived from the CLI or env could contain
+injected null bytes (`\0`) early in the pipeline. This could be used to truncate resolved paths and bypass security
+mechanisms later in execution. **Prevention:** Explicitly validate all user-supplied paths early in the function logic
+(`getInput`, `getOutput`) and reject strings containing null characters (`\0`) to prevent evasion techniques.
