@@ -1,7 +1,7 @@
-## 2025-02-23 - Use initialValue instead of defaultValue for CLI text prompts
+## 2025-02-23 - Use placeholder instead of initialValue for CLI text prompts with descriptive help
 
-**Learning:** In CLI text prompts (like @clack/prompts), it is significantly better UX to use `initialValue` instead of
-`defaultValue` when a logical default exists. Using `initialValue` pre-fills the input so the user can see it and edit
-it, which reduces friction. In contrast, `defaultValue` can unexpectedly mask placeholder text or descriptive options
-without explicitly showing the user what is being selected. **Action:** Always set an `initialValue` in CLI text prompts
-where a logical default exists, to ensure the default is visible and editable.
+**Learning:** In CLI text prompts (like @clack/prompts), `initialValue` fills the text field, which hides any
+descriptive `placeholder` text that would otherwise provide helpful instructions to the user. Using no `initialValue`
+(or `defaultValue`) ensures the `placeholder` remains visible, guiding the user on the expected input format without
+them needing to clear the field first. **Action:** Avoid setting an `initialValue` in CLI text prompts when a
+descriptive `placeholder` is present, to ensure the helpful placeholder text remains visible to the user.
