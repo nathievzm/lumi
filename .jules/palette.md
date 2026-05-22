@@ -38,3 +38,11 @@ legitimately need a wide variety of formats (like dimensions).
 
 **Action:** Avoid using `initialValue` or `defaultValue` in free-text inputs like dimensions, where a helpful
 placeholder explaining multiple formats is more valuable.
+
+## 2026-05-22 - Helpful Error Messages
+
+**Learning:** When a batch process fails to find images because they are nested in subdirectories, an overall error
+message is not actionable enough. Users often forget to use the `--recursive` flag.
+
+**Action:** Always provide actionable hints in error messages when user intent is clear but they might have missed a
+flag.
