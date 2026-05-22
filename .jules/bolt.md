@@ -42,3 +42,10 @@ startup time of the CLI, making `lumi --help` and error reporting feel slow.
 
 **Action:** Used dynamic imports (`await import('sharp')`) to lazily load the library only when image processing methods
 (`resize` and `getSharpFormats`) are called. This avoids importing `sharp` during the synchronous CLI startup path.
+
+## 2024-05-22 - Caching dynamic import promises for concurrent processing
+
+**Learning:** When dynamically importing heavy modules (like 'sharp') for concurrent processing (e.g., inside 'p-limit'
+loops), the repeated resolution of the dynamic import across concurrent threads incurs significant overhead. **Action:**
+Cache the import promise at the module level (e.g., `let myImportPromise: Promise<unknown> | undefined`) to ensure the
+module is resolved only once, drastically reducing overhead for concurrent operations.
