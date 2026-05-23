@@ -57,3 +57,9 @@ boundary check, not just the immediately obvious file path.
 
 **Prevention:** Ensure comprehensive null byte validation (`\0`) on all path inputs (both base directories and target
 paths) prior to resolving them with `node:path` functions.
+## 2024-05-30 - [Explicit Null-Byte Path Traversal Checks]
+**Vulnerability:** Null-byte (`\0`) injection in file or directory paths could bypass boundary checks or alter file operations.
+
+**Learning:** Bun and `node:path` APIs may not throw automatically when encountering null bytes during path construction/joining (unlike newer Node.js versions which often reject them natively). This leaves the application vulnerable if user input containing null bytes is passed to file operations.
+
+**Prevention:** Always manually check and explicitly reject inputs containing null bytes (`\\0`) in CLI arguments or image names before combining them into filesystem paths.
