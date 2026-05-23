@@ -48,3 +48,11 @@ them needing to clear the field first.
 
 **Action:** Avoid setting an `initialValue` in CLI text prompts when a descriptive `placeholder` is present, to ensure
 the helpful placeholder text remains visible to the user.
+
+## 2026-05-23 - Empty State Actionable Hints
+
+**Learning:** When users encounter an empty state (like no images found in a directory), they might not realize the tool
+can search subdirectories if told to do so. A generic "not found" error doesn't help them discover available features.
+
+**Action:** Always provide actionable hints in empty states or error messages (e.g., suggesting the `--recursive` flag)
+to guide the user toward a solution and improve feature discoverability.
