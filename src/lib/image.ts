@@ -2,6 +2,8 @@ import { extname, join } from 'node:path'
 
 import { type Option } from '@clack/prompts'
 import imageExtensions from 'image-extensions'
+import type sharp from 'sharp'
+// eslint-disable-next-line no-duplicate-imports
 import { type AvailableFormatInfo } from 'sharp'
 
 import { ImageError } from './error'
@@ -55,14 +57,23 @@ const validExtensions = new Set(inputFormats)
 const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
     typeof value === 'object' && value !== null && 'output' in value && 'id' in value
 
+// eslint-disable-next-line init-declarations
+let sharpPromise: Promise<{ default: typeof sharp }> | undefined
+
+const getSharp = () => {
+    // eslint-disable-next-line no-unsafe-type-assertion
+    sharpPromise ??= import('sharp') as unknown as Promise<{ default: typeof sharp }>
+    return sharpPromise
+}
+
 /**
  * Retrieves a list of image formats supported by the Sharp library for output processing.
  *
  * @returns An array of prompt-compatible `Option` objects representing the supported output formats.
  */
 const getSharpFormats = async () => {
-    const { default: sharp } = await import('sharp')
-    const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
+    const { default: sharpLib } = await getSharp()
+    const sharpFormats = Object.values(sharpLib.format).filter(format => isFormatInfo(format))
 
     const formats: Option<string>[] = sharpFormats
         .filter(format => format.output.file)
@@ -167,9 +178,9 @@ export const resize = async (params: ResizeParams) => {
         guard(input, inputPath)
         guard(output, outputPath)
 
-        const { default: sharp } = await import('sharp')
+        const { default: sharpLib } = await getSharp()
 
-        await sharp(inputPath, { animated: true })
+        await sharpLib(inputPath, { animated: true })
             .resize(width, height, { background: 'transparent', fit: 'contain' })
             .toFile(outputPath)
 
