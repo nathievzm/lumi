@@ -2,7 +2,7 @@ import { extname, join } from 'node:path'
 
 import { type Option } from '@clack/prompts'
 import imageExtensions from 'image-extensions'
-import { type AvailableFormatInfo } from 'sharp'
+import { type AvailableFormatInfo, type default as sharp } from 'sharp'
 
 import { ImageError } from './error'
 import { guard } from './folder'
@@ -46,6 +46,25 @@ const inputFormats = imageExtensions.map(format => `.${format}`)
 const validExtensions = new Set(inputFormats)
 
 /**
+ * ⚡ Bolt: Cache the heavy dynamic import of sharp to avoid resolving it repeatedly
+ * in concurrent threads (e.g. inside the p-limit loop during batch resize).
+ */
+// eslint-disable-next-line init-declarations
+let sharpPromise: Promise<{ default: typeof sharp }> | undefined
+
+/**
+ * Helper to get the cached sharp module promise.
+ *
+ * @returns A promise resolving to the default export of the sharp module.
+ */
+const getSharp = async () => {
+    // eslint-disable-next-line no-unsafe-type-assertion
+    sharpPromise ??= import('sharp') as unknown as Promise<{ default: typeof sharp }>
+    const { default: sModule } = await sharpPromise
+    return sModule
+}
+
+/**
  * A type guard to verify if an unknown value conforms to the `AvailableFormatInfo` structure from Sharp.
  *
  * @param value - The unknown value to evaluate.
@@ -61,8 +80,8 @@ const isFormatInfo = (value: unknown): value is AvailableFormatInfo =>
  * @returns An array of prompt-compatible `Option` objects representing the supported output formats.
  */
 const getSharpFormats = async () => {
-    const { default: sharp } = await import('sharp')
-    const sharpFormats = Object.values(sharp.format).filter(format => isFormatInfo(format))
+    const sharpModule = await getSharp()
+    const sharpFormats = Object.values(sharpModule.format).filter(format => isFormatInfo(format))
 
     const formats: Option<string>[] = sharpFormats
         .filter(format => format.output.file)
@@ -167,9 +186,9 @@ export const resize = async (params: ResizeParams) => {
         guard(input, inputPath)
         guard(output, outputPath)
 
-        const { default: sharp } = await import('sharp')
+        const sharpModule = await getSharp()
 
-        await sharp(inputPath, { animated: true })
+        await sharpModule(inputPath, { animated: true })
             .resize(width, height, { background: 'transparent', fit: 'contain' })
             .toFile(outputPath)
 
