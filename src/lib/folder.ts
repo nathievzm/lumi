@@ -19,6 +19,7 @@ import { FolderError } from './error'
  */
 export const getInput = (input?: string) => {
     if (input !== undefined && input !== '') {
+        guard(cwd(), input)
         log.info(`input folder provided: ${color.cyan(input)} 📂`)
         return input
     }
@@ -41,6 +42,7 @@ export const getInput = (input?: string) => {
  */
 export const getOutput = (output?: string) => {
     if (output !== undefined && output !== '') {
+        guard(cwd(), output)
         log.info(`output folder provided: ${color.cyan(output)} 📂`)
         return output
     }
