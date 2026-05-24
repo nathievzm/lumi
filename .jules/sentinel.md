@@ -57,3 +57,20 @@ boundary check, not just the immediately obvious file path.
 
 **Prevention:** Ensure comprehensive null byte validation (`\0`) on all path inputs (both base directories and target
 paths) prior to resolving them with `node:path` functions.
+
+## 2026-05-24 - Prevent Path Traversal via Null Bytes in File Paths
+
+**Vulnerability:** Node.js file system API wrappers (`node:path` functions like `join` or `resolve`) inside the
+`getInput` and `getOutput` functions were not adequately rejecting null bytes (`\0`). When combined with `bun`
+operations or native modules like `sharp`, this can be exploited to bypass boundary checks, allowing malicious users to
+interact with unintended files on the system or write to restricted locations.
+
+**Learning:** Bun's underlying `node:path` implementation might not inherently restrict or throw on null byte injection
+inside paths during processing loops before reaching the filesystem endpoints, making manual pre-flight checks strictly
+necessary at input bounds. This application already checks for null bytes inside `guard` during deep execution but
+neglected the very initial CLI validation step for the primary input/output directory parameters, leading to early
+application state corruption or potential traversal if `getInput` or `getOutput` paths themselves contain null bytes.
+
+**Prevention:** To prevent directory boundary escapes, explicitly check for and reject null bytes (`\0`) using
+`if (path.includes('\0'))` in early lifecycle boundary functions (like `getInput` and `getOutput`) before any further
+resolution logic happens.
