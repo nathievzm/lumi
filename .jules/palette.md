@@ -48,3 +48,11 @@ them needing to clear the field first.
 
 **Action:** Avoid setting an `initialValue` in CLI text prompts when a descriptive `placeholder` is present, to ensure
 the helpful placeholder text remains visible to the user.
+
+## 2026-05-24 - Actionable Error Hints
+
+**Learning:** Users who encounter 'no items found' errors during batch processes might not realize there are flags (like
+--recursive) that could find nested items.
+
+**Action:** Always provide actionable hints in error messages or empty states (e.g., suggesting the --recursive flag) to
+guide the user toward a solution.
