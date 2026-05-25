@@ -90,8 +90,6 @@ try {
                 continue
             }
 
-            console.log(pr.reason)
-
             const message = LumiError.getMessage(pr.reason)
             log.error(color.red(message))
         }
