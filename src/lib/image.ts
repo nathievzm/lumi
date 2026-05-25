@@ -106,23 +106,19 @@ const getSharpFormats = async () => {
 export const getImages = (files: readonly string[], input: string, output: string) => {
     const resolvedOutput = resolve(output)
     const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
+    const resolvedInput = resolve(input)
 
-    const images = files.filter(file => {
+    // Optimization: Use a single for...of loop instead of .filter() and use join()
+    // Instead of resolve() inside the loop to avoid resolving the base input path repeatedly.
+    const images: string[] = []
+
+    for (const file of files) {
         const ext = extname(file)
-        const isImage = validExtensions.has(ext.toLowerCase())
 
-        if (!isImage) {
-            return false
+        if (validExtensions.has(ext.toLowerCase()) && !join(resolvedInput, file).startsWith(normalizedOutput)) {
+            images.push(file)
         }
-
-        const resolvedFile = resolve(input, file)
-
-        if (resolvedFile.startsWith(normalizedOutput)) {
-            return false
-        }
-
-        return true
-    })
+    }
 
     return images
 }
