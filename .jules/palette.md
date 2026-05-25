@@ -39,7 +39,17 @@ legitimately need a wide variety of formats (like dimensions).
 **Action:** Avoid using `initialValue` or `defaultValue` in free-text inputs like dimensions, where a helpful
 placeholder explaining multiple formats is more valuable.
 
-## 2026-05-22 - Helpful Error Messages
+## 2025-05-21 - Use placeholder instead of initialValue for CLI text prompts with descriptive help
+
+**Learning:** In CLI text prompts (like @clack/prompts), `initialValue` fills the text field, which hides any
+descriptive `placeholder` text that would otherwise provide helpful instructions to the user. Using no `initialValue`
+(or `defaultValue`) ensures the `placeholder` remains visible, guiding the user on the expected input format without
+them needing to clear the field first.
+
+**Action:** Avoid setting an `initialValue` in CLI text prompts when a descriptive `placeholder` is present, to ensure
+the helpful placeholder text remains visible to the user.
+
+## 2026-05-23 - Helpful Error Messages
 
 **Learning:** When a batch process fails to find images because they are nested in subdirectories, an overall error
 message is not actionable enough. Users often forget to use the `--recursive` flag.
