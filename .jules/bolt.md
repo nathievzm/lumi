@@ -42,3 +42,13 @@ startup time of the CLI, making `lumi --help` and error reporting feel slow.
 
 **Action:** Used dynamic imports (`await import('sharp')`) to lazily load the library only when image processing methods
 (`resize` and `getSharpFormats`) are called. This avoids importing `sharp` during the synchronous CLI startup path.
+
+## 2024-05-18 - Avoid typeof on imported default types
+
+**Learning:** When asserting a type on a dynamically imported module by extracting its default export (e.g.
+`typeof sharp`), the `typeof` keyword must not be applied if the module has been imported specifically into the type
+space via `import { type default as sharp } from 'sharp'`. Applying `typeof` to a type-only import results in a `TS2693`
+compilation error because `typeof` operates on values, not types.
+
+**Action:** When strictly importing types to satisfy `import(consistent-type-specifier-style)`, directly apply the
+imported type without `typeof`.
