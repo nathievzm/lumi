@@ -68,3 +68,9 @@ terminate strings and bypass directory boundary checks.
 
 **Prevention:** Explicitly reject null bytes ('\0') in all user-provided path components before passing them to
 `node:path` functions or combining them.
+## 2024-05-25 - [Path Traversal in getImages via Null Byte Injection]
+**Vulnerability:** The `getImages` function in `src/lib/image.ts` passed unsanitized `input`, `output`, and `file` variables directly to `node:path.resolve`. A payload containing a null byte (`\0`) could truncate or bypass the directory boundaries logic when used with Bun's `node:path` functions, allowing path traversal (e.g., fetching `/etc/passwd.png` instead of filtering it out).
+
+**Learning:** Bun's `node:path` functions (like `resolve` and `join`) preserve null bytes (`\0`) within the path string rather than throwing errors. This behavior is different from Node.js and can be exploited by an attacker to bypass boundary checks, or write/read out-of-bounds directories since native file system operations may behave differently.
+
+**Prevention:** Explicitly reject paths containing null bytes (`\0`) before passing them to any `node:path` resolving or joining functions, similar to how `src/lib/folder.ts`'s `guard` function does it. Always validate each individual path component.

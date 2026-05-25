@@ -104,10 +104,18 @@ const getSharpFormats = async () => {
  * @returns An array of string paths representing valid, unprocessed images.
  */
 export const getImages = (files: readonly string[], input: string, output: string) => {
+    if (input.includes('\0') || output.includes('\0')) {
+        throw new ImageError('path traversal detected 🚨')
+    }
+
     const resolvedOutput = resolve(output)
     const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
 
     const images = files.filter(file => {
+        if (file.includes('\0')) {
+            throw new ImageError('path traversal detected 🚨')
+        }
+
         const ext = extname(file)
         const isImage = validExtensions.has(ext.toLowerCase())
 
