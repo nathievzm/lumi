@@ -1,4 +1,4 @@
-import { extname, join } from 'node:path'
+import { extname, join, resolve, sep } from 'node:path'
 
 import { type Option } from '@clack/prompts'
 import imageExtensions from 'image-extensions'
@@ -42,9 +42,19 @@ interface ResizeParams {
     readonly extension: string
 }
 
+/**
+ * Array of supported input image format extensions prefixed with a dot (e.g., '.jpg', '.png').
+ */
 const inputFormats = imageExtensions.map(format => `.${format}`)
+
+/**
+ * Set of valid input image extensions for optimized lookup.
+ */
 const validExtensions = new Set(inputFormats)
 
+/**
+ * Cached promise for the dynamically imported sharp module.
+ */
 let sharpPromise: Promise<{ default: typeof sharpType }> | undefined = undefined
 
 /**
@@ -85,16 +95,33 @@ const getSharpFormats = async () => {
 }
 
 /**
- * Filters an array of file paths, returning only those with recognized image extensions.
+ * Filters a list of files to identify valid images that are not already present in the output directory.
  *
- * @param files - A readonly array of file paths or filenames to filter.
+ * @param files - A readonly array of file paths to filter.
+ * @param input - The absolute or relative path to the source directory containing the input files.
+ * @param output - The absolute or relative path to the destination directory for the processed images.
  *
- * @returns An array containing only the file paths that correspond to supported image formats.
+ * @returns An array of string paths representing valid, unprocessed images.
  */
-export const getImages = (files: readonly string[]) => {
+export const getImages = (files: readonly string[], input: string, output: string) => {
+    const resolvedOutput = resolve(output)
+    const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
+
     const images = files.filter(file => {
         const ext = extname(file)
-        return validExtensions.has(ext.toLowerCase())
+        const isImage = validExtensions.has(ext.toLowerCase())
+
+        if (!isImage) {
+            return false
+        }
+
+        const resolvedFile = resolve(input, file)
+
+        if (resolvedFile.startsWith(normalizedOutput)) {
+            return false
+        }
+
+        return true
     })
 
     return images

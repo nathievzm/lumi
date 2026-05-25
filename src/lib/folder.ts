@@ -106,15 +106,20 @@ export const readFiles = async (input: string, recursive = false) => {
  */
 export const guard = (folder: string, path: string) => {
     if (path.includes('\0') || folder.includes('\0')) {
-        throw new FolderError('path traversal detected 🚫')
+        throw new FolderError('path traversal detected 🚨')
     }
 
     const resolved = resolve(folder)
     const resolvedPath = resolve(path)
+
+    if (resolved === resolvedPath) {
+        return true
+    }
+
     const normalized = resolved.endsWith(sep) ? resolved : resolved + sep
 
     if (!resolvedPath.startsWith(normalized)) {
-        throw new FolderError('path traversal detected 🚫')
+        throw new FolderError('path traversal detected 🚨')
     }
 
     return true

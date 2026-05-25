@@ -48,7 +48,7 @@ const { values } = parseArgs({
          * Whether to process the input directory recursively. Defaults to the `RECURSIVE` environment variable.
          */
         recursive: {
-            default: Boolean(Bun.env.RECURSIVE),
+            default: Bun.env.RECURSIVE === 'true',
             short: 'r',
             type: 'boolean'
         },

@@ -38,7 +38,7 @@ try {
     await prepare(output)
 
     const allFiles = await readFiles(input, cli.recursive)
-    const images = getImages(allFiles)
+    const images = getImages(allFiles, input, output)
 
     if (images.length === 0) {
         throw new ImageError('no valid images found in the input folder 😭')
@@ -89,6 +89,8 @@ try {
             if (pr.status === 'fulfilled') {
                 continue
             }
+
+            console.log(pr.reason)
 
             const message = LumiError.getMessage(pr.reason)
             log.error(color.red(message))
