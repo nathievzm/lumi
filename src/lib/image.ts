@@ -197,10 +197,16 @@ export const getExtensions = async (images: readonly string[], format?: string) 
  * @throws { ImageError } If the image processing fails or if a path traversal attempt is detected during output
  *   resolution.
  */
+// eslint-disable-next-line max-statements
 export const resize = async (params: ResizeParams) => {
     const { image, input, output, width, height, name, extension } = params
 
     try {
+        // Security: Explicitly check for null bytes as node:path's join can normalize them away
+        if (image.includes('\0') || name.includes('\0') || extension.includes('\0')) {
+            throw new ImageError('path traversal detected 🚨')
+        }
+
         const inputPath = join(input, image)
         const outputPath = join(output, `${name}${extension}`)
 

@@ -68,3 +68,9 @@ terminate strings and bypass directory boundary checks.
 
 **Prevention:** Explicitly reject null bytes ('\0') in all user-provided path components before passing them to
 `node:path` functions or combining them.
+## 2024-05-26 - [Path Traversal Bypass via Node.js Path Null Byte Normalization]
+**Vulnerability:** The codebase had a path traversal check in `guard` that correctly looked for null bytes. However, when user-supplied input strings (like the file extension or file name) were concatenated using `join` from `node:path`, the function internally normalized and erased the null bytes *before* the resulting string could be tested by `guard`, thus bypassing the traversal protection completely.
+
+**Learning:** `node:path` utilities (like `join` and `resolve`) behave in ways that can erase maliciously injected null characters when calculating paths, which defeats string-based security checks performed *after* concatenation. We must perform security verification directly on user inputs before transforming or combining them with path utilities.
+
+**Prevention:** Always validate and check inputs (e.g. for `\0` null bytes) immediately upon reception, or explicitly check all input variables for `\0` before they are passed into `join` or `resolve`.
