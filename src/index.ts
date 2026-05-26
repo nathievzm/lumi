@@ -41,7 +41,10 @@ try {
     const images = getImages(allFiles, input, output)
 
     if (images.length === 0) {
-        throw new ImageError('no valid images found in the input folder 😭')
+        const hint = cli.recursive
+            ? ''
+            : '\n💡 hint: if your images are in subfolders, try adding the --recursive (-r) flag!'
+        throw new ImageError(`no valid images found in the input folder 😭${hint}`)
     }
 
     note(`found ${color.magenta(images.length)} images to process! 🚀`)

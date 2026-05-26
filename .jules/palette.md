@@ -48,3 +48,12 @@ them needing to clear the field first.
 
 **Action:** Avoid setting an `initialValue` in CLI text prompts when a descriptive `placeholder` is present, to ensure
 the helpful placeholder text remains visible to the user.
+
+## 2026-05-26 - Actionable Hints in Empty States
+
+**Learning:** When a batch process fails to find items (like no images found in a directory), a simple "not found" error
+leaves the user stuck, especially if the expected files are nested and the CLI requires a specific flag (like
+`--recursive`) to search subdirectories.
+
+**Action:** Always provide actionable hints in error messages or empty states (e.g., suggesting the `--recursive` flag)
+to guide the user toward a solution.
