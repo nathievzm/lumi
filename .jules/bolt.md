@@ -52,3 +52,11 @@ compilation error because `typeof` operates on values, not types.
 
 **Action:** When strictly importing types to satisfy `import(consistent-type-specifier-style)`, directly apply the
 imported type without `typeof`.
+
+## 2024-05-26 - [Avoid resolve() in tight file processing loops]
+
+**Learning:** Calling `resolve()` inside a tight `.filter()` or `.map()` loop across thousands of files creates a
+measurable performance bottleneck.
+
+**Action:** Resolve the base directory once outside the loop, and use `join()` inside the loop to assemble the absolute
+paths.

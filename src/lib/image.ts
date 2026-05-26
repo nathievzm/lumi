@@ -104,6 +104,8 @@ const getSharpFormats = async () => {
  * @returns An array of string paths representing valid, unprocessed images.
  */
 export const getImages = (files: readonly string[], input: string, output: string) => {
+    // ⚡ Bolt: Resolve base directories once outside the loop to avoid redundant computation
+    const resolvedInput = resolve(input)
     const resolvedOutput = resolve(output)
     const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
 
@@ -115,7 +117,8 @@ export const getImages = (files: readonly string[], input: string, output: strin
             return false
         }
 
-        const resolvedFile = resolve(input, file)
+        // ⚡ Bolt: Use join instead of resolve for measurable speedup inside the tight loop
+        const resolvedFile = join(resolvedInput, file)
 
         if (resolvedFile.startsWith(normalizedOutput)) {
             return false
