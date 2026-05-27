@@ -104,10 +104,18 @@ const getSharpFormats = async () => {
  * @returns An array of string paths representing valid, unprocessed images.
  */
 export const getImages = (files: readonly string[], input: string, output: string) => {
+    if (input.includes('\0') || output.includes('\0')) {
+        throw new ImageError('path traversal detected 🚨')
+    }
+
     const resolvedOutput = resolve(output)
     const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
 
     const images = files.filter(file => {
+        if (file.includes('\0')) {
+            return false
+        }
+
         const ext = extname(file)
         const isImage = validExtensions.has(ext.toLowerCase())
 
@@ -197,8 +205,19 @@ export const getExtensions = async (images: readonly string[], format?: string) 
  * @throws { ImageError } If the image processing fails or if a path traversal attempt is detected during output
  *   resolution.
  */
+// eslint-disable-next-line max-statements
 export const resize = async (params: ResizeParams) => {
     const { image, input, output, width, height, name, extension } = params
+
+    if (
+        image.includes('\0') ||
+        input.includes('\0') ||
+        output.includes('\0') ||
+        name.includes('\0') ||
+        extension.includes('\0')
+    ) {
+        throw new ImageError('path traversal detected 🚨')
+    }
 
     try {
         const inputPath = join(input, image)

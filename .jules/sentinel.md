@@ -68,3 +68,17 @@ terminate strings and bypass directory boundary checks.
 
 **Prevention:** Explicitly reject null bytes ('\0') in all user-provided path components before passing them to
 `node:path` functions or combining them.
+
+## 2024-05-27 - [Fix Path Traversal in Image Processing]
+
+**Vulnerability:** Found a path traversal vulnerability in `src/lib/image.ts`. Bun and Node's `node:path` functions
+(like `join` and `resolve`) can normalize and erase null bytes (`\0`) if followed by a directory traversal sequence. The
+existing `guard` function checked the combined path, but the null byte could already have been erased by
+`join`/`resolve`, bypassing the check.
+
+**Learning:** Path normalization functions like `join` and `resolve` can obscure null bytes when followed by traversal
+sequences. Security checks must be performed on user input _before_ concatenation or normalization, not just on the
+resulting combined path.
+
+**Prevention:** Explicitly reject null bytes (`\0`) in all user-provided path components (including base directories,
+filenames, and extensions) _before_ passing them to any `node:path` functions or combining them.
