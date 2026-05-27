@@ -52,3 +52,7 @@ compilation error because `typeof` operates on values, not types.
 
 **Action:** When strictly importing types to satisfy `import(consistent-type-specifier-style)`, directly apply the
 imported type without `typeof`.
+
+## 2024-05-27 - [Algorithmic Hoisting over Micro-optimizations]
+**Learning:** Do not substitute `path.join` for `path.resolve` inside loops as a micro-optimization; they handle absolute paths differently, which can introduce functional regressions.
+**Action:** Instead, achieve algorithmic speedups by hoisting invariant directory relationship checks (like determining if input and output directories are disjoint or entirely nested) outside the loop entirely, safely skipping O(N) per-file resolutions.

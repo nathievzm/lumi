@@ -107,18 +107,28 @@ export const getImages = (files: readonly string[], input: string, output: strin
     const resolvedOutput = resolve(output)
     const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
 
+    // Optimize: Pre-calculate directory relationships to skip expensive per-file path resolutions.
+    // If directories are disjoint, we can skip resolving each file path entirely.
+    const resolvedInput = resolve(input)
+    const normalizedInput = resolvedInput.endsWith(sep) ? resolvedInput : resolvedInput + sep
+    const isInputInsideOutput = normalizedInput.startsWith(normalizedOutput)
+    const isOutputInsideInput = normalizedOutput.startsWith(normalizedInput)
+
+    // eslint-disable-next-line max-statements
     const images = files.filter(file => {
         const ext = extname(file)
         const isImage = validExtensions.has(ext.toLowerCase())
 
-        if (!isImage) {
+        if (!isImage || isInputInsideOutput) {
             return false
         }
 
-        const resolvedFile = resolve(input, file)
+        if (isOutputInsideInput) {
+            const resolvedFile = resolve(input, file)
 
-        if (resolvedFile.startsWith(normalizedOutput)) {
-            return false
+            if (resolvedFile.startsWith(normalizedOutput)) {
+                return false
+            }
         }
 
         return true
