@@ -52,3 +52,8 @@ compilation error because `typeof` operates on values, not types.
 
 **Action:** When strictly importing types to satisfy `import(consistent-type-specifier-style)`, directly apply the
 imported type without `typeof`.
+
+## 2024-05-28 - Optimize directory checking in getImages
+**Learning:** Checking directory nesting on a per-file basis inside a `.filter` loop causes a significant O(N) penalty because `path.resolve` is relatively expensive and runs repeatedly for thousands of files.
+
+**Action:** Hoist the directory structure invariants (checking if the output directory is within the input directory or vice versa) outside the file processing loop entirely. When the directories are disjoint, we skip the file resolution and boundary check entirely for every file.

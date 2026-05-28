@@ -107,6 +107,15 @@ export const getImages = (files: readonly string[], input: string, output: strin
     const resolvedOutput = resolve(output)
     const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
 
+    const resolvedInput = resolve(input)
+    const normalizedInput = resolvedInput.endsWith(sep) ? resolvedInput : resolvedInput + sep
+
+    if (normalizedInput.startsWith(normalizedOutput)) {
+        return []
+    }
+
+    const needsOutputCheck = normalizedOutput.startsWith(normalizedInput)
+
     const images = files.filter(file => {
         const ext = extname(file)
         const isImage = validExtensions.has(ext.toLowerCase())
@@ -115,10 +124,12 @@ export const getImages = (files: readonly string[], input: string, output: strin
             return false
         }
 
-        const resolvedFile = resolve(input, file)
+        if (needsOutputCheck) {
+            const resolvedFile = resolve(input, file)
 
-        if (resolvedFile.startsWith(normalizedOutput)) {
-            return false
+            if (resolvedFile.startsWith(normalizedOutput)) {
+                return false
+            }
         }
 
         return true
