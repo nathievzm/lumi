@@ -48,3 +48,12 @@ them needing to clear the field first.
 
 **Action:** Avoid setting an `initialValue` in CLI text prompts when a descriptive `placeholder` is present, to ensure
 the helpful placeholder text remains visible to the user.
+
+## 2026-05-28 - Actionable Empty State Hints
+
+**Learning:** When batch processing fails to find items (empty state), users often don't know why. Providing an
+actionable hint based on the current CLI flags (like suggesting `--recursive`) turns a dead-end error into a helpful
+guide.
+
+**Action:** Always check the current context (e.g., flags used) and provide contextual hints in empty state error
+messages.
