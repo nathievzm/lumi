@@ -1,11 +1,10 @@
-import { extname, join, resolve, sep } from 'node:path'
+import { extname, resolve, sep } from 'node:path'
 
 import { type Option } from '@clack/prompts'
 import imageExtensions from 'image-extensions'
 import { type AvailableFormatInfo, type default as sharpType } from 'sharp'
 
 import { ImageError } from './error'
-import { guard } from './folder'
 import { askExtensions, askWidthAndHeight } from './prompt'
 
 /**
@@ -206,11 +205,22 @@ export const resize = async (params: ResizeParams) => {
     }
 
     try {
-        const inputPath = join(input, image)
-        const outputPath = join(output, `${name}${extension}`)
+        const inputPath = resolve(input, image)
+        const outputPath = resolve(output, `${name}${extension}`)
 
-        guard(input, inputPath)
-        guard(output, outputPath)
+        const resolvedInput = resolve(input)
+        const resolvedOutput = resolve(output)
+
+        const normalizedInput = resolvedInput.endsWith(sep) ? resolvedInput : resolvedInput + sep
+        const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
+
+        if (!inputPath.startsWith(normalizedInput) && inputPath !== resolvedInput) {
+            throw new ImageError('path traversal detected 🚨')
+        }
+
+        if (!outputPath.startsWith(normalizedOutput) && outputPath !== resolvedOutput) {
+            throw new ImageError('path traversal detected 🚨')
+        }
 
         const sharp = await getSharp()
 

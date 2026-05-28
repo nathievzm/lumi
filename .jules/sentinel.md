@@ -68,9 +68,9 @@ terminate strings and bypass directory boundary checks.
 
 **Prevention:** Explicitly reject null bytes ('\0') in all user-provided path components before passing them to
 `node:path` functions or combining them.
-## 2024-05-25 - [Path Traversal in getImages via Null Byte Injection]
-**Vulnerability:** The `getImages` function in `src/lib/image.ts` passed unsanitized `input`, `output`, and `file` variables directly to `node:path.resolve`. A payload containing a null byte (`\0`) could truncate or bypass the directory boundaries logic when used with Bun's `node:path` functions, allowing path traversal (e.g., fetching `/etc/passwd.png` instead of filtering it out).
+## 2024-05-25 - [Path Traversal bypass in resize via Node Path Normalization]
+**Vulnerability:** The `resize` function in `src/lib/image.ts` used `node:path.join` to construct file paths which were then passed to a `guard` function. An attacker could supply a payload with a null byte followed by directory traversal sequences (e.g., `test\0/../../etc/passwd`). `node:path.join` normalizes the path and erases the null byte (`\0/../` resolves up one level and drops the `\0`), allowing the path to successfully pass the `guard` validation, while effectively resolving out of the directory bounds.
 
-**Learning:** Bun's `node:path` functions (like `resolve` and `join`) preserve null bytes (`\0`) within the path string rather than throwing errors. This behavior is different from Node.js and can be exploited by an attacker to bypass boundary checks, or write/read out-of-bounds directories since native file system operations may behave differently.
+**Learning:** `node:path` functions like `join` will normalize directory traversals which can effectively erase strings containing null bytes (`\0`) if they are followed by `../`. This causes downstream validation functions that check for null bytes (like `guard`) to miss the injection because the path was already normalized.
 
-**Prevention:** Explicitly reject paths containing null bytes (`\0`) before passing them to any `node:path` resolving or joining functions, similar to how `src/lib/folder.ts`'s `guard` function does it. Always validate each individual path component.
+**Prevention:** Explicitly reject paths containing null bytes (`\0`) *before* passing them to any `node:path` resolving or joining functions, otherwise the null byte might be normalized away and bypass subsequent guards. Always validate raw input components prior to combination.
