@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/nathievzm/lumi/compare/v1.2.0...v1.2.1) (2026-05-29)
+
+### Bug Fixes
+
+- **index:** await for update notifier
+  ([6eab884](https://github.com/nathievzm/lumi/commit/6eab884c213f457ac4f389fa8a44c5223dec5b22))
+
 # [1.2.0](https://github.com/nathievzm/lumi/compare/v1.1.6...v1.2.0) (2026-05-29)
 
 ### Bug Fixes

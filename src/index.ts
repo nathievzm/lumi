@@ -17,7 +17,7 @@ import { notifyUpdate } from '@/update'
 import pkg from '../package.json' with { type: 'json' }
 
 try {
-    void notifyUpdate(pkg)
+    await notifyUpdate(pkg)
 
     console.clear()
 
