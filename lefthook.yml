@@ -1,10 +1,10 @@
 pre-commit:
   jobs:
     - name: format
-      run: bun fmt {staged_files} && git add {staged_files}
+      run: bun fmt && git add .
 
     - name: lint
-      run: bun lint {staged_files}
+      run: bun lint
 
     - name: types
       run: bunx --bun tsc --noEmit

@@ -1,3 +1,39 @@
+# [1.2.0](https://github.com/nathievzm/lumi/compare/v1.1.6...v1.2.0) (2026-05-29)
+
+### Bug Fixes
+
+- guard function and recursive flag
+  ([41fcb3e](https://github.com/nathievzm/lumi/commit/41fcb3e38c7c271971543b2cc38665f7c545c9c2))
+
+### Features
+
+- **image:** cache sharp dynamic import promise to improve performance
+  ([08a02fd](https://github.com/nathievzm/lumi/commit/08a02fd0a166dfd3587b76c9635fee323ddff38c))
+- **ui:** add initialValue to dimensions prompt to reduce user friction
+  ([b72ccaf](https://github.com/nathievzm/lumi/commit/b72ccafe8dfbd66d35a5b3abbe727500f36e5921))
+- **ux:** add initialValue to askWidthAndHeight prompt
+  ([027ec53](https://github.com/nathievzm/lumi/commit/027ec536da421716121f306fefa5d23fa5c49696))
+- **ux:** add initialValue to askWidthAndHeight prompt
+  ([a095643](https://github.com/nathievzm/lumi/commit/a09564304ba0b49d3e9d2d45ed64a9460c578a97))
+- **ux:** update journal learning about initialValue vs placeholder
+  ([80c873f](https://github.com/nathievzm/lumi/commit/80c873fb16ded0ad9b098670f92f9839cf0c66d7))
+- **ux:** update journal learning about initialValue vs placeholder
+  ([3f75765](https://github.com/nathievzm/lumi/commit/3f7576541d7792a0004e8ba2dddb8d8873106303))
+- **ux:** update journal learning about initialValue vs placeholder
+  ([b56fd87](https://github.com/nathievzm/lumi/commit/b56fd876ee00478efe24b604c5084e8c27d49509))
+
+### Performance Improvements
+
+- **image:** lazily load heavy sharp module to improve startup time
+  ([5c3c9a4](https://github.com/nathievzm/lumi/commit/5c3c9a424e21d46c7830feb5e80517a4e274ba91))
+- optimize path resolution in `getImages`
+  ([1b91635](https://github.com/nathievzm/lumi/commit/1b91635306851cd1840e1a11b9eacd361741993d))
+
+### Reverts
+
+- Remove initialValue from dimension prompt to show placeholder
+  ([06b9a0c](https://github.com/nathievzm/lumi/commit/06b9a0c35089d89d056fecc8ff50e7a31b34a789))
+
 ## [1.1.6](https://github.com/nathievzm/lumi/compare/v1.1.5...v1.1.6) (2026-05-19)
 
 ### Bug Fixes
