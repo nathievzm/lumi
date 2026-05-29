@@ -48,3 +48,11 @@ them needing to clear the field first.
 
 **Action:** Avoid setting an `initialValue` in CLI text prompts when a descriptive `placeholder` is present, to ensure
 the helpful placeholder text remains visible to the user.
+
+## 2026-05-25 - Actionable Empty State Errors
+
+**Learning:** When users run the tool on a directory that has images in subfolders but not in the root, an error simply
+stating "no valid images found" is confusing and unhelpful.
+
+**Action:** Always provide actionable hints in empty states or error messages, such as suggesting the `--recursive`
+flag, to guide the user toward a solution.
