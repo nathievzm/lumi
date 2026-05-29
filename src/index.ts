@@ -41,7 +41,7 @@ try {
     const images = getImages(allFiles, input, output)
 
     if (images.length === 0) {
-        throw new ImageError('no valid images found in the input folder 😭')
+        throw new ImageError('no valid images found in the input folder 😭 (try adding the --recursive flag?)')
     }
 
     note(`found ${color.magenta(images.length)} images to process! 🚀`)
