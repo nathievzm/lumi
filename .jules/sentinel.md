@@ -68,3 +68,9 @@ terminate strings and bypass directory boundary checks.
 
 **Prevention:** Explicitly reject null bytes ('\0') in all user-provided path components before passing them to
 `node:path` functions or combining them.
+## 2024-05-29 - [Path Traversal Bypass via Null-Byte Normalization]
+**Vulnerability:** A path traversal vulnerability existed in the `resize` function where user input (`image`, `name`, `extension`) containing a null byte (`\0`) followed by directory traversal components (`/../`) caused Node.js `path.join` and `path.resolve` to effectively erase the null byte and resolve the path outside the intended directory. Because `guard()` checked the *combined* path (`etc/passwd`) rather than the raw inputs, it failed to detect the null byte and allowed the traversal.
+
+**Learning:** Path normalization functions (`path.join`, `path.resolve`) can alter inputs in ways that bypass security checks if the checks rely solely on the normalized output.
+
+**Prevention:** Always validate individual components for malicious sequences (like null bytes) *before* combining them with path manipulation functions.
