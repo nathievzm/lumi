@@ -52,3 +52,11 @@ compilation error because `typeof` operates on values, not types.
 
 **Action:** When strictly importing types to satisfy `import(consistent-type-specifier-style)`, directly apply the
 imported type without `typeof`.
+
+## 2025-05-25 - [Optimize getImages path resolution]
+
+**Learning:** `resolve` is significantly slower than `join` in Node's path module, particularly within tight loops.
+Repeatedly resolving a known directory prefix causes measurable overhead when processing large volumes of files.
+
+**Action:** Whenever iterating over many files that share a base directory, `resolve` the base directory once outside
+the loop and use `join(resolvedBase, file)` inside the loop to drastically improve performance.

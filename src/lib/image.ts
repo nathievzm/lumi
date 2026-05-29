@@ -95,6 +95,26 @@ const getSharpFormats = async () => {
 }
 
 /**
+ * Determines whether a given file is a valid, processable image.
+ *
+ * A file is considered processable if it has a valid image extension and is not
+ * already located within the output directory.
+ *
+ * @param file - The name or relative path of the file to check.
+ * @param input - The absolute or relative path to the input directory.
+ * @param output - The absolute or relative path to the output directory.
+ *
+ * @returns `true` if the file is a processable image, otherwise `false`.
+ */
+const isProcessable = (file: string, input: string, output: string) => {
+    const ext = extname(file)
+    const isImage = validExtensions.has(ext.toLowerCase())
+    const isInOutput = join(input, file).startsWith(output)
+
+    return isImage && !isInOutput
+}
+
+/**
  * Filters a list of files to identify valid images that are not already present in the output directory.
  *
  * @param files - A readonly array of file paths to filter.
@@ -104,25 +124,19 @@ const getSharpFormats = async () => {
  * @returns An array of string paths representing valid, unprocessed images.
  */
 export const getImages = (files: readonly string[], input: string, output: string) => {
+    const resolvedInput = resolve(input)
     const resolvedOutput = resolve(output)
     const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
 
-    const images = files.filter(file => {
-        const ext = extname(file)
-        const isImage = validExtensions.has(ext.toLowerCase())
+    const images: string[] = []
 
-        if (!isImage) {
-            return false
+    for (const file of files) {
+        if (!isProcessable(file, resolvedInput, normalizedOutput)) {
+            continue
         }
 
-        const resolvedFile = resolve(input, file)
-
-        if (resolvedFile.startsWith(normalizedOutput)) {
-            return false
-        }
-
-        return true
-    })
+        images.push(file)
+    }
 
     return images
 }
