@@ -1,12 +1,10 @@
 pre-commit:
-  # running all checks at the same time for maximum speed ⚡
-  parallel: true
   jobs:
     - name: format
-      run: bun fmt && git add .
+      run: bun fmt {staged_files} && git add {staged_files}
 
     - name: lint
-      run: bun lint
+      run: bun lint {staged_files}
 
     - name: types
       run: bunx --bun tsc --noEmit
@@ -14,7 +12,6 @@ pre-commit:
 commit-msg:
   jobs:
     - name: commitlint
-      # using bun to run commitlint as fast as possible 🌸
       run: bunx --bun commitlint --edit {1}
 
 pre-push:
