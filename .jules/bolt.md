@@ -52,3 +52,6 @@ compilation error because `typeof` operates on values, not types.
 
 **Action:** When strictly importing types to satisfy `import(consistent-type-specifier-style)`, directly apply the
 imported type without `typeof`.
+## 2024-05-29 - [Avoid O(N) per-file Path Resolution in Loops]
+**Learning:** Checking directory overlaps (like checking if input and output directories overlap) per file within a loop using `resolve(input, file)` becomes a massive bottleneck for thousands of files.
+**Action:** Always hoist invariant directory relationship checks (like whether input and output overlap at all) outside the `filter` loop to skip O(N) disk/string operations entirely.

@@ -107,6 +107,12 @@ export const getImages = (files: readonly string[], input: string, output: strin
     const resolvedOutput = resolve(output)
     const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
 
+    // ⚡ Bolt: Hoist invariant directory relationship checks outside the loop.
+    // If input and output directories do not overlap, we can safely skip O(N) per-file resolutions.
+    const resolvedInput = resolve(input)
+    const normalizedInput = resolvedInput.endsWith(sep) ? resolvedInput : resolvedInput + sep
+    const couldOverlap = normalizedOutput.startsWith(normalizedInput) || normalizedInput.startsWith(normalizedOutput)
+
     const images = files.filter(file => {
         const ext = extname(file)
         const isImage = validExtensions.has(ext.toLowerCase())
@@ -115,10 +121,12 @@ export const getImages = (files: readonly string[], input: string, output: strin
             return false
         }
 
-        const resolvedFile = resolve(input, file)
+        if (couldOverlap) {
+            const resolvedFile = resolve(input, file)
 
-        if (resolvedFile.startsWith(normalizedOutput)) {
-            return false
+            if (resolvedFile.startsWith(normalizedOutput)) {
+                return false
+            }
         }
 
         return true
