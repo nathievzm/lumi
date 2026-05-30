@@ -68,3 +68,10 @@ terminate strings and bypass directory boundary checks.
 
 **Prevention:** Explicitly reject null bytes ('\0') in all user-provided path components before passing them to
 `node:path` functions or combining them.
+
+## 2024-05-28 - Path Traversal bypass via null bytes and path.join
+**Vulnerability:** Path traversal vulnerability due to null bytes (`\0`) effectively erasing following traversal tokens (`..`) during `node:path` normalization operations like `join` or `resolve`. This allowed traversing paths while bypassing checks later performed by `guard` using `startsWith` or explicit `\0` string detection on the joined string.
+
+**Learning:** `path.join` and `path.resolve` can mutate user input containing null bytes, either truncating it or consuming them when resolving `..`. If a guard expects to test the final path, it might see a perfectly valid-looking normalized path instead of the malicious one containing `\0`, while Node's C++ filesystem functions would still respect the null terminator to drop the suffix, or `join` removed the `\0` but kept the `..` resulting in traversal depending on ordering. Actually, the main issue is that `join` ignores/erases `\0` along with `..` or leaves the string altered such that the malicious traversal tokens bypass prefix checking.
+
+**Prevention:** Always validate individual user input components for null bytes (`\0`) *before* concatenating them using any `node:path` normalization functions, rather than checking the final aggregated path.
