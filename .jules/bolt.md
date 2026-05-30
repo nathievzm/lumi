@@ -60,3 +60,11 @@ Repeatedly resolving a known directory prefix causes measurable overhead when pr
 
 **Action:** Whenever iterating over many files that share a base directory, `resolve` the base directory once outside
 the loop and use `join(resolvedBase, file)` inside the loop to drastically improve performance.
+
+## 2024-05-30 - [Optimize File Filtering for Disjoint Directories]
+
+**Learning:** When filtering large arrays of files based on their presence in an output directory, checking `path.join().startsWith()` inside the loop for every single file causes an O(N) path resolution bottleneck.
+Because most setups have completely distinct input and output directories (e.g. `src` and `dist`), checking if the directories overlap *before* the loop allows us to skip the inner-loop check entirely.
+If the directories are disjoint, we can safely assume no input file is already in the output directory, effectively reducing the O(N) boundary check to O(1).
+
+**Action:** Before looping over items to perform path-based filtering, check if the root directories are disjoint (neither contains the other). If they are, use a boolean flag to skip the expensive inner-loop path operations. Always remember to append the directory separator (`sep`) to normalized paths to prevent false positive overlap matches (e.g., `src` vs `src_output`).

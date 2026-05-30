@@ -106,14 +106,6 @@ const getSharpFormats = async () => {
  *
  * @returns `true` if the file is a processable image, otherwise `false`.
  */
-const isProcessable = (file: string, input: string, output: string) => {
-    const ext = extname(file)
-    const isImage = validExtensions.has(ext.toLowerCase())
-    const isInOutput = join(input, file).startsWith(output)
-
-    return isImage && !isInOutput
-}
-
 /**
  * Filters a list of files to identify valid images that are not already present in the output directory.
  *
@@ -123,15 +115,31 @@ const isProcessable = (file: string, input: string, output: string) => {
  *
  * @returns An array of string paths representing valid, unprocessed images.
  */
+// eslint-disable-next-line max-statements
+// eslint-disable-next-line max-statements
 export const getImages = (files: readonly string[], input: string, output: string) => {
     const resolvedInput = resolve(input)
     const resolvedOutput = resolve(output)
     const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
+    const normalizedInput = resolvedInput.endsWith(sep) ? resolvedInput : resolvedInput + sep
+
+    // ⚡ Bolt: Fast-path optimization.
+    // If input and output directories are disjoint (neither contains the other),
+    // We can safely skip the expensive path.join/startsWith check inside the loop.
+    // This turns an O(N) path resolution penalty into O(1).
+    const isOutputInsideInput = normalizedOutput.startsWith(normalizedInput)
+    const isInputInsideOutput = normalizedInput.startsWith(normalizedOutput)
+    const isDisjoint = !isOutputInsideInput && !isInputInsideOutput
 
     const images: string[] = []
 
     for (const file of files) {
-        if (!isProcessable(file, resolvedInput, normalizedOutput)) {
+        const ext = extname(file)
+        if (!validExtensions.has(ext.toLowerCase())) {
+            continue
+        }
+
+        if (!isDisjoint && join(resolvedInput, file).startsWith(normalizedOutput)) {
             continue
         }
 
