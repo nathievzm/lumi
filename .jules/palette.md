@@ -56,3 +56,12 @@ stating "no valid images found" is confusing and unhelpful.
 
 **Action:** Always provide actionable hints in empty states or error messages, such as suggesting the `--recursive`
 flag, to guide the user toward a solution.
+
+## 2026-05-30 - Surfacing Underlying CLI Errors
+
+**Learning:** When a CLI operation fails due to a complex underlying tool (like image conversion via sharp), displaying
+only the top-level error (e.g. "error processing file") hides crucial debugging context, leaving users stuck without
+knowing if it's an unsupported format, a missing dependency, or a bad parameter.
+
+**Action:** Always surface the underlying `cause` message when handling and displaying custom CLI error classes,
+ensuring the user gets the full context needed to resolve the issue.
