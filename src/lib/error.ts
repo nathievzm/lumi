@@ -24,6 +24,14 @@ export class LumiError extends Error {
      */
     static getMessage(error: unknown) {
         if (error instanceof Error) {
+            if (error.cause instanceof Error) {
+                return `${error.message} - ${error.cause.message}`
+            }
+
+            if (typeof error.cause === 'string') {
+                return `${error.message} - ${error.cause}`
+            }
+
             return error.message
         }
 

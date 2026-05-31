@@ -56,3 +56,11 @@ stating "no valid images found" is confusing and unhelpful.
 
 **Action:** Always provide actionable hints in empty states or error messages, such as suggesting the `--recursive`
 flag, to guide the user toward a solution.
+
+## 2026-05-31 - Surface Underlying Error Causes
+
+**Learning:** Hiding the underlying cause of an error behind a generic top-level message prevents users from
+understanding the full debugging context needed to resolve issues in CLI applications.
+
+**Action:** Always surface the underlying `cause` message (e.g., `error.cause.message`) when handling and displaying
+custom CLI error classes to provide users with the necessary context.
