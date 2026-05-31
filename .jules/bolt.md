@@ -60,3 +60,12 @@ Repeatedly resolving a known directory prefix causes measurable overhead when pr
 
 **Action:** Whenever iterating over many files that share a base directory, `resolve` the base directory once outside
 the loop and use `join(resolvedBase, file)` inside the loop to drastically improve performance.
+
+## 2024-05-15 - [Skip redundant path generation in loops]
+
+**Learning:** Checking directory intersections using `path.join().startsWith()` inside loops adds `O(N)` string
+generation/path resolution overhead.
+
+**Action:** Identify and compute invariant relationships (e.g., checking if the input and output directories are
+strictly disjoint). This allows safely skipping the inside-loop path operations completely, dramatically speeding up
+tasks dealing with massive file lists.
