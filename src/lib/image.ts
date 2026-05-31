@@ -123,7 +123,12 @@ const isProcessable = (file: string, input: string, output: string) => {
  *
  * @returns An array of string paths representing valid, unprocessed images.
  */
+// eslint-disable-next-line max-statements
 export const getImages = (files: readonly string[], input: string, output: string) => {
+    if (input.includes('\0') || output.includes('\0')) {
+        return []
+    }
+
     const resolvedInput = resolve(input)
     const resolvedOutput = resolve(output)
     const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
@@ -131,7 +136,7 @@ export const getImages = (files: readonly string[], input: string, output: strin
     const images: string[] = []
 
     for (const file of files) {
-        if (!isProcessable(file, resolvedInput, normalizedOutput)) {
+        if (file.includes('\0') || !isProcessable(file, resolvedInput, normalizedOutput)) {
             continue
         }
 
@@ -211,8 +216,13 @@ export const getExtensions = async (images: readonly string[], format?: string) 
  * @throws { ImageError } If the image processing fails or if a path traversal attempt is detected during output
  *   resolution.
  */
+// eslint-disable-next-line max-statements
 export const resize = async (params: ResizeParams) => {
     const { image, input, output, width, height, name, extension } = params
+
+    if ([image, input, output, name, extension].some(param => param.includes('\0'))) {
+        throw new ImageError('path traversal detected 🚨')
+    }
 
     try {
         const inputPath = join(input, image)

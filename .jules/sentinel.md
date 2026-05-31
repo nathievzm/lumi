@@ -68,3 +68,9 @@ terminate strings and bypass directory boundary checks.
 
 **Prevention:** Explicitly reject null bytes ('\0') in all user-provided path components before passing them to
 `node:path` functions or combining them.
+## 2024-05-24 - Null-byte injection check
+**Vulnerability:** Null byte injection allowed bypass of path security checks.
+
+**Learning:** Bun's path functions (like `join` and `resolve`) can sometimes normalize or process strings differently when null bytes are mixed with traversal sequences. To be truly safe, validation needs to prevent `\0` in inputs before joining. The `isProcessable` function in image processing incorrectly allowed files with null bytes to slip through due to `join` erasing the null byte.
+
+**Prevention:** Check for null bytes early in request processing, specifically in `getImages` and `resize` functions, returning empty data or throwing errors before path manipulation begins.
