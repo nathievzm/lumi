@@ -56,3 +56,8 @@ stating "no valid images found" is confusing and unhelpful.
 
 **Action:** Always provide actionable hints in empty states or error messages, such as suggesting the `--recursive`
 flag, to guide the user toward a solution.
+## 2025-06-01 - Improve Error Messages by Surfacing the Cause
+
+**Learning:** When creating custom error classes that wrap built-in or dependency-thrown errors (like `EACCES` from Node.js, or file read errors), the top-level error message often obscures the actual root cause (e.g. "image issue" vs "permission denied"). By actively inspecting `error.cause.message` within error handlers and displaying it alongside the generic message, we provide significantly richer debugging context for users troubleshooting failures.
+
+**Action:** Always surface the underlying `cause` message (e.g., `error.cause.message`) when handling custom CLI error classes to provide users with full context, rather than hiding it behind generic messages.
