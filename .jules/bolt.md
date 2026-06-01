@@ -60,3 +60,13 @@ Repeatedly resolving a known directory prefix causes measurable overhead when pr
 
 **Action:** Whenever iterating over many files that share a base directory, `resolve` the base directory once outside
 the loop and use `join(resolvedBase, file)` inside the loop to drastically improve performance.
+
+## 2025-05-25 - [Optimize getImages path resolution]
+
+**Learning:** When filtering files, checking output directory membership on a per-file basis (`join().startsWith()`)
+creates an O(N) path resolution bottleneck. Since input and output directories are often completely disjoint, this check
+is usually unnecessary for every file.
+
+**Action:** Achieve algorithmic speedups by hoisting invariant directory relationship checks (like determining if input
+and output directories are disjoint, or if one is inside another) outside the loop entirely. This safely skips O(N)
+per-file resolutions when directories don't overlap, drastically reducing filtering overhead for large inputs.

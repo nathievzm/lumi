@@ -103,15 +103,25 @@ const getSharpFormats = async () => {
  * @param file - The name or relative path of the file to check.
  * @param input - The absolute or relative path to the input directory.
  * @param output - The absolute or relative path to the output directory.
+ * @param checkOutput - Whether to check if the file is within the output directory.
  *
  * @returns `true` if the file is a processable image, otherwise `false`.
  */
-const isProcessable = (file: string, input: string, output: string) => {
+// eslint-disable-next-line max-params
+const isProcessable = (file: string, input: string, output: string, checkOutput: boolean) => {
     const ext = extname(file)
     const isImage = validExtensions.has(ext.toLowerCase())
-    const isInOutput = join(input, file).startsWith(output)
 
-    return isImage && !isInOutput
+    if (!isImage) {
+        return false
+    }
+
+    if (checkOutput) {
+        const isInOutput = join(input, file).startsWith(output)
+        return !isInOutput
+    }
+
+    return true
 }
 
 /**
@@ -123,15 +133,23 @@ const isProcessable = (file: string, input: string, output: string) => {
  *
  * @returns An array of string paths representing valid, unprocessed images.
  */
+// eslint-disable-next-line max-statements
 export const getImages = (files: readonly string[], input: string, output: string) => {
     const resolvedInput = resolve(input)
     const resolvedOutput = resolve(output)
+    const normalizedInput = resolvedInput.endsWith(sep) ? resolvedInput : resolvedInput + sep
     const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
+
+    if (normalizedInput.startsWith(normalizedOutput)) {
+        return []
+    }
+
+    const checkOutput = normalizedOutput.startsWith(normalizedInput)
 
     const images: string[] = []
 
     for (const file of files) {
-        if (!isProcessable(file, resolvedInput, normalizedOutput)) {
+        if (!isProcessable(file, resolvedInput, normalizedOutput, checkOutput)) {
             continue
         }
 
