@@ -1,11 +1,11 @@
-# ✨ lumi ✨
+# 🌸 lumi 🌸
 
 > [!IMPORTANT] lumi is magically powered by [Bun](https://bun.sh) and [Sharp](https://sharp.pixelplumbing.com/). please
 > make sure you have bun installed on your system to enjoy the magic!
 
-A fast, interactive CLI tool for batch image processing. Resize, convert, and optimize your images with ease.
+🌸 your lightning-fast and interactive cli companion to resize, convert, and optimize media in seconds.
 
-## 🚀 features
+## ✨ features
 
 - **Batch Processing:** Process hundreds of images in seconds with high concurrency.
 - **Interactive UI:** User-friendly prompts for missing configurations using `@clack/prompts`.
@@ -40,7 +40,7 @@ If installed globally, simply run:
 lumi [options]
 ```
 
-### interactive mode
+### ✨ interactive mode
 
 > [!NOTE] if you run **lumi** without providing required flags (like dimensions or output formats), it will guide you
 > through the configuration using cute, interactive prompts!
@@ -51,7 +51,7 @@ lumi [options]
 - **Folders:** By default, **lumi** uses your current directory as the input and creates an `output` folder for the
   results.
 
-### cli options
+### 💻 cli options
 
 You can bypass the prompts by providing the flags directly:
 
@@ -93,20 +93,20 @@ RECURSIVE = 'false'
 
 If you want to contribute or run the project from source:
 
-### clone the repository
+### 🌿 clone the repository
 
 ```bash
 git clone https://github.com/nathievzm/lumi.git
 cd lumi
 ```
 
-### install dependencies
+### 🔧 install dependencies
 
 ```bash
 bun install
 ```
 
-### available scripts
+### 📜 available scripts
 
 - `bun start`: Run the application.
 - `bun dev`: Start with hot reloading.
