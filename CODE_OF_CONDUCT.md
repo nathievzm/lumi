@@ -1,11 +1,11 @@
 # 💖 contributor covenant code of conduct
 
-## ✨ welcome to lumi!
+## 🌸 welcome to lumi!
 
 Welcome to the Lumi community! 💖 I am so incredibly happy to have you here. Building this project is a dream, and my
 absolute goal is for our repository to feel like a super safe, collaborative, and welcoming digital home for every
 developer. Before we jump into the code and start creating magic together, please take a little moment to read our house
-rules. Let's treat each other with kindness, respect, and build something awesome! 🚀
+rules. Let's treat each other with kindness, respect, and build something awesome! ✨
 
 ## 🤝 our pledge
 

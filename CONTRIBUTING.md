@@ -1,6 +1,6 @@
 # 💖 contributing to lumi
 
-## ✨ welcome to the team!
+## 🌸 welcome to the team!
 
 Thank you so much for your interest in contributing to lumi! 💖 To keep our repository clean, organized, and running
 smoothly, please follow these guidelines when submitting your magical code.
@@ -64,7 +64,7 @@ open issue, it is highly encouraged and super helpful to append the issue number
 
 **Example:** `docs: add CODE_OF_CONDUCT (#93)`
 
-## 🚀 pull requests
+## ✨ pull requests
 
 When your code is ready and tested, open a Pull Request against the `main` branch.
 
@@ -75,4 +75,4 @@ When your code is ready and tested, open a Pull Request against the `main` branc
 - **Auto-magic labels:** If you followed our branch naming convention and included the issue number (e.g.,
   `feat/12-add-feature`), our GitHub Actions will automatically grab the labels from that issue and apply them to your
   PR! 🏷️
-- I will review it as soon as possible and we will get that merged! 🎉
+- I will review it as soon as possible and we will get that merged! 💖

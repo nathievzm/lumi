@@ -1,13 +1,16 @@
 pre-commit:
   jobs:
     - name: format
-      run: bun fmt && git add .
+      run: bun fmt {staged_files}
+      stage_fixed: true
 
     - name: lint
-      run: bun lint
+      run: bun lint {staged_files}
+      glob: '*.{js,ts}'
 
     - name: types
-      run: bunx --bun tsc --noEmit
+      run: bunx --bun tsc --noEmit {staged_files}
+      glob: '*.{ts}'
 
 commit-msg:
   jobs:

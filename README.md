@@ -1,9 +1,11 @@
-# ✨ lumi ✨
+# 🌸 lumi 🌸
 
-A fast, interactive CLI tool for batch image processing. Resize, convert, and optimize your images with ease, powered by
-[Bun](https://bun.sh) and [Sharp](https://sharp.pixelplumbing.com/).
+> [!IMPORTANT] lumi is magically powered by [Bun](https://bun.sh) and [Sharp](https://sharp.pixelplumbing.com/). please
+> make sure you have bun installed on your system to enjoy the magic!
 
-## 🚀 Features
+🌸 your lightning-fast and interactive cli companion to resize, convert, and optimize media in seconds.
+
+## ✨ features
 
 - **Batch Processing:** Process hundreds of images in seconds with high concurrency.
 - **Interactive UI:** User-friendly prompts for missing configurations using `@clack/prompts`.
@@ -16,9 +18,9 @@ A fast, interactive CLI tool for batch image processing. Resize, convert, and op
 - **Environment Driven:** Fully configurable via `.env` files or CLI flags.
 - **Update Notifications:** Automatically alerts you when a new version is available.
 
-## 📦 Installation
+## 📦 installation
 
-You don't even need to install it if you use `bunx`! Run it directly from anywhere in your terminal:
+> [!TIP] you don't even need to install it if you use `bunx`! you can run it directly from anywhere in your terminal.
 
 ```bash
 bunx @nathievzm/lumi
@@ -30,7 +32,7 @@ Or install it globally:
 bun install -g @nathievzm/lumi
 ```
 
-## 🛠️ Usage
+## 🛠️ usage
 
 If installed globally, simply run:
 
@@ -38,10 +40,10 @@ If installed globally, simply run:
 lumi [options]
 ```
 
-### Interactive Mode
+### ✨ interactive mode
 
-If you run **lumi** without providing required flags (like dimensions or output formats), it will guide you through the
-configuration using cute, interactive prompts.
+> [!NOTE] if you run **lumi** without providing required flags (like dimensions or output formats), it will guide you
+> through the configuration using cute, interactive prompts!
 
 - **Dimensions:** You can enter a single number for square images (e.g., `1080`) or two numbers for custom dimensions
   (e.g., `1920 1080`).
@@ -49,7 +51,7 @@ configuration using cute, interactive prompts.
 - **Folders:** By default, **lumi** uses your current directory as the input and creates an `output` folder for the
   results.
 
-### CLI Options
+### 💻 cli options
 
 You can bypass the prompts by providing the flags directly:
 
@@ -58,7 +60,7 @@ bunx @nathievzm/lumi -i ./my-vacation-pics -s 1080 -f .webp
 ```
 
 | Flag          | Shortcut | Description                   | Default / Env                |
-| :------------ | :------- | :---------------------------- | :--------------------------- |
+| ------------- | -------- | ----------------------------- | ---------------------------- |
 | `--input`     | `-i`     | Input directory path          | `.` / `INPUT_FOLDER`         |
 | `--output`    | `-o`     | Output directory path         | `./output` / `OUTPUT_FOLDER` |
 | `--width`     | `-w`     | Target width in pixels        | Prompt / `WIDTH`             |
@@ -68,7 +70,7 @@ bunx @nathievzm/lumi -i ./my-vacation-pics -s 1080 -f .webp
 | `--limit`     | `-l`     | Max concurrent operations     | `10` / `LIMIT`               |
 | `--recursive` | `-r`     | Process subdirectories        | `false` / `RECURSIVE`        |
 
-### 🌍 Environment Variables
+### 🌍 environment variables
 
 **lumi** also reads from a `.env` file in your current working directory. This is useful for saving your preferred
 defaults:
@@ -83,26 +85,28 @@ LIMIT = '10'
 RECURSIVE = 'false'
 ```
 
----
+## 🧑‍💻 local development
 
-## 🧑‍💻 Local Development
+> [!IMPORTANT] we absolutely love community contributions! 💖 please read our [CONTRIBUTING.md](CONTRIBUTING.md) for
+> detailed guidelines, and don't forget to review our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) to keep our space safe
+> and welcoming.
 
 If you want to contribute or run the project from source:
 
-### Clone the repository
+### 🌿 clone the repository
 
 ```bash
 git clone https://github.com/nathievzm/lumi.git
 cd lumi
 ```
 
-### Install dependencies
+### 🔧 install dependencies
 
 ```bash
 bun install
 ```
 
-### Available Scripts
+### 📜 available scripts
 
 - `bun start`: Run the application.
 - `bun dev`: Start with hot reloading.
@@ -114,6 +118,6 @@ bun install
 - `bun release`: Release a new version with `bumpp` and update the changelog.
 - `bun prepare`: Install git hooks with `lefthook`.
 
-## 📄 License
+## 📄 license
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
