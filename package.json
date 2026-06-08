@@ -13,17 +13,16 @@
         "media",
         "p-limit",
         "sharp",
-        "spinnies",
         "typescript"
     ],
     "bugs": {
         "url": "https://github.com/nathievzm/lumi/issues",
-        "email": "nathalievzm@gmail.com"
+        "email": "nathievzm.dev@gmail.com"
     },
     "license": "MIT",
     "author": {
         "name": "Nathalie Zambrano",
-        "email": "nathalievzm@gmail.com",
+        "email": "nathievzm.dev@gmail.com",
         "url": "https://github.com/nathievzm"
     },
     "repository": {
