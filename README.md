@@ -1,6 +1,7 @@
 # 🌸 lumi 🌸
 
-> [!IMPORTANT] lumi is magically powered by [Bun](https://bun.sh) and [Sharp](https://sharp.pixelplumbing.com/). please
+> [!IMPORTANT]
+> lumi is magically powered by [Bun](https://bun.sh) and [Sharp](https://sharp.pixelplumbing.com/). please
 > make sure you have bun installed on your system to enjoy the magic!
 
 🌸 your lightning-fast and interactive cli companion to resize, convert, and optimize media in seconds.
@@ -20,7 +21,8 @@
 
 ## 📦 installation
 
-> [!TIP] you don't even need to install it if you use `bunx`! you can run it directly from anywhere in your terminal.
+> [!TIP]
+> you don't even need to install it if you use `bunx`! you can run it directly from anywhere in your terminal.
 
 ```bash
 bunx @nathievzm/lumi
@@ -42,7 +44,8 @@ lumi [options]
 
 ### ✨ interactive mode
 
-> [!NOTE] if you run **lumi** without providing required flags (like dimensions or output formats), it will guide you
+> [!NOTE]
+> if you run **lumi** without providing required flags (like dimensions or output formats), it will guide you
 > through the configuration using cute, interactive prompts!
 
 - **Dimensions:** You can enter a single number for square images (e.g., `1080`) or two numbers for custom dimensions
@@ -87,7 +90,8 @@ RECURSIVE = 'false'
 
 ## 🧑‍💻 local development
 
-> [!IMPORTANT] we absolutely love community contributions! 💖 please read our [CONTRIBUTING.md](CONTRIBUTING.md) for
+> [!IMPORTANT]
+> we absolutely love community contributions! 💖 please read our [CONTRIBUTING.md](CONTRIBUTING.md) for
 > detailed guidelines, and don't forget to review our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) to keep our space safe
 > and welcoming.
 
