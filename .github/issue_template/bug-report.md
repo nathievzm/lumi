@@ -1,12 +1,12 @@
 ---
 name: '🐛 bug report'
-about: 'create a report to help us squash a bug and improve lumi!'
+about: 'create a report to help us squash a bug and improve lumi 🌸!'
 title: 'bug: <short description>'
 labels: ['bug']
 assignees: ''
 ---
 
-### 🐞 describe the bug
+### 🐛 describe the bug
 
 A clear and concise description of what the bug is.
 
