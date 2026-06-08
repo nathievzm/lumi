@@ -16,7 +16,7 @@
     },
     "objectWrap": "preserve",
     "printWidth": 120,
-    "proseWrap": "always",
+    "proseWrap": "preserve",
     "quoteProps": "consistent",
     "semi": false,
     "singleQuote": true,
