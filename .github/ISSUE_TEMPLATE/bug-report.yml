@@ -2,7 +2,6 @@ name: '🐛 bug report'
 description: 'create a report to help us squash a bug and improve lumi 🌸'
 title: 'bug: <short description>'
 labels: ['bug']
-type: 'bug'
 
 body:
   - type: 'textarea'
