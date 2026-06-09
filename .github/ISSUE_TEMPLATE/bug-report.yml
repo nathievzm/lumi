@@ -82,6 +82,7 @@ body:
       description: 'Add any other context about the problem here!'
 
   - type: 'checkboxes'
+    id: 'code-of-conduct'
     attributes:
       label: ' 📕 code of conduct'
       description: 'By submitting this bug, you agree to follow our [code of conduct](CODE_OF_CONDUCT.md):'
