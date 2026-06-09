@@ -2,16 +2,17 @@ name: '✨ feature request'
 description: 'suggest an idea for lumi 🌸 to make it even more magical'
 title: 'feature: <short description>'
 labels: ['enhancement']
-projects: ['nathievzm/4']
 type: 'feature'
 
 body:
   - type: 'textarea'
+    id: 'problem-description'
     attributes:
       label: '🤔 is your feature request related to a problem?'
       description: "A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]"
 
   - type: 'textarea'
+    id: 'solution-description'
     attributes:
       label: "✨ describe the solution you'd like"
       description: 'A clear and concise description of what you want to happen.'
@@ -19,11 +20,13 @@ body:
       required: true
 
   - type: 'textarea'
+    id: 'alternatives-considered'
     attributes:
       label: "💡 describe alternatives you've considered"
       description: "A clear and concise description of any alternative solutions or features you've considered."
 
   - type: 'textarea'
+    id: 'additional-context'
     attributes:
       label: '💖 additional context'
       description: 'Add any other context or screenshots about the feature request here!'
