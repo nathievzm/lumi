@@ -9,7 +9,7 @@ pre-commit:
       glob: '*.{js,ts}'
 
     - name: types
-      run: bunx --bun tsc --noEmit {staged_files}
+      run: bunx --bun tsc --noEmit
       glob: '*.{ts}'
 
 commit-msg:
