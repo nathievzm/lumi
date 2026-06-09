@@ -1,0 +1,73 @@
+name: '🐛 bug report'
+description: 'create a report to help us squash a bug and improve lumi 🌸'
+title: 'bug: <short description>'
+labels: ['bug']
+projects: ['nathievzm/4']
+type: 'bug'
+
+body:
+  - type: 'textarea'
+    attributes:
+      label: '🐛 describe the bug'
+      description: 'A clear and concise description of what the bug is.'
+    validations:
+      required: true
+
+  - type: 'textarea'
+    attributes:
+      label: '👣 steps to reproduce'
+      description: 'Steps to reproduce the behavior:'
+      placeholder: |
+        1. Go to '...'
+        2. Run command '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: 'textarea'
+    attributes:
+      label: '✨ expected behavior'
+      description: 'A clear and concise description of what you expected to happen.'
+    validations:
+      required: true
+
+  - type: 'upload'
+    attributes:
+      label: '📸 screenshots or logs'
+      description: 'If applicable, add screenshots or terminal logs to help explain your problem.'
+
+  - type: 'markdown'
+    attributes:
+      value: '### 💻 environment'
+
+  - type: 'dropdown'
+    attributes:
+      label: 'os'
+      description: 'Select the environment(s) where you encountered the bug.'
+      multiple: true
+      options:
+        - label: 'Windows'
+        - label: 'macOS'
+        - label: 'Linux'
+        - label: 'Other (please specify in the description)'
+          value: 'other'
+    validations:
+      required: true
+
+  - type: 'input'
+    attributes:
+      label: 'bun version'
+      description: 'Specify the version of bun you are using (e.g., 1.0.0). If you are not using bun, please specify "N/A".'
+      placeholder: '1.0.0'
+
+  - type: 'input'
+    attributes:
+      label: 'lumi version'
+      description: 'Specify the version of lumi you are using (e.g., 1.0.0).'
+      placeholder: '1.0.0'
+
+  - type: 'textarea'
+    attributes:
+      label: '💖 additional context'
+      description: 'Add any other context about the problem here!'
