@@ -81,7 +81,7 @@ body:
     id: 'code-of-conduct'
     attributes:
       label: '💖 code of conduct'
-      description: 'by submitting this bug, you agree to follow our [code of conduct](/blob/main/CODE_OF_CONDUCT.md)'
+      description: 'by submitting this bug, you agree to follow our [code of conduct](blob/main/CODE_OF_CONDUCT.md)'
       options:
         - label: 'i have read and agree to the code of conduct'
           required: true
