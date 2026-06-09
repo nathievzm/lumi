@@ -8,14 +8,14 @@ body:
     id: 'problem-description'
     attributes:
       label: '🤔 is your feature request related to a problem?'
-      description: 'A clear and concise description of what the problem is.'
-      placeholder: "Ex. I'm always frustrated when [...]"
+      description: 'a clear and concise description of what the problem is'
+      placeholder: "ex. i'm always frustrated when [...]"
 
   - type: 'textarea'
     id: 'solution-description'
     attributes:
       label: "✨ describe the solution you'd like"
-      description: 'A clear and concise description of what you want to happen.'
+      description: 'a clear and concise description of what you want to happen'
     validations:
       required: true
 
@@ -23,19 +23,19 @@ body:
     id: 'alternatives-considered'
     attributes:
       label: "💡 describe alternatives you've considered"
-      description: "A clear and concise description of any alternative solutions or features you've considered."
+      description: "a clear and concise description of any alternative solutions or features you've considered"
 
   - type: 'textarea'
     id: 'additional-context'
     attributes:
-      label: '💖 additional context'
-      description: 'Add any other context or screenshots about the feature request here!'
+      label: '✨ additional context'
+      description: 'add any other context or screenshots about the feature request here!'
 
   - type: 'checkboxes'
     id: 'code-of-conduct'
     attributes:
-      label: ' 📕 code of conduct'
-      description: 'By submitting this feature, you agree to follow our [code of conduct](CODE_OF_CONDUCT.md):'
+      label: '💖 code of conduct'
+      description: 'by submitting this feature request, you agree to follow our [code of conduct](/blob/main/CODE_OF_CONDUCT.md)'
       options:
-        - label: 'I have read and agree to the code of conduct'
+        - label: 'i have read and agree to the code of conduct'
           required: true
