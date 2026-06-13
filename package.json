@@ -1,19 +1,22 @@
 {
     "name": "@nathievzm/lumi",
     "version": "1.2.1",
-    "description": "a concurrent cli tool to resize and convert images using bun and sharp",
+    "description": "a concurrent cli tool to resize and convert media using bun, sharp, and ffmpeg",
     "keywords": [
         "bun",
         "clack",
         "cli",
         "concurrency",
         "concurrent",
+        "ffmpeg",
         "image",
         "image-processing",
         "media",
         "p-limit",
         "sharp",
-        "typescript"
+        "typescript",
+        "video",
+        "webm"
     ],
     "bugs": {
         "url": "https://github.com/nathievzm/lumi/issues",

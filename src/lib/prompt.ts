@@ -3,6 +3,8 @@ import { exit } from 'node:process'
 import { type Option, cancel, group, select, text } from '@clack/prompts'
 import color from 'picocolors'
 
+type FormatOptions = readonly Readonly<Option<string>>[]
+
 /**
  * Validates the quantity of numeric matches extracted from the user's dimension input.
  *
@@ -102,8 +104,12 @@ export const askWidthAndHeight = async () => {
  *
  * @returns A promise resolving to a record that maps each original file extension to its selected output format string.
  */
-export const askExtensions = (extensions: readonly string[], formats: readonly Readonly<Option<string>>[]) => {
+export const askExtensions = (
+    extensions: readonly string[],
+    formats: FormatOptions | ((extension: string) => FormatOptions)
+) => {
     const promptGroups: Record<string, () => Promise<string | symbol>> = {}
+    const resolveFormats = typeof formats === 'function' ? formats : () => formats
 
     for (const extension of extensions) {
         if (!extension) {
@@ -111,12 +117,13 @@ export const askExtensions = (extensions: readonly string[], formats: readonly R
         }
 
         promptGroups[extension] = () => {
-            const initialValue = formats.some(format => format.value === extension) ? extension : undefined
+            const options = resolveFormats(extension)
+            const initialValue = options.some(format => format.value === extension) ? extension : undefined
 
             return select({
                 initialValue,
                 message: `what ${color.magenta('format')} do you want to use for ${color.cyan(extension)} files? 🎨`,
-                options: [...formats]
+                options: [...options]
             })
         }
     }
