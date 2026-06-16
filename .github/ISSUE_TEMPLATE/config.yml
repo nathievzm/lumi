@@ -1,0 +1,12 @@
+blank_issues_enabled: false
+
+contact_links:
+  # direct users to github discussions for general questions and chats
+  - name: '💬 q&a and discussions'
+    url: 'https://github.com/nathievzm/lumi/discussions'
+    about: 'have a question or just want to chat about lumi? join the discussions!'
+
+  # private security vulnerability reports
+  - name: '🔒 report a security vulnerability'
+    url: 'https://github.com/nathievzm/lumi/security/advisories/new'
+    about: 'please do not report security vulnerabilities in public issues. use this link instead.'
