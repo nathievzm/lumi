@@ -2,8 +2,8 @@
 
 > [!IMPORTANT]
 > lumi is magically powered by [Bun](https://bun.sh), [Sharp](https://sharp.pixelplumbing.com/), and
-> [FFmpeg](https://ffmpeg.org/). please make sure you have bun installed on your system to enjoy the magic!
-> FFmpeg is required when converting gifs and videos to WebM.
+> [FFmpeg](https://ffmpeg.org/) through `ffmpeg-static`. please make sure you have bun installed on your system to
+> enjoy the magic!
 
 🌸 your lightning-fast and interactive cli companion to resize, convert, and optimize media in seconds.
 

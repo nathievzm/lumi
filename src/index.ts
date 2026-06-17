@@ -9,12 +9,11 @@ import pLimit from 'p-limit'
 import color from 'picocolors'
 
 import { cli } from '@/args'
-import { FolderError, ImageError, LumiError } from '@/error'
+import { FolderError, ImageError, LumiError, VideoError } from '@/error'
 import { getInput, getOutput, prepare, readFiles } from '@/folder'
 import { getExtensions, getMedia, getWidthAndHeight, resize } from '@/image'
 import { notifyUpdate } from '@/update'
 import { canConvertToWebm, convertToWebm, isVideoExtension, isWebmTarget } from '@/video'
-import { VideoError } from '@/video-error'
 
 import pkg from '../package.json' with { type: 'json' }
 

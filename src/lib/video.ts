@@ -1,7 +1,9 @@
 import { join } from 'node:path'
 
+import ffmpeg from 'ffmpeg-static'
+
+import { VideoError } from './error'
 import { guard } from './folder'
-import { VideoError } from './video-error'
 
 interface ConvertToWebmParams {
     readonly height: number
@@ -59,9 +61,6 @@ const summarizeStderr = (stderr: string) => {
     return lines.slice(-8).join('\n')
 }
 
-const isMissingCommand = (error: unknown) =>
-    typeof error === 'object' && error !== null && 'code' in error && error.code === 'ENOENT'
-
 const getFfmpegFailure = (code: number | null, stderr: string) => {
     const details = summarizeStderr(stderr)
     const suffix = details ? `\n${details}` : ''
@@ -74,16 +73,20 @@ const getFfmpegStartError = (error: unknown) => {
         return error
     }
 
-    if (isMissingCommand(error)) {
-        return new VideoError('ffmpeg was not found. please install ffmpeg and try again', error)
+    return new VideoError('ffmpeg failed to start', error)
+}
+
+const getFfmpegBinary = () => {
+    if (ffmpeg === null || typeof ffmpeg !== 'string' || ffmpeg.trim() === '') {
+        throw new VideoError('ffmpeg binary is missing or not supported on this platform')
     }
 
-    return new VideoError('ffmpeg failed to start', error)
+    return ffmpeg
 }
 
 const runFfmpeg = async (args: readonly string[]) => {
     try {
-        const process = Bun.spawn(['ffmpeg', ...args], { stderr: 'pipe', stdout: 'ignore' })
+        const process = Bun.spawn([getFfmpegBinary(), ...args], { stderr: 'pipe', stdout: 'ignore' })
         const stderrPromise = new Response(process.stderr).text()
         const code = await process.exited
 
