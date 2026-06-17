@@ -7,6 +7,7 @@ import { type AvailableFormatInfo, type default as sharpType } from 'sharp'
 import { ImageError } from './error'
 import { guard } from './folder'
 import { askExtensions, askWidthAndHeight } from './prompt'
+import { canConvertToWebm, getVideoFormats, isVideoExtension } from './video'
 
 /**
  * Configuration parameters required for the image resizing and conversion operation.
@@ -43,14 +44,16 @@ interface ResizeParams {
 }
 
 /**
- * Array of supported input image format extensions prefixed with a dot (e.g., '.jpg', '.png').
+ * Array of supported input media format extensions prefixed with a dot (e.g., '.jpg', '.mp4').
  */
-const inputFormats = imageExtensions.map(format => `.${format}`)
+const inputFormats = [...imageExtensions.map(format => `.${format}`), ...getVideoFormats()]
 
 /**
- * Set of valid input image extensions for optimized lookup.
+ * Set of valid input media extensions for optimized lookup.
  */
 const validExtensions = new Set(inputFormats)
+
+const webmFormat = { label: 'webm', value: '.webm' } satisfies Option<string>
 
 /**
  * Cached promise for the dynamically imported sharp module.
@@ -95,9 +98,9 @@ const getSharpFormats = async () => {
 }
 
 /**
- * Determines whether a given file is a valid, processable image.
+ * Determines whether a given file is a valid, processable media file.
  *
- * A file is considered processable if it has a valid image extension and is not
+ * A file is considered processable if it has a valid media extension and is not
  * already located within the output directory.
  *
  * @param file - The name or relative path of the file to check.
@@ -108,37 +111,37 @@ const getSharpFormats = async () => {
  */
 const isProcessable = (file: string, input: string, output: string) => {
     const ext = extname(file)
-    const isImage = validExtensions.has(ext.toLowerCase())
+    const isMedia = validExtensions.has(ext.toLowerCase())
     const isInOutput = join(input, file).startsWith(output)
 
-    return isImage && !isInOutput
+    return isMedia && !isInOutput
 }
 
 /**
- * Filters a list of files to identify valid images that are not already present in the output directory.
+ * Filters a list of files to identify valid media that are not already present in the output directory.
  *
  * @param files - A readonly array of file paths to filter.
  * @param input - The absolute or relative path to the source directory containing the input files.
  * @param output - The absolute or relative path to the destination directory for the processed images.
  *
- * @returns An array of string paths representing valid, unprocessed images.
+ * @returns An array of string paths representing valid, unprocessed media files.
  */
-export const getImages = (files: readonly string[], input: string, output: string) => {
+export const getMedia = (files: readonly string[], input: string, output: string) => {
     const resolvedInput = resolve(input)
     const resolvedOutput = resolve(output)
     const normalizedOutput = resolvedOutput.endsWith(sep) ? resolvedOutput : resolvedOutput + sep
 
-    const images: string[] = []
+    const media: string[] = []
 
     for (const file of files) {
         if (!isProcessable(file, resolvedInput, normalizedOutput)) {
             continue
         }
 
-        images.push(file)
+        media.push(file)
     }
 
-    return images
+    return media
 }
 
 /**
@@ -196,7 +199,17 @@ export const getExtensions = async (images: readonly string[], format?: string) 
     const extensions = [...extensionsSet]
 
     const formats = await getSharpFormats()
-    return askExtensions(extensions, formats)
+    return askExtensions(extensions, extension => {
+        if (isVideoExtension(extension)) {
+            return [webmFormat]
+        }
+
+        if (canConvertToWebm(extension)) {
+            return [...formats, webmFormat]
+        }
+
+        return formats
+    })
 }
 
 /**

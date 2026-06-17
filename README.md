@@ -1,8 +1,9 @@
 # 🌸 lumi 🌸
 
 > [!IMPORTANT]
-> lumi is magically powered by [Bun](https://bun.sh) and [Sharp](https://sharp.pixelplumbing.com/). please
-> make sure you have bun installed on your system to enjoy the magic!
+> lumi is magically powered by [Bun](https://bun.sh), [Sharp](https://sharp.pixelplumbing.com/), and
+> [FFmpeg](https://ffmpeg.org/) through `ffmpeg-static`. please make sure you have bun installed on your system to
+> enjoy the magic!
 
 🌸 your lightning-fast and interactive cli companion to resize, convert, and optimize media in seconds.
 
@@ -15,6 +16,7 @@
 - **Smart Resizing:** Automatically fits images while maintaining aspect ratio (`contain` fit).
 - **Multi-Format Support:** Convert between all formats supported by Sharp (WebP, PNG, JPEG, GIF, AVIF, etc.).
 - **Animated Support:** Seamlessly handles animated GIFs and WebP files.
+- **WebM Conversion:** Convert GIFs and common video formats to WebM using FFmpeg.
 - **Concurrency Control:** Fine-tune performance with configurable processing limits.
 - **Environment Driven:** Fully configurable via `.env` files or CLI flags.
 - **Update Notifications:** Automatically alerts you when a new version is available.
@@ -51,6 +53,7 @@ lumi [options]
 - **Dimensions:** You can enter a single number for square images (e.g., `1080`) or two numbers for custom dimensions
   (e.g., `1920 1080`).
 - **Formats:** Choose specific output formats for each unique extension found in your input!
+- **Videos:** Video inputs are converted to WebM, and GIFs can be converted to WebM when selected.
 - **Folders:** By default, **lumi** uses your current directory as the input and creates an `output` folder for the
   results.
 
